@@ -66,10 +66,10 @@ serve(async (req) => {
       });
     }
 
-    // If not enough questions in database, generate new ones using OpenAI
-    const openaiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openaiKey) {
-      throw new Error('OPENAI_API_KEY is not set - cannot generate new questions');
+    // If not enough questions in database, generate new ones using Lovable AI
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    if (!lovableApiKey) {
+      throw new Error('LOVABLE_API_KEY is not set - cannot generate new questions');
     }
 
     const examContext = examType === 'jamb' ? 'JAMB (Joint Admissions and Matriculation Board)' :
@@ -99,18 +99,18 @@ Requirements:
 
 Make questions challenging but fair, and ensure explanations help students understand the concept.`;
 
-    logStep("Calling OpenAI to generate questions");
+    logStep("Calling Lovable AI to generate questions");
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiKey}`,
+        'Authorization': `Bearer ${lovableApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'google/gemini-2.5-flash',
         messages: [
-          { role: 'system', content: 'You are an expert in Nigerian education and exam preparation. Generate high-quality multiple choice questions.' },
+          { role: 'system', content: 'You are an expert in Nigerian education and exam preparation. Generate high-quality multiple choice questions. Always return valid JSON.' },
           { role: 'user', content: prompt }
         ],
         max_tokens: 2000,
@@ -118,9 +118,31 @@ Make questions challenging but fair, and ensure explanations help students under
       }),
     });
 
+    // Handle rate limiting and payment errors
+    if (response.status === 429) {
+      logStep("Rate limit exceeded");
+      return new Response(JSON.stringify({ 
+        error: 'Rate limit exceeded. Please try again in a moment.' 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 429,
+      });
+    }
+
+    if (response.status === 402) {
+      logStep("Payment required - out of credits");
+      return new Response(JSON.stringify({ 
+        error: 'AI service credits exhausted. Please contact administrator.' 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 402,
+      });
+    }
+
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
+      logStep("Lovable AI error", { error });
+      throw new Error(`Lovable AI error: ${error.error?.message || 'Unknown error'}`);
     }
 
     const data = await response.json();
@@ -140,7 +162,7 @@ Make questions challenging but fair, and ensure explanations help students under
       }
     } catch (parseError) {
       const errorMessage = parseError instanceof Error ? parseError.message : 'Unknown parse error';
-      logStep("Failed to parse AI response as JSON", { error: errorMessage });
+      logStep("Failed to parse AI response as JSON", { error: errorMessage, response: aiResponse });
       throw new Error('Failed to parse generated questions');
     }
 
@@ -170,7 +192,8 @@ Make questions challenging but fair, and ensure explanations help students under
     return new Response(JSON.stringify({
       questions: questionsToSave,
       source: 'generated',
-      tokensUsed: data.usage?.total_tokens || 0
+      tokensUsed: data.usage?.total_tokens || 0,
+      model: 'google/gemini-2.5-flash'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,

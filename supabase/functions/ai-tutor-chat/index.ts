@@ -27,11 +27,11 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
-    const openaiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openaiKey) {
-      throw new Error('OPENAI_API_KEY is not set');
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    if (!lovableApiKey) {
+      throw new Error('LOVABLE_API_KEY is not set');
     }
-    logStep("OpenAI key verified");
+    logStep("Lovable AI key verified");
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
@@ -92,26 +92,47 @@ Keep responses concise but thorough. Always encourage the student and relate to 
     // Add current user message
     contextMessages.push({ role: 'user', content: message });
 
-    logStep("Built context for OpenAI", { messageCount: contextMessages.length });
+    logStep("Built context for Lovable AI", { messageCount: contextMessages.length });
 
-    // Call OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Call Lovable AI Gateway (Google Gemini 2.5 Flash)
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiKey}`,
+        'Authorization': `Bearer ${lovableApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'google/gemini-2.5-flash',
         messages: contextMessages,
         max_tokens: 500,
         temperature: 0.7,
       }),
     });
 
+    // Handle rate limiting and payment errors
+    if (response.status === 429) {
+      logStep("Rate limit exceeded");
+      return new Response(JSON.stringify({ 
+        error: 'Rate limit exceeded. Please try again in a moment.' 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 429,
+      });
+    }
+
+    if (response.status === 402) {
+      logStep("Payment required - out of credits");
+      return new Response(JSON.stringify({ 
+        error: 'AI service credits exhausted. Please contact administrator.' 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 402,
+      });
+    }
+
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
+      throw new Error(`Lovable AI error: ${error.error?.message || 'Unknown error'}`);
     }
 
     const data = await response.json();
@@ -136,7 +157,7 @@ Keep responses concise but thorough. Always encourage the student and relate to 
         content: aiResponse,
         metadata: { 
           timestamp: new Date().toISOString(),
-          model: 'gpt-4o-mini',
+          model: 'google/gemini-2.5-flash',
           tokens_used: data.usage?.total_tokens || 0
         }
       }
@@ -147,7 +168,8 @@ Keep responses concise but thorough. Always encourage the student and relate to 
     return new Response(JSON.stringify({
       response: aiResponse,
       conversationId: `${user.id}-${tutorId}-${subject}`,
-      tokensUsed: data.usage?.total_tokens || 0
+      tokensUsed: data.usage?.total_tokens || 0,
+      model: 'google/gemini-2.5-flash'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,

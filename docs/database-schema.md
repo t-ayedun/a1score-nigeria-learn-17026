@@ -1,6 +1,8 @@
 
 # A1Score Database Schema Design
 
+> **Last Updated**: 2025-01-09 - Added AI optimization, document storage, and learning analytics tables
+
 ## Core Tables
 
 ### users
@@ -161,16 +163,148 @@ CREATE TABLE quiz_attempts (
 );
 ```
 
-### tutor_conversations
+### conversation_history (NEW - AI Chat Persistence)
 ```sql
-CREATE TABLE tutor_conversations (
+CREATE TABLE conversation_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  title VARCHAR(255),
-  subject VARCHAR(100),
-  messages JSONB NOT NULL, -- array of message objects
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  session_id UUID NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+  content TEXT NOT NULL,
+  tokens_used INTEGER DEFAULT 0,
+  model TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### quizzes (NEW - Structured Quiz Management)
+```sql
+CREATE TABLE quizzes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  description TEXT,
+  subject TEXT NOT NULL,
+  academic_level TEXT,
+  created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  difficulty TEXT CHECK (difficulty IN ('easy', 'medium', 'hard')),
+  estimated_duration_minutes INTEGER,
+  passing_score INTEGER DEFAULT 70,
+  is_published BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### quiz_questions (NEW - Individual Questions)
+```sql
+CREATE TABLE quiz_questions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  quiz_id UUID REFERENCES quizzes(id) ON DELETE CASCADE,
+  question_text TEXT NOT NULL,
+  question_type TEXT NOT NULL CHECK (question_type IN ('multiple_choice', 'true_false', 'short_answer', 'essay')),
+  options JSONB,
+  correct_answer TEXT NOT NULL,
+  explanation TEXT,
+  difficulty TEXT CHECK (difficulty IN ('easy', 'medium', 'hard')),
+  topic TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### user_documents (NEW - Document Storage Metadata)
+```sql
+CREATE TABLE user_documents (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  file_name TEXT NOT NULL,
+  file_size INTEGER,
+  file_type TEXT,
+  storage_path TEXT NOT NULL,
+  upload_status TEXT DEFAULT 'processing' CHECK (upload_status IN ('processing', 'completed', 'failed')),
+  processing_metadata JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### document_chunks (NEW - RAG/Vector Search)
+```sql
+CREATE TABLE document_chunks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  document_id UUID NOT NULL REFERENCES user_documents(id) ON DELETE CASCADE,
+  chunk_index INTEGER NOT NULL,
+  content TEXT NOT NULL,
+  metadata JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### learning_sessions (NEW - Learning Analytics)
+```sql
+CREATE TABLE learning_sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  session_type TEXT NOT NULL CHECK (session_type IN ('quiz', 'ai_chat', 'document_study', 'practice')),
+  subject TEXT,
+  topic TEXT,
+  duration_minutes INTEGER,
+  questions_answered INTEGER DEFAULT 0,
+  correct_answers INTEGER DEFAULT 0,
+  concepts_covered TEXT[],
+  performance_score DECIMAL(5,2),
+  started_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  ended_at TIMESTAMP WITH TIME ZONE,
+  metadata JSONB
+);
+```
+
+### spaced_repetition_cards (NEW - Spaced Repetition System)
+```sql
+CREATE TABLE spaced_repetition_cards (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  subject TEXT NOT NULL,
+  topic TEXT NOT NULL,
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL,
+  difficulty INTEGER DEFAULT 0,
+  ease_factor DECIMAL(3,2) DEFAULT 2.5,
+  interval_days INTEGER DEFAULT 0,
+  repetitions INTEGER DEFAULT 0,
+  next_review_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  last_reviewed_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  metadata JSONB
+);
+```
+
+### ai_response_cache (NEW - Cost Optimization)
+```sql
+CREATE TABLE ai_response_cache (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  query_hash TEXT NOT NULL UNIQUE,
+  query_text TEXT NOT NULL,
+  response_text TEXT NOT NULL,
+  model TEXT NOT NULL,
+  tokens_used INTEGER,
+  hit_count INTEGER DEFAULT 1,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  last_accessed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### user_ai_usage (NEW - Rate Limiting & Usage Tracking)
+```sql
+CREATE TABLE user_ai_usage (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  usage_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  requests_count INTEGER DEFAULT 0,
+  tokens_used INTEGER DEFAULT 0,
+  cost_usd DECIMAL(10,4) DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, usage_date)
 );
 ```
 
@@ -193,9 +327,37 @@ CREATE INDEX idx_user_activities_date ON user_activities(created_at);
 
 -- Quiz indexes
 CREATE INDEX idx_quizzes_subject ON quizzes(subject);
-CREATE INDEX idx_quizzes_level ON quizzes(level);
+CREATE INDEX idx_quizzes_created_by ON quizzes(created_by);
+CREATE INDEX idx_quizzes_created_at ON quizzes(created_at DESC);
+CREATE INDEX idx_quiz_questions_quiz_id ON quiz_questions(quiz_id);
+CREATE INDEX idx_quiz_questions_topic ON quiz_questions(topic);
 CREATE INDEX idx_quiz_attempts_user_id ON quiz_attempts(user_id);
 CREATE INDEX idx_quiz_attempts_quiz_id ON quiz_attempts(quiz_id);
+
+-- Conversation indexes
+CREATE INDEX idx_conversation_history_user_id ON conversation_history(user_id);
+CREATE INDEX idx_conversation_history_session_id ON conversation_history(session_id);
+CREATE INDEX idx_conversation_history_created_at ON conversation_history(created_at DESC);
+
+-- Document indexes
+CREATE INDEX idx_user_documents_user_id ON user_documents(user_id);
+CREATE INDEX idx_user_documents_created_at ON user_documents(created_at DESC);
+CREATE INDEX idx_document_chunks_document_id ON document_chunks(document_id);
+
+-- Learning analytics indexes
+CREATE INDEX idx_learning_sessions_user_id ON learning_sessions(user_id);
+CREATE INDEX idx_learning_sessions_started_at ON learning_sessions(started_at DESC);
+CREATE INDEX idx_learning_sessions_subject ON learning_sessions(subject);
+
+-- Spaced repetition indexes
+CREATE INDEX idx_spaced_repetition_user_id ON spaced_repetition_cards(user_id);
+CREATE INDEX idx_spaced_repetition_next_review ON spaced_repetition_cards(next_review_date);
+CREATE INDEX idx_spaced_repetition_subject ON spaced_repetition_cards(subject);
+
+-- AI optimization indexes
+CREATE INDEX idx_ai_response_cache_query_hash ON ai_response_cache(query_hash);
+CREATE INDEX idx_user_ai_usage_user_id ON user_ai_usage(user_id);
+CREATE INDEX idx_user_ai_usage_date ON user_ai_usage(usage_date DESC);
 ```
 
 ## Row Level Security (RLS) Policies
