@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProgressAnalytics } from '@/hooks/useProgressAnalytics';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { ConceptMasteryRadar } from './ConceptMasteryRadar';
 import { StudyTimeTrendsChart } from './StudyTimeTrendsChart';
 import { QuizPerformanceChart } from './QuizPerformanceChart';
@@ -17,11 +18,16 @@ import {
   Download, 
   RefreshCw,
   Clock,
-  Trophy
+  Trophy,
+  Brain,
+  Target
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export function ProgressTrackerDashboard() {
+  const navigate = useNavigate();
+  const { preferences } = useUserPreferences();
   const {
     loading,
     conceptMastery,
@@ -38,6 +44,9 @@ export function ProgressTrackerDashboard() {
 
   const [exportingPDF, setExportingPDF] = useState(false);
   const [exportingCSV, setExportingCSV] = useState(false);
+  
+  // Check if user has any learning activity
+  const hasActivity = conceptMastery.length > 0 || studyTimeTrends.length > 0 || quizPerformance.length > 0;
 
   const handleExportPDF = async () => {
     setExportingPDF(true);
@@ -89,6 +98,49 @@ export function ProgressTrackerDashboard() {
           <div className="text-center">
             <RefreshCw className="h-12 w-12 mx-auto mb-4 animate-spin text-muted-foreground" />
             <p className="text-muted-foreground">Loading your progress...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show empty state if no activity
+  if (!hasActivity) {
+    return (
+      <Card>
+        <CardContent className="py-12">
+          <div className="text-center space-y-6 max-w-md mx-auto">
+            <div className="mx-auto w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+              <BarChart3 className="h-10 w-10 text-blue-600" />
+            </div>
+            
+            <div>
+              <h3 className="text-xl font-semibold mb-2">No Progress Data Yet</h3>
+              <p className="text-gray-600 mb-4">
+                {preferences?.learningSubjects && preferences.learningSubjects.length > 0
+                  ? `Start studying ${preferences.learningSubjects.join(', ')} to see your progress analytics here!`
+                  : 'Take quizzes and start study sessions to track your learning journey'}
+              </p>
+            </div>
+
+            <div className="flex gap-3 justify-center">
+              <Button onClick={() => navigate('/student/quiz')}>
+                <Brain className="h-4 w-4 mr-2" />
+                Take a Quiz
+              </Button>
+              <Button variant="outline" onClick={() => navigate('/student/study-timer')}>
+                <Clock className="h-4 w-4 mr-2" />
+                Start Study Session
+              </Button>
+            </div>
+
+            {preferences?.examDate && preferences.daysUntilExam && preferences.daysUntilExam > 0 && (
+              <div className="pt-4 border-t">
+                <p className="text-sm text-gray-500">
+                  ⏰ You have {preferences.daysUntilExam} days until your exam
+                </p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

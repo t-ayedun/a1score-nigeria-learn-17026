@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 
-interface SubjectProgress {
+export interface SubjectProgress {
   subject: string;
   totalQuizzes: number;
   averageScore: number;
@@ -11,9 +11,11 @@ interface SubjectProgress {
   weeklyHours: number;
   topicsCompleted: number;
   questionsAnswered: number;
+  hasActivity: boolean; // True if real study data exists
+  fromOnboarding: boolean; // True if from onboarding preferences
 }
 
-export const useSubjectProgress = () => {
+export const useSubjectProgress = (preferredSubjects?: string[]) => {
   const { user } = useAuth();
   const [subjects, setSubjects] = useState<SubjectProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,8 +92,8 @@ export const useSubjectProgress = () => {
         }
       });
 
-      // Calculate progress for each subject
-      const subjectProgress: SubjectProgress[] = Array.from(subjectMap.entries()).map(([subject, data]) => {
+      // Calculate progress for each subject with activity
+      const activitySubjects: SubjectProgress[] = Array.from(subjectMap.entries()).map(([subject, data]) => {
         const avgScore = data.quizzes.length > 0
           ? data.quizzes.reduce((sum, q) => sum + (q.score || 0), 0) / data.quizzes.length
           : 0;
@@ -123,12 +125,43 @@ export const useSubjectProgress = () => {
           weeklyHours: Math.round(weeklyMinutes / 60 * 10) / 10,
           lastStudied,
           topicsCompleted,
-          questionsAnswered: totalQuestions
+          questionsAnswered: totalQuestions,
+          hasActivity: true,
+          fromOnboarding: false
         };
       });
 
-      // Sort by total study hours (most studied first)
-      subjectProgress.sort((a, b) => b.totalStudyHours - a.totalStudyHours);
+      // Add preferred subjects from onboarding if provided and not already in activity
+      const finalSubjects = [...activitySubjects];
+      
+      if (preferredSubjects && preferredSubjects.length > 0) {
+        const activitySubjectNames = new Set(activitySubjects.map(s => s.subject.toLowerCase()));
+        
+        preferredSubjects.forEach(prefSubject => {
+          if (!activitySubjectNames.has(prefSubject.toLowerCase())) {
+            // Add onboarding subject with zero progress
+            finalSubjects.push({
+              subject: prefSubject,
+              totalQuizzes: 0,
+              averageScore: 0,
+              totalStudyHours: 0,
+              weeklyHours: 0,
+              lastStudied: 'Never',
+              topicsCompleted: 0,
+              questionsAnswered: 0,
+              hasActivity: false,
+              fromOnboarding: true
+            });
+          }
+        });
+      }
+
+      // Sort: subjects with activity first (by study hours), then onboarding subjects
+      finalSubjects.sort((a, b) => {
+        if (a.hasActivity && !b.hasActivity) return -1;
+        if (!a.hasActivity && b.hasActivity) return 1;
+        return b.totalStudyHours - a.totalStudyHours;
+      });
 
       // Calculate overall weekly stats
       const totalWeeklyMinutes = recentSessions?.reduce((sum, s) => sum + (s.duration_minutes || 0), 0) || 0;
@@ -149,7 +182,7 @@ export const useSubjectProgress = () => {
         averageScore: weeklyAvgScore
       });
 
-      setSubjects(subjectProgress);
+      setSubjects(finalSubjects);
     } catch (error) {
       console.error('Error fetching subject progress:', error);
     } finally {

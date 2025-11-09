@@ -6,7 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Calculator, FlaskConical, Globe, LogOut, Trophy, TrendingUp, GraduationCap, Microscope, FileText, Bot, Brain, Clock, Shield, Play, Target, BarChart3, Users, Sparkles } from "lucide-react";
+import { BookOpen, Calculator, FlaskConical, Globe, LogOut, Trophy, TrendingUp, Bot, Brain, Clock, Play, Target, BarChart3, Sparkles, Microscope, FileText } from "lucide-react";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useSubjectProgress } from "@/hooks/useSubjectProgress";
 import { motion } from "framer-motion";
 import AITutorChat from "./AITutorChat";
 import QuizInterface from "./QuizInterface";
@@ -45,6 +47,10 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [currentPlan, setCurrentPlan] = useState<'free' | 'premium' | 'pro'>('free');
   const [currentAnalysis, setCurrentAnalysis] = useState<any>(null);
+  
+  // Fetch user preferences and real data
+  const { preferences, loading: preferencesLoading } = useUserPreferences();
+  const { subjects: userSubjects, loading: subjectsLoading } = useSubjectProgress(preferences?.learningSubjects);
 
   // Handle routing to study tools
   useEffect(() => {
@@ -115,69 +121,30 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
     fetchUserStats();
   }, []);
 
-  const getContentByLevel = (level?: string) => {
-    if (level === 'undergraduate') {
-      return {
-        subjects: [
-          { name: 'Calculus', icon: Calculator, progress: 78, color: 'bg-blue-500' },
-          { name: 'Data Structures', icon: BookOpen, progress: 65, color: 'bg-purple-500' },
-          { name: 'Chemistry', icon: FlaskConical, progress: 72, color: 'bg-green-500' },
-          { name: 'Academic Writing', icon: Globe, progress: 84, color: 'bg-orange-500' },
-        ],
-        achievements: [
-          { title: 'Research Pioneer', description: 'Completed first research project', icon: GraduationCap },
-          { title: 'Code Master', description: 'Solved 50 programming challenges', icon: Calculator },
-          { title: 'Consistent Scholar', description: '30 days learning streak', icon: TrendingUp },
-        ],
-        welcomeMessage: 'Ready to excel in your undergraduate studies?',
-        stats: { streak: 30, points: '12,450', leagueRank: '#47', leagueName: 'Gold League' }
-      };
-    } else if (level === 'postgraduate-taught' || level === 'postgraduate-research') {
-      return {
-        subjects: [
-          { name: 'Advanced Research Methods', icon: Microscope, progress: 85, color: 'bg-red-500' },
-          { name: 'Statistical Analysis', icon: Calculator, progress: 78, color: 'bg-blue-500' },
-          { name: 'Literature Review', icon: BookOpen, progress: 90, color: 'bg-green-500' },
-          { name: 'Thesis Writing', icon: Globe, progress: 67, color: 'bg-purple-500' },
-        ],
-        achievements: [
-          { title: 'Research Expert', description: 'Published first paper', icon: Microscope },
-          { title: 'Data Analyst', description: 'Mastered SPSS & R', icon: Calculator },
-          { title: 'Academic Writer', description: 'Thesis chapter completed', icon: GraduationCap },
-        ],
-        welcomeMessage: level === 'postgraduate-research' 
-          ? 'Advancing your research journey!' 
-          : 'Excelling in your postgraduate studies!',
-        stats: { streak: 45, points: '24,750', leagueRank: '#12', leagueName: 'Diamond League' }
-      };
-    } else {
-      // Secondary school content (JSS/SS levels)
-      const baseContent = {
-        subjects: [
-          { name: 'Mathematics', icon: Calculator, progress: 78, color: 'bg-blue-500' },
-          { name: 'Physics', icon: FlaskConical, progress: 65, color: 'bg-purple-500' },
-          { name: 'Chemistry', icon: FlaskConical, progress: 72, color: 'bg-green-500' },
-          { name: 'English', icon: Globe, progress: 84, color: 'bg-orange-500' },
-        ],
-        achievements: [
-          { title: 'Getting Started', description: 'Welcome to A1Score!', icon: Trophy },
-          { title: 'Learning Journey', description: 'Continue your progress', icon: Calculator },
-          { title: 'Stay Consistent', description: `Keep your learning streak going`, icon: TrendingUp },
-        ],
-        welcomeMessage: 'Ready to continue your learning journey?',
-        stats: userStats || { 
-          streak: 0, 
-          points: '0', 
-          leagueRank: '#--',
-          leagueName: 'Bronze League'
-        }
-      };
-
-      return baseContent;
+  // Get welcome message based on preferences
+  const getWelcomeMessage = () => {
+    if (preferences?.examDate && preferences.daysUntilExam && preferences.daysUntilExam > 0) {
+      return `${preferences.daysUntilExam} days until your exam - let's prepare!`;
     }
+    if (preferences?.learningSubjects && preferences.learningSubjects.length > 0) {
+      return `Ready to master ${preferences.learningSubjects.join(', ')}?`;
+    }
+    return 'Ready to continue your learning journey?';
   };
 
-  const content = getContentByLevel(user.level);
+  // Map subjects to icons
+  const getSubjectIcon = (subject: string) => {
+    const lower = subject.toLowerCase();
+    if (lower.includes('math') || lower.includes('algebra') || lower.includes('calculus')) return Calculator;
+    if (lower.includes('physics') || lower.includes('chemistry') || lower.includes('biology')) return FlaskConical;
+    if (lower.includes('english') || lower.includes('literature')) return Globe;
+    return BookOpen;
+  };
+
+  const getSubjectColor = (index: number) => {
+    const colors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-red-500', 'bg-indigo-500'];
+    return colors[index % colors.length];
+  };
 
   const getLevelBadge = (level?: string) => {
     if (level === 'undergraduate') return <Badge className="bg-blue-100 text-blue-800">Undergraduate</Badge>;
@@ -222,7 +189,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
       <div className="pt-16 sm:pt-20 px-4 sm:px-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="dashboard" className="space-y-6 max-w-7xl mx-auto">
-            {/* Welcome Banner - Simplified */}
+            {/* Welcome Banner - Personalized */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -233,16 +200,16 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
                       <h2 className="text-2xl font-bold">Welcome back, {user.name}! 👋</h2>
-                      <p className="text-blue-100">{content.welcomeMessage}</p>
+                      <p className="text-blue-100">{getWelcomeMessage()}</p>
                     </div>
                     <div className="hidden md:flex gap-8 text-center">
                       <div>
-                        <div className="text-3xl font-bold">{content.stats.streak}</div>
+                        <div className="text-3xl font-bold">{userStats?.streak || 0}</div>
                         <div className="text-sm text-blue-100">Day Streak</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-bold">{content.stats.leagueRank}</div>
-                        <div className="text-sm text-blue-100">{content.stats.leagueName}</div>
+                        <div className="text-3xl font-bold">{userStats?.leagueRank || '#--'}</div>
+                        <div className="text-sm text-blue-100">{userStats?.leagueName || 'Bronze League'}</div>
                       </div>
                     </div>
                   </div>
@@ -322,43 +289,116 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
               </p>
             </motion.div>
 
-            {/* Subject Progress */}
+            {/* Subject Progress - Real Data */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Your Progress</h3>
-                <p className="text-sm text-gray-600">Track your learning across subjects</p>
+                <h3 className="text-lg font-semibold text-gray-900">Your Subjects</h3>
+                <p className="text-sm text-gray-600">
+                  {userSubjects.length === 0 
+                    ? "Start studying to track your progress" 
+                    : "Based on your actual study activity"}
+                </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {content.subjects.map((subject, index) => (
-                  <Card 
-                    key={subject.name} 
-                    className="hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => setActiveTab('subjects')}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <CardTitle className="text-base">{subject.name}</CardTitle>
-                        <Badge variant="secondary" className="text-xs">
-                          {subject.progress}%
-                        </Badge>
+
+              {subjectsLoading ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">Loading your subjects...</p>
+                </div>
+              ) : userSubjects.length === 0 ? (
+                <Card className="p-8 text-center">
+                  <div className="space-y-4">
+                    <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                      <BookOpen className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        {preferences?.learningSubjects && preferences.learningSubjects.length > 0
+                          ? `Let's start with ${preferences.learningSubjects.join(', ')}`
+                          : 'No Subjects Yet'}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {preferences?.learningSubjects && preferences.learningSubjects.length > 0
+                          ? 'Take your first quiz or start a study session to begin tracking progress!'
+                          : 'Complete onboarding or start studying to see your subjects here'}
+                      </p>
+                      <div className="flex gap-2 justify-center">
+                        <Button onClick={() => setActiveTab('quiz')}>
+                          <Brain className="h-4 w-4 mr-2" />
+                          Take a Quiz
+                        </Button>
+                        <Button variant="outline" onClick={() => setActiveTab('study-timer')}>
+                          <Clock className="h-4 w-4 mr-2" />
+                          Start Studying
+                        </Button>
                       </div>
-                      <Progress value={subject.progress} className="h-2" />
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="text-xs text-gray-600">
-                        {subject.progress >= 80 ? '🔥 Excellent' : subject.progress >= 60 ? '💪 Good Progress' : '📈 Keep Going'}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    </div>
+                  </div>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {userSubjects.slice(0, 4).map((subject, index) => {
+                    const Icon = getSubjectIcon(subject.subject);
+                    const color = getSubjectColor(index);
+                    const progressPercent = subject.hasActivity 
+                      ? Math.min(100, Math.round((subject.totalQuizzes * 10) + (subject.totalStudyHours * 2)))
+                      : 0;
+                    
+                    return (
+                      <Card 
+                        key={subject.subject} 
+                        className="hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => setActiveTab('subjects')}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <CardTitle className="text-base flex items-center gap-2">
+                              <div className={`p-1.5 ${color} rounded`}>
+                                <Icon className="h-3.5 w-3.5 text-white" />
+                              </div>
+                              {subject.subject}
+                            </CardTitle>
+                            <Badge variant={subject.hasActivity ? "secondary" : "outline"} className="text-xs">
+                              {progressPercent}%
+                            </Badge>
+                          </div>
+                          <Progress value={progressPercent} className="h-2" />
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          {subject.hasActivity ? (
+                            <>
+                              <div className="text-xs text-gray-600 mb-2">
+                                {subject.averageScore >= 80 ? '🔥 Excellent' : subject.averageScore >= 60 ? '💪 Good Progress' : '📈 Keep Going'}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {subject.totalStudyHours}h studied • {subject.totalQuizzes} quizzes
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-xs text-gray-500">
+                              ✨ Ready to start? Click to begin!
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+
+              {userSubjects.length > 4 && (
+                <div className="text-center mt-4">
+                  <Button variant="outline" onClick={() => setActiveTab('subjects')}>
+                    View All {userSubjects.length} Subjects
+                  </Button>
+                </div>
+              )}
             </motion.div>
 
-            {/* Recent Achievements */}
+            {/* Quick Actions - Personalized */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -366,24 +406,45 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base font-semibold">Recent Achievements</CardTitle>
+                  <CardTitle className="text-base font-semibold">Continue Learning</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {content.achievements.map((achievement, index) => {
-                      const Icon = achievement.icon;
-                      return (
-                        <div key={index} className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                          <div className="p-2 bg-yellow-400 rounded-full flex-shrink-0">
-                            <Icon className="h-4 w-4 text-white" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="font-semibold text-sm">{achievement.title}</div>
-                            <div className="text-xs text-gray-600 truncate">{achievement.description}</div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <Button 
+                      variant="outline" 
+                      className="h-auto flex-col gap-2 p-4"
+                      onClick={() => setActiveTab('subjects')}
+                    >
+                      <Target className="h-5 w-5 text-blue-600" />
+                      <div className="text-center">
+                        <div className="font-semibold text-sm">Browse Subjects</div>
+                        <div className="text-xs text-gray-500">Explore topics</div>
+                      </div>
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="h-auto flex-col gap-2 p-4"
+                      onClick={() => setActiveTab('progress-tracker')}
+                    >
+                      <BarChart3 className="h-5 w-5 text-green-600" />
+                      <div className="text-center">
+                        <div className="font-semibold text-sm">Track Progress</div>
+                        <div className="text-xs text-gray-500">View analytics</div>
+                      </div>
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="h-auto flex-col gap-2 p-4"
+                      onClick={() => setActiveTab('gamification')}
+                    >
+                      <Trophy className="h-5 w-5 text-yellow-600" />
+                      <div className="text-center">
+                        <div className="font-semibold text-sm">Achievements</div>
+                        <div className="text-xs text-gray-500">View rewards</div>
+                      </div>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
