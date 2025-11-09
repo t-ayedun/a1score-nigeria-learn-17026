@@ -53,7 +53,17 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
     }
     autoRotateRef.current = setInterval(() => {
       setDirection('forward');
-      setCurrentSlide((prev) => (prev + 1) % heroContent.length);
+      setCurrentSlide((prev) => {
+        const next = prev + 1;
+        if (next >= heroContent.length) {
+          // Create smooth loop by going to duplicate, then resetting
+          setTimeout(() => {
+            setCurrentSlide(0);
+          }, 1000);
+          return next;
+        }
+        return next;
+      });
     }, 8000);
 
     setTimeout(() => setIsTransitioning(false), 1000);
@@ -62,7 +72,17 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
   useEffect(() => {
     autoRotateRef.current = setInterval(() => {
       setDirection('forward');
-      setCurrentSlide((prev) => (prev + 1) % heroContent.length);
+      setCurrentSlide((prev) => {
+        const next = prev + 1;
+        if (next >= heroContent.length) {
+          // Create smooth loop by going to duplicate, then resetting
+          setTimeout(() => {
+            setCurrentSlide(0);
+          }, 1000);
+          return next;
+        }
+        return next;
+      });
     }, 8000);
 
     return () => {
@@ -72,7 +92,7 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
     };
   }, [heroContent.length]);
 
-  const currentContent = heroContent[currentSlide];
+  const currentContent = heroContent[currentSlide % heroContent.length];
   const CurrentIcon = currentContent.icon;
 
   return (
@@ -91,16 +111,18 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
         {/* Carousel container with overflow hidden */}
         <div className="relative min-h-[550px] md:min-h-[500px] overflow-hidden">
           <div 
-            className="flex transition-transform duration-1000 ease-in-out"
+            className={`flex ${currentSlide === heroContent.length ? 'transition-none' : 'transition-transform duration-1000 ease-in-out'}`}
             style={{
               transform: `translateX(-${currentSlide * 100}%)`,
             }}
           >
-            {heroContent.map((content, index) => {
+            {/* Render all slides plus duplicate of first slide at end */}
+            {[...heroContent, heroContent[0]].map((content, index) => {
               const Icon = content.icon;
+              const isLastDuplicate = index === heroContent.length;
               return (
                 <div 
-                  key={content.slideKey}
+                  key={isLastDuplicate ? 'duplicate-0' : content.slideKey}
                   className="min-w-full flex-shrink-0 px-4"
                 >
                   <div className="space-y-6 max-w-4xl mx-auto">
@@ -162,7 +184,7 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
               onClick={() => navigateToSlide(index)}
               disabled={isTransitioning}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide 
+                index === (currentSlide % heroContent.length)
                   ? `bg-gradient-to-r ${currentContent.gradient}` 
                   : 'bg-muted hover:bg-muted-foreground/40'
               }`}
@@ -179,7 +201,7 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
               onClick={() => navigateToSlide(index)}
               disabled={isTransitioning}
               className={`capitalize transition-all duration-300 ${
-                index === currentSlide 
+                index === (currentSlide % heroContent.length)
                   ? 'text-foreground font-medium' 
                   : 'hover:text-foreground/70'
               }`}
