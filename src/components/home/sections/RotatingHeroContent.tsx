@@ -51,39 +51,29 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
     if (autoRotateRef.current) {
       clearInterval(autoRotateRef.current);
     }
-    autoRotateRef.current = setInterval(() => {
-      setDirection('forward');
-      setCurrentSlide((prev) => {
-        const next = prev + 1;
-        if (next >= heroContent.length) {
-          // Create smooth loop by going to duplicate, then resetting
-          setTimeout(() => {
-            setCurrentSlide(0);
-          }, 1000);
-          return next;
-        }
-        return next;
-      });
-    }, 8000);
+    startAutoRotate();
 
     setTimeout(() => setIsTransitioning(false), 1000);
   };
 
-  useEffect(() => {
+  const startAutoRotate = () => {
     autoRotateRef.current = setInterval(() => {
-      setDirection('forward');
       setCurrentSlide((prev) => {
         const next = prev + 1;
-        if (next >= heroContent.length) {
-          // Create smooth loop by going to duplicate, then resetting
+        if (next === heroContent.length) {
+          // We're at the duplicate, after animation completes, jump to real first slide
           setTimeout(() => {
             setCurrentSlide(0);
-          }, 1000);
+          }, 1050); // Just after the 1s transition
           return next;
         }
         return next;
       });
     }, 8000);
+  };
+
+  useEffect(() => {
+    startAutoRotate();
 
     return () => {
       if (autoRotateRef.current) {
@@ -111,7 +101,7 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
         {/* Carousel container with overflow hidden */}
         <div className="relative min-h-[550px] md:min-h-[500px] overflow-hidden">
           <div 
-            className={`flex ${currentSlide === heroContent.length ? 'transition-none' : 'transition-transform duration-1000 ease-in-out'}`}
+            className={`flex transition-transform duration-1000 ease-in-out`}
             style={{
               transform: `translateX(-${currentSlide * 100}%)`,
             }}
