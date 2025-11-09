@@ -32,7 +32,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/auth" replace />;
   }
   
-  return <>{children}</>;
+  return (
+    <>
+      <OnboardingWrapper />
+      {children}
+    </>
+  );
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
@@ -56,7 +61,6 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <OnboardingWrapper />
           <BrowserRouter>
             <ScrollToTop />
             <BackToTop />
