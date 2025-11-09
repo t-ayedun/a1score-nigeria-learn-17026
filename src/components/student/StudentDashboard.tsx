@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -61,11 +62,58 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
     }
   }, [location.pathname]);
 
-  const getDemoProfile = () => {
-    return studentProfiles.find(p => p.name === user.name) || studentProfiles[0];
-  };
+  // Fetch real user data
+  const [userStats, setUserStats] = useState<any>(null);
+  
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      try {
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+        if (!authUser) return;
 
-  const demoProfile = getDemoProfile();
+        // Get quiz attempts
+        const { data: quizzes } = await supabase
+          .from('quiz_attempts')
+          .select('*')
+          .eq('user_id', authUser.id);
+
+        // Get learning streak
+        const { data: streak } = await supabase
+          .from('learning_streaks')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .maybeSingle();
+
+        // Get learning points
+        const { data: points } = await supabase
+          .from('learning_points')
+          .select('points')
+          .eq('user_id', authUser.id);
+
+        const totalPoints = points?.reduce((sum, p) => sum + p.points, 0) || 0;
+        const avgScore = quizzes && quizzes.length > 0
+          ? Math.round(quizzes.reduce((sum, q) => sum + (q.score || 0), 0) / quizzes.length)
+          : 0;
+
+        // Calculate league
+        const leagueName = totalPoints < 500 ? 'Bronze League' :
+                          totalPoints < 1500 ? 'Silver League' :
+                          totalPoints < 3000 ? 'Gold League' : 'Diamond League';
+
+        setUserStats({
+          streak: streak?.current_streak || 0,
+          points: totalPoints.toLocaleString(),
+          leagueRank: '#--',
+          leagueName,
+          avgScore
+        });
+      } catch (error) {
+        console.error('Error fetching user stats:', error);
+      }
+    };
+
+    fetchUserStats();
+  }, []);
 
   const getContentByLevel = (level?: string) => {
     if (level === 'undergraduate') {
@@ -112,15 +160,15 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           { name: 'English', icon: Globe, progress: 84, color: 'bg-orange-500' },
         ],
         achievements: [
-          { title: 'Quiz Master', description: 'Completed 10 quizzes', icon: Trophy },
-          { title: 'Math Genius', description: 'Scored 90% in Algebra', icon: Calculator },
-          { title: 'Consistent Learner', description: `${demoProfile.studyStreak} days streak`, icon: TrendingUp },
+          { title: 'Getting Started', description: 'Welcome to A1Score!', icon: Trophy },
+          { title: 'Learning Journey', description: 'Continue your progress', icon: Calculator },
+          { title: 'Stay Consistent', description: `Keep your learning streak going`, icon: TrendingUp },
         ],
         welcomeMessage: 'Ready to continue your learning journey?',
-        stats: { 
-          streak: demoProfile.studyStreak, 
-          points: `${demoProfile.totalPoints}`, 
-          leagueRank: '#245',
+        stats: userStats || { 
+          streak: 0, 
+          points: '0', 
+          leagueRank: '#--',
           leagueName: 'Bronze League'
         }
       };

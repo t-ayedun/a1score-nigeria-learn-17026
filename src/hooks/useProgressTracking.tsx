@@ -55,32 +55,30 @@ export const useProgressTracking = () => {
     try {
       setLoading(true);
 
-      // Get user progress
-      const { data: userProgress } = await supabase
-        .from('user_progress')
+      // Get quiz attempts for quiz stats
+      const { data: quizAttempts } = await supabase
+        .from('quiz_attempts')
         .select('*')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user.id);
+
+      const totalQuizzes = quizAttempts?.length || 0;
+      const averageScore = quizAttempts && quizAttempts.length > 0
+        ? quizAttempts.reduce((sum, q) => sum + (q.score || 0), 0) / quizAttempts.length
+        : 0;
 
       // Get user achievements
       const { data: userAchievements } = await supabase
         .from('user_achievements')
-        .select(`
-          *,
-          achievements (*)
-        `)
+        .select('*')
         .eq('user_id', user.id);
 
-      // Get study sessions for weekly progress
+      // Get learning sessions for weekly progress
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
       const { data: recentSessions } = await supabase
-        .from('study_sessions')
-        .select(`
-          *,
-          subjects (name)
-        `)
+        .from('learning_sessions')
+        .select('*')
         .eq('user_id', user.id)
         .gte('started_at', oneWeekAgo.toISOString());
 
@@ -88,42 +86,52 @@ export const useProgressTracking = () => {
       const totalStudyHours = recentSessions?.reduce((total, session) => 
         total + (session.duration_minutes || 0), 0) || 0;
 
-      // Calculate total points
-      const totalPoints = recentSessions?.reduce((total, session) => 
-        total + (session.points_earned || 0), 0) || 0;
+      // Get learning points for total points
+      const { data: pointsData } = await supabase
+        .from('learning_points')
+        .select('points')
+        .eq('user_id', user.id);
 
-      // Group weekly progress by subject
+      const totalPoints = pointsData?.reduce((sum, p) => sum + (p.points || 0), 0) || 0;
+
+      // Group weekly progress by subject from sessions
       const weeklyProgress = recentSessions?.reduce((acc: any[], session: any) => {
-        const subjectName = session.subjects?.name || 'Unknown';
+        const subjectName = session.subject || 'General';
         const existing = acc.find(item => item.subject === subjectName);
         
         if (existing) {
           existing.hours += session.duration_minutes || 0;
-          existing.points += session.points_earned || 0;
+          existing.points += 0; // Points are tracked separately
         } else {
           acc.push({
             subject: subjectName,
             hours: session.duration_minutes || 0,
-            points: session.points_earned || 0
+            points: 0
           });
         }
         
         return acc;
       }, []) || [];
 
-      // Calculate streak (simplified - count consecutive days with activity)
-      const streakDays = calculateStreakDays(recentSessions || []);
+      // Get streak from learning_streaks table
+      const { data: streakData } = await supabase
+        .from('learning_streaks')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
 
-      // Calculate league rank based on total points (using points from sessions since user_progress doesn't have total_points)
-      const { data: allUsers } = await supabase
-        .from('study_sessions')
-        .select('user_id, points_earned');
+      const streakDays = streakData?.current_streak || 0;
+
+      // Calculate league rank based on total points
+      const { data: allUsersPoints } = await supabase
+        .from('learning_points')
+        .select('user_id, points');
 
       // Aggregate points by user
       const userPointsMap = new Map<string, number>();
-      allUsers?.forEach(session => {
-        const current = userPointsMap.get(session.user_id) || 0;
-        userPointsMap.set(session.user_id, current + (session.points_earned || 0));
+      allUsersPoints?.forEach(p => {
+        const current = userPointsMap.get(p.user_id) || 0;
+        userPointsMap.set(p.user_id, current + (p.points || 0));
       });
 
       // Sort users by points
@@ -136,17 +144,14 @@ export const useProgressTracking = () => {
                         totalPoints < 3000 ? 'Gold League' : 'Diamond League';
 
       setProgressStats({
-        totalQuizzes: userProgress?.total_quizzes || 0,
-        averageScore: userProgress?.average_score || 0,
+        totalQuizzes,
+        averageScore: Math.round(averageScore),
         streakDays,
         totalStudyHours: Math.round(totalStudyHours / 60), // Convert to hours
         totalPoints,
         leagueRank: userRank >= 0 ? userRank + 1 : undefined,
         leagueName,
-        achievements: userAchievements?.map(ua => ({
-          ...ua.achievements,
-          earned_at: ua.earned_at
-        })) || [],
+        achievements: userAchievements || [],
         weeklyProgress
       });
 
@@ -181,19 +186,18 @@ export const useProgressTracking = () => {
     return streak;
   };
 
-  const startStudySession = async (subjectId: string, sessionType: string) => {
+  const startStudySession = async (subject: string, sessionType: string) => {
     if (!user) return null;
 
     try {
       const { data: session, error } = await supabase
-        .from('study_sessions')
+        .from('learning_sessions')
         .insert({
           user_id: user.id,
-          subject_id: subjectId,
+          subject: subject,
           session_type: sessionType,
           started_at: new Date().toISOString(),
-          duration_minutes: 0,
-          points_earned: 0
+          duration_minutes: 0
         })
         .select()
         .single();
@@ -217,13 +221,25 @@ export const useProgressTracking = () => {
       const durationMinutes = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60));
 
       await supabase
-        .from('study_sessions')
+        .from('learning_sessions')
         .update({
           ended_at: endTime.toISOString(),
-          duration_minutes: durationMinutes,
-          points_earned: pointsEarned
+          duration_minutes: durationMinutes
         })
         .eq('id', currentSession.id);
+
+      // Award points separately if provided
+      if (pointsEarned > 0) {
+        await supabase
+          .from('learning_points')
+          .insert({
+            user_id: user.id,
+            activity_type: currentSession.session_type,
+            subject: currentSession.subject,
+            points: pointsEarned,
+            reason: 'Study session completed'
+          });
+      }
 
       setCurrentSession(null);
       loadProgressStats(); // Refresh stats
@@ -236,45 +252,41 @@ export const useProgressTracking = () => {
     if (!user || !progressStats) return;
 
     try {
-      // Get all available achievements
-      const { data: allAchievements } = await supabase
-        .from('achievements')
-        .select('*')
-        .eq('is_active', true);
+      // Award achievements based on progress
+      const achievements = [];
 
-      // Check which achievements haven't been earned yet
-      const earnedAchievementIds = progressStats.achievements.map(a => a.id);
-      const unearned = allAchievements?.filter(a => !earnedAchievementIds.includes(a.id)) || [];
-
-      for (const achievement of unearned) {
-        const criteria = achievement.criteria as any;
-        let shouldAward = false;
-
-        switch (criteria?.type) {
-          case 'quiz_completed':
-            shouldAward = progressStats.totalQuizzes >= (criteria?.target || 0);
-            break;
-          case 'quiz_streak':
-            shouldAward = progressStats.streakDays >= (criteria?.target || 0);
-            break;
-          case 'study_hours':
-            shouldAward = progressStats.totalStudyHours >= (criteria?.target || 0);
-            break;
-          // Add more achievement types as needed
-        }
-
-        if (shouldAward) {
-          await supabase
-            .from('user_achievements')
-            .insert({
-              user_id: user.id,
-              achievement_id: achievement.id
-            });
-        }
+      // Quiz milestones
+      if (progressStats.totalQuizzes >= 1 && !progressStats.achievements.some(a => a.achievement_type === 'first_quiz')) {
+        achievements.push({
+          user_id: user.id,
+          achievement_type: 'first_quiz',
+          title: 'First Quiz',
+          description: 'Completed your first quiz'
+        });
+      }
+      if (progressStats.totalQuizzes >= 10 && !progressStats.achievements.some(a => a.achievement_type === 'quiz_master')) {
+        achievements.push({
+          user_id: user.id,
+          achievement_type: 'quiz_master',
+          title: 'Quiz Master',
+          description: 'Completed 10 quizzes'
+        });
       }
 
-      // Refresh progress stats to include new achievements
-      loadProgressStats();
+      // Streak milestones
+      if (progressStats.streakDays >= 7 && !progressStats.achievements.some(a => a.achievement_type === 'week_streak')) {
+        achievements.push({
+          user_id: user.id,
+          achievement_type: 'week_streak',
+          title: '7 Day Streak',
+          description: 'Maintained a 7-day learning streak'
+        });
+      }
+
+      if (achievements.length > 0) {
+        await supabase.from('user_achievements').insert(achievements);
+        loadProgressStats(); // Refresh to show new achievements
+      }
     } catch (error) {
       console.error('Error checking achievements:', error);
     }
