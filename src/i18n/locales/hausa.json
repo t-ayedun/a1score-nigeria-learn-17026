@@ -1,0 +1,83 @@
+
+{
+  "common": {
+    "loading": "Ana daukarwa...",
+    "error": "Kuskure",
+    "success": "Nasara",
+    "cancel": "Soke",
+    "save": "Ajiye",
+    "continue": "Ci gaba",
+    "back": "Koma baya",
+    "next": "Na gaba",
+    "finish": "Gama"
+  },
+  "auth": {
+    "welcome": "Maraba da A1Score",
+    "subtitle": "Koyo na AI don Najeriya",
+    "login": "Shiga",
+    "register": "Yi rajista",
+    "email": "Imel",
+    "password": "Kalmar shiga",
+    "fullName": "Cikakken suna",
+    "academicLevel": "Matakin ilimi",
+    "teachingSubject": "Fannin koyarwa",
+    "institution": "Sunan makaranta",
+    "childSchool": "Makarantar yaro",
+    "loginAs": "Shiga a matsayin {{role}}",
+    "registerAs": "Yi rajista a matsayin {{role}}",
+    "demoMode": "Yanayin gwaji: Danna kowane maballin don bincika",
+    "emailVerification": "Da fatan za a tabbatar da adireshin imel",
+    "resendVerification": "Sake aika imel tabbatarwa",
+    "profileSetup": "Kammala saitar bayanan martaba"
+  },
+  "roles": {
+    "student": "Daliba",
+    "teacher": "Malami",
+    "parent": "Iyaye",
+    "admin": "Mai gudanar da makaranta"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "tutor": "Malamin AI",
+    "subjects": "Darussa",
+    "quiz": "Quiz na aiki",
+    "achievements": "Nasarori",
+    "settings": "Saitunan"
+  },
+  "onboarding": {
+    "welcome": "Maraba da A1Score!",
+    "step1Title": "Koyo na musamman",
+    "step2Title": "Aiki da ci gaba",
+    "step3Title": "Samun nasara"
+  },
+  "hero": {
+    "student": {
+      "title": "Yi Nasara A Kowane Darasi",
+      "subtitle": "Daga makarantar sakandare zuwa karatun digiri",
+      "description": "Samu taimako nan take da aikin gida, shirye-shiryen jarrabawa, da bincike a duk matakan ilimi. Ko kana shirye-shirye wa WAEC, karantawa domin digiri, ko kuma aiki akan masters thesis - mun rufe ka 24/7.",
+      "primaryButton": "Fara Koyo Kyauta",
+      "secondaryButton": "Ga Yadda Yake Aiki"
+    },
+    "teacher": {
+      "title": "Sami Kudi Yayin Koyarwa",
+      "subtitle": "Taimaka wa dalibai a kowane matakin ilimi",
+      "description": "Taimaka wa dalibai daga makarantar sakandare har zuwa jami'a da kuma fiye da haka. Kirkiro abun ciki, tabbatar da amsoshi, kuma sami har zuwa ₦50,000 kowane wata yayin da kake sanya ilimi mai kyau ya zama mai saukin samun kowa.",
+      "primaryButton": "Fara Samun Kudi Yau",
+      "secondaryButton": "Koyi Game da Fa'idodin Malami"
+    },
+    "parent": {
+      "title": "Goyi Bayan Tafiyar Yaron Ka",
+      "subtitle": "Kowane mataki daga makarantar sakandare zuwa kammala karatun",
+      "description": "Bi diddigin ci gaban ilimin yaronka kuma tabbatar da sun yi nasara a kowane muhimmin lokaci. Samu cikakkun rahotanni da basirar ko suna makarantar sakandare, jami'a, ko kuma suna bin digiri na gaba.",
+      "primaryButton": "Lura Da Yarona",
+      "secondaryButton": "Ga Dashboard na Iyaye"
+    },
+    "admin": {
+      "title": "Canza Cibiyar Ilimin Ka",
+      "subtitle": "Sakamako mafi kyau a duk matakan ilimi",
+      "description": "Shiga cikin cibiyoyin ilimi 200+ da suka riga suka ga ci gaba na 40% a cikin aikin ilimi yayin da suke rage farashin koyarwa. Cikakken tallafi daga ilimin sakandare zuwa shirye-shiryen postgraduate.",
+      "primaryButton": "Sami Demo na Cibiya",
+      "secondaryButton": "Ga Labarun Nasara"
+    }
+  }
+}

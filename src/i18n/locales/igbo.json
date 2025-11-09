@@ -1,0 +1,83 @@
+
+{
+  "common": {
+    "loading": "Na-ebu...",
+    "error": "Njehie",
+    "success": "Ihe ịga nke ọma",
+    "cancel": "Kagbuo",
+    "save": "Chekwaa",
+    "continue": "Gaa n'ihu",
+    "back": "Laghachi azụ",
+    "next": "Ọzọ",
+    "finish": "Mechaa"
+  },
+  "auth": {
+    "welcome": "Ndewo na A1Score",
+    "subtitle": "Mmụta AI maka Naịjirịa",
+    "login": "Banye",
+    "register": "Debanye aha",
+    "email": "Ozi-e",
+    "password": "Okwu nzuzo",
+    "fullName": "Aha zuru ezu",
+    "academicLevel": "Ọkwa mmụta",
+    "teachingSubject": "Isiokwu nkuzi",
+    "institution": "Aha ụlọ akwụkwọ",
+    "childSchool": "Ụlọ akwụkwọ nwa",
+    "loginAs": "Banye dị ka {{role}}",
+    "registerAs": "Debanye aha dị ka {{role}}",
+    "demoMode": "Ọnọdụ ngosi: Pịa bọtịn ọ bụla iji nyochaa",
+    "emailVerification": "Biko kwenye adreesị ozi-e gị",
+    "resendVerification": "Zigharịa ozi-e nkwenye",
+    "profileSetup": "Mechaa nhazi profaịlụ gị"
+  },
+  "roles": {
+    "student": "Nwa akwụkwọ",
+    "teacher": "Onye nkuzi",
+    "parent": "Nne na nna",
+    "admin": "Onye njikwa ụlọ akwụkwọ"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "tutor": "Onye nkuzi AI",
+    "subjects": "Isiokwu",
+    "quiz": "Quiz omume",
+    "achievements": "Ihe ịga nke ọma",
+    "settings": "Nhazi"
+  },
+  "onboarding": {
+    "welcome": "Ndewo na A1Score!",
+    "step1Title": "Mmụta ahaziri ahazi",
+    "step2Title": "Omume na ọganihu",
+    "step3Title": "Nweta ọmarịcha"
+  },
+  "hero": {
+    "student": {
+      "title": "Merie Na Isiokwu Niile",
+      "subtitle": "Site na ụlọ akwụkwọ sekọndrị ruo na agụmakwụkwọ",
+      "description": "Nweta enyemaka ozugbo na ọrụ ụlọ, nkwadebe ule, na nyocha na ọkwa mmụta niile. Ma ị na-akwado maka WAEC, na-amụ maka degree gị, ma ọ bụ na-arụ ọrụ na masters thesis - anyị kpuchitere gị 24/7.",
+      "primaryButton": "Malite Mmụta N'efu",
+      "secondaryButton": "Lee Otú Ọ Na-arụ Ọrụ"
+    },
+    "teacher": {
+      "title": "Nweta Ego Mgbe Ị Na-akụzi",
+      "subtitle": "Kwado ụmụ akwụkwọ na ọkwa mmụta niile",
+      "description": "Nyere ụmụ akwụkwọ aka site na ụlọ akwụkwọ sekọndrị gaa na mahadum na karịa. Mepụta ọdịnaya, kwenye azịza, ma nweta ruo ₦50,000 kwa ọnwa ebe ị na-eme ka agụmakwụkwọ dị mma dịkwuo mfe maka onye ọ bụla.",
+      "primaryButton": "Malite Ịnweta Taa",
+      "secondaryButton": "Mụta Maka Uru Onye Nkuzi"
+    },
+    "parent": {
+      "title": "Kwado Njem Nwa Gị",
+      "subtitle": "Nzọụkwụ ọ bụla site na ụlọ akwụkwọ sekọndrị ruo na gụsịrị akwụkwọ",
+      "description": "Soro ọganihu agụmakwụkwọ nwa gị ma hụ na ha na-eme nke ọma na ncheta ọ bụla. Nweta akụkọ zuru ezu na nghọta ma ha nọ na ụlọ akwụkwọ sekọndrị, mahadum, ma ọ bụ na-achụso degree dị elu.",
+      "primaryButton": "Lelee Nwa M",
+      "secondaryButton": "Lee Dashboard Nne na Nna"
+    },
+    "admin": {
+      "title": "Gbanwee Ụlọ Ọrụ Gị",
+      "subtitle": "Nsonaazụ ka mma na ọkwa mmụta niile",
+      "description": "Sonye na ụlọ ọrụ 200+ nke na-ahụlarị mmelite 40% na arụmọrụ agụmakwụkwọ ebe ha na-ebelata ọnụ ahịa nkuzi. Nkwado zuru oke site na agụmakwụkwọ sekọndrị gaa na mmemme postgraduate.",
+      "primaryButton": "Nweta Demo Ụlọ Ọrụ",
+      "secondaryButton": "Lee Akụkọ Ihe Ịga Nke Ọma"
+    }
+  }
+}

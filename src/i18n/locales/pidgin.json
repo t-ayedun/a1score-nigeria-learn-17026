@@ -1,0 +1,86 @@
+
+{
+  "common": {
+    "loading": "Dey load...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish"
+  },
+  "auth": {
+    "welcome": "Welcome to A1Score",
+    "subtitle": "AI-Powered Learning for Nigeria",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Your Full Name",
+    "academicLevel": "Wetin level you dey?",
+    "teachingSubject": "Wetin you dey teach?",
+    "institution": "Your School Name",
+    "childSchool": "Your Pikin School",
+    "loginAs": "Login as {{role}}",
+    "registerAs": "Register as {{role}}",
+    "demoMode": "Demo Mode: Click any button make you explore the platform",
+    "emailVerification": "Abeg verify your email address",
+    "resendVerification": "Send verification email again",
+    "profileSetup": "Complete your profile setup"
+  },
+  "roles": {
+    "student": "Student",
+    "teacher": "Teacher",
+    "parent": "Parent",
+    "admin": "School Admin"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "tutor": "AI Teacher",
+    "subjects": "Subjects",
+    "quiz": "Practice Quiz",
+    "achievements": "Achievements",
+    "settings": "Settings"
+  },
+  "onboarding": {
+    "welcome": "Welcome to A1Score!",
+    "step1Title": "Learning Wey Sweet",
+    "step1Desc": "Get AI teacher wey go teach you based on Naija curriculum",
+    "step2Title": "Practice & Progress",
+    "step2Desc": "Do quiz and see how you dey improve for your studies",
+    "step3Title": "Be the Best",
+    "step3Desc": "Collect badge and compete with other students for Naija"
+  },
+  "hero": {
+    "student": {
+      "title": "Pass All Your Subject",
+      "subtitle": "From secondary school to university level",
+      "description": "Get help with assignment, exam prep, and research for all your academic level. Whether you dey prepare for WAEC, study for your degree, or dey work on masters - we get you covered 24/7.",
+      "primaryButton": "Start Learning Free",
+      "secondaryButton": "See How E Dey Work"
+    },
+    "teacher": {
+      "title": "Teach and Earn Money",
+      "subtitle": "Help students for all academic level",
+      "description": "Help students from secondary school to university and beyond. Create content, validate answers, and earn up to ₦50,000 monthly while you dey make quality education accessible for everyone.",
+      "primaryButton": "Start Dey Earn Today",
+      "secondaryButton": "Learn About Teacher Benefits"
+    },
+    "parent": {
+      "title": "Support Your Pikin Journey",
+      "subtitle": "Every step from secondary school to graduation",
+      "description": "Track your pikin academic progress and make sure dem succeed for every milestone. Get detailed reports and insights whether dem dey secondary school, university, or pursuing advanced degrees.",
+      "primaryButton": "Monitor My Pikin",
+      "secondaryButton": "See Parent Dashboard"
+    },
+    "admin": {
+      "title": "Transform Your Institution",
+      "subtitle": "Better results for all academic levels",
+      "description": "Join 200+ institutions wey already dey see 40% improvement for academic performance while dem dey reduce tutoring costs. Complete support from secondary education through postgraduate programs.",
+      "primaryButton": "Get Institution Demo",
+      "secondaryButton": "See Success Stories"
+    }
+  }
+}
