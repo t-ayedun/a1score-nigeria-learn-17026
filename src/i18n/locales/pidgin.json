@@ -54,33 +54,39 @@
     "step3Desc": "Collect badge and compete with other students for Naija"
   },
   "hero": {
-    "student": {
-      "title": "Pass All Your Subject",
-      "subtitle": "From secondary school to university level",
-      "description": "Get help with assignment, exam prep, and research for all your academic level. Whether you dey prepare for WAEC, study for your degree, or dey work on masters - we get you covered 24/7.",
+    "main": {
+      "title": "Learn Anything, Master Everything",
+      "subtitle": "Your Personal AI Learning Assistant",
+      "description": "Get instant help with homework, exam prep, and career development. Whether you be WAEC student or you wan improve your work skills - we dey here 24/7 to help you succeed.",
+      "example1": "WAEC Students",
+      "example2": "Professional Skills",
+      "label": "Overview",
       "primaryButton": "Start Learning Free",
-      "secondaryButton": "See How E Dey Work"
+      "secondaryButton": "See How E Work"
     },
-    "teacher": {
-      "title": "Teach and Earn Money",
-      "subtitle": "Help students for all academic level",
-      "description": "Help students from secondary school to university and beyond. Create content, validate answers, and earn up to ₦50,000 monthly while you dey make quality education accessible for everyone.",
-      "primaryButton": "Start Dey Earn Today",
-      "secondaryButton": "Learn About Teacher Benefits"
+    "feature1": {
+      "title": "Your Personal AI Teacher",
+      "subtitle": "24/7 Expert Support",
+      "description": "Get personalized help anytime, anywhere. From solving hard math problems to analyzing business matters - your AI teacher go adjust to your learning style and speed.",
+      "label": "AI Teacher",
+      "primaryButton": "Try AI Teacher",
+      "secondaryButton": "Learn More"
     },
-    "parent": {
-      "title": "Support Your Pikin Journey",
-      "subtitle": "Every step from secondary school to graduation",
-      "description": "Track your pikin academic progress and make sure dem succeed for every milestone. Get detailed reports and insights whether dem dey secondary school, university, or pursuing advanced degrees.",
-      "primaryButton": "Monitor My Pikin",
-      "secondaryButton": "See Parent Dashboard"
+    "feature2": {
+      "title": "Track Your Progress",
+      "subtitle": "Visual Learning Analytics",
+      "description": "See yourself dey improve with detailed progress tracking, performance insights, and achievement badges. Celebrate every milestone for your learning journey.",
+      "label": "Progress",
+      "primaryButton": "View Demo",
+      "secondaryButton": "See Analytics"
     },
-    "admin": {
-      "title": "Transform Your Institution",
-      "subtitle": "Better results for all academic levels",
-      "description": "Join 200+ institutions wey already dey see 40% improvement for academic performance while dem dey reduce tutoring costs. Complete support from secondary education through postgraduate programs.",
-      "primaryButton": "Get Institution Demo",
-      "secondaryButton": "See Success Stories"
+    "feature3": {
+      "title": "Coming Soon",
+      "subtitle": "Exciting New Features",
+      "description": "We dey build teacher marketplace, enhanced parent dashboard, and powerful institutional tools. Join our community make you be first to get these amazing features.",
+      "label": "Future",
+      "primaryButton": "Join Waitlist",
+      "secondaryButton": "Stay Updated"
     }
   }
 }

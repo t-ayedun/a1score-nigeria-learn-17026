@@ -51,33 +51,39 @@
     "step3Title": "Nweta ọmarịcha"
   },
   "hero": {
-    "student": {
-      "title": "Merie Na Isiokwu Niile",
-      "subtitle": "Site na ụlọ akwụkwọ sekọndrị ruo na agụmakwụkwọ",
-      "description": "Nweta enyemaka ozugbo na ọrụ ụlọ, nkwadebe ule, na nyocha na ọkwa mmụta niile. Ma ị na-akwado maka WAEC, na-amụ maka degree gị, ma ọ bụ na-arụ ọrụ na masters thesis - anyị kpuchitere gị 24/7.",
+    "main": {
+      "title": "Mụta Ihe Ọ Bụla, Merie Ihe Niile",
+      "subtitle": "Onye Inyeaka Mmụta AI Nke Gị",
+      "description": "Nweta enyemaka ozugbo na ọrụ ụlọ, nkwadebe ule, na mmepe ọrụ gị. Ma ị bụ nwa akwụkwọ WAEC ma ọ bụ na-amụta nka ọrụ ọhụrụ - anyị nọ ebe a 24/7 iji nyere gị aka inweta ihe ịga nke ọma.",
+      "example1": "Ụmụ Akwụkwọ WAEC",
+      "example2": "Mmepe Ọrụ Ọkachamara",
+      "label": "Nlegharị Anya",
       "primaryButton": "Malite Mmụta N'efu",
       "secondaryButton": "Lee Otú Ọ Na-arụ Ọrụ"
     },
-    "teacher": {
-      "title": "Nweta Ego Mgbe Ị Na-akụzi",
-      "subtitle": "Kwado ụmụ akwụkwọ na ọkwa mmụta niile",
-      "description": "Nyere ụmụ akwụkwọ aka site na ụlọ akwụkwọ sekọndrị gaa na mahadum na karịa. Mepụta ọdịnaya, kwenye azịza, ma nweta ruo ₦50,000 kwa ọnwa ebe ị na-eme ka agụmakwụkwọ dị mma dịkwuo mfe maka onye ọ bụla.",
-      "primaryButton": "Malite Ịnweta Taa",
-      "secondaryButton": "Mụta Maka Uru Onye Nkuzi"
+    "feature1": {
+      "title": "Onye Nkuzi AI Nke Gị",
+      "subtitle": "Nkwado Ọkachamara 24/7",
+      "description": "Nweta enyemaka ahaziri ahazi mgbe ọ bụla, ebe ọ bụla. Site na idozi nsogbu mgbakọ na mwepụ dị mgbagwoju anya ruo na nyocha azụmahịa - onye nkuzi AI gị ga-agbanwe ka ọ dabara n'ụdị mmụta gị na ọsọ gị.",
+      "label": "Onye Nkuzi AI",
+      "primaryButton": "Nwalee Onye Nkuzi AI",
+      "secondaryButton": "Mụta Karịa"
     },
-    "parent": {
-      "title": "Kwado Njem Nwa Gị",
-      "subtitle": "Nzọụkwụ ọ bụla site na ụlọ akwụkwọ sekọndrị ruo na gụsịrị akwụkwọ",
-      "description": "Soro ọganihu agụmakwụkwọ nwa gị ma hụ na ha na-eme nke ọma na ncheta ọ bụla. Nweta akụkọ zuru ezu na nghọta ma ha nọ na ụlọ akwụkwọ sekọndrị, mahadum, ma ọ bụ na-achụso degree dị elu.",
-      "primaryButton": "Lelee Nwa M",
-      "secondaryButton": "Lee Dashboard Nne na Nna"
+    "feature2": {
+      "title": "Soro Ọganihu Gị",
+      "subtitle": "Nyocha Mmụta A Na-ahụ Anya",
+      "description": "Hụ ka ị na-aga n'ihu site na nnyocha ọganihu zuru ezu, nghọta arụmọrụ, na akara nrụzu. Mee ememe ncheta ọ bụla na njem mmụta gị.",
+      "label": "Ọganihu",
+      "primaryButton": "Lelee Ngosi",
+      "secondaryButton": "Hụ Nyocha"
     },
-    "admin": {
-      "title": "Gbanwee Ụlọ Ọrụ Gị",
-      "subtitle": "Nsonaazụ ka mma na ọkwa mmụta niile",
-      "description": "Sonye na ụlọ ọrụ 200+ nke na-ahụlarị mmelite 40% na arụmọrụ agụmakwụkwọ ebe ha na-ebelata ọnụ ahịa nkuzi. Nkwado zuru oke site na agụmakwụkwọ sekọndrị gaa na mmemme postgraduate.",
-      "primaryButton": "Nweta Demo Ụlọ Ọrụ",
-      "secondaryButton": "Lee Akụkọ Ihe Ịga Nke Ọma"
+    "feature3": {
+      "title": "Na-abịa N'oge Na-adịghị Anya",
+      "subtitle": "Njirimara Ọhụrụ Na-atọ Ụtọ",
+      "description": "Anyị na-ewu ahịa ndị nkuzi, dashboard nne na nna ka mma, na ngwa ụlọ ọrụ dị ike. Sonye na obodo anyị ka ị bụrụ onye mbụ na ahịrị maka njirimara ndị a dị ịtụnanya.",
+      "label": "Ọdịnihu",
+      "primaryButton": "Sonye na Ndepụta Nchere",
+      "secondaryButton": "Nọgide Na-enweta Mmelite"
     }
   }
 }

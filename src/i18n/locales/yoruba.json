@@ -51,33 +51,39 @@
     "step3Title": "Ṣàṣeyọrí Gíga"
   },
   "hero": {
-    "student": {
-      "title": "Ṣàṣeyọrí Nínú Gbogbo Ẹ̀ka Ẹ̀kọ́",
-      "subtitle": "Láti ilé-ẹ̀kọ́ gíga sí ìgbà graduate",
-      "description": "Gba ìrànlọ́wọ́ lẹ́sẹ̀kẹsẹ̀ pẹ̀lú iṣẹ́ ilé, ìmúrasílẹ̀ ìdánwò, àti ìwádìí ní gbogbo àwọn ipele ẹ̀kọ́. Bóyá o n múra sílẹ̀ fún WAEC, n ka fún degree rẹ, tàbí n ṣiṣẹ́ lórí thesis masters - a ti gbé ọ mọ́lẹ̀ ní 24/7.",
+    "main": {
+      "title": "Kọ́ Ohunkóhun, Ṣàkóso Gbogbo Rẹ̀",
+      "subtitle": "Olùrànlọ́wọ́ Ẹ̀kọ́ AI Ti Ara Rẹ",
+      "description": "Gba ìrànlọ́wọ́ lẹ́sẹ̀kẹsẹ̀ pẹ̀lú iṣẹ́ ilé, ìmúrasílẹ̀ ìdánwò, àti ìdàgbàsókè iṣẹ́. Bóyá o jẹ́ akẹ́kọ̀ọ́ WAEC tàbí o ń gbìyànjú láti mú ọgbọ́n iṣẹ́ rẹ pọ̀ sí i - a wà níbí 24/7 láti ràn ọ́ lọ́wọ́ láti ṣàṣeyọrí.",
+      "example1": "Àwọn Akẹ́kọ̀ọ́ WAEC",
+      "example2": "Ìmúdàgbà Ọgbọ́n Iṣẹ́",
+      "label": "Àkójọpọ̀",
       "primaryButton": "Bẹ̀rẹ̀ Ẹ̀kọ́ Lọ́fẹ̀ẹ́",
       "secondaryButton": "Wo Bí Ó Ṣe Ń Ṣiṣẹ́"
     },
-    "teacher": {
-      "title": "Jẹ Owó Ní Ìgbà Tí O Ń Kọ́",
-      "subtitle": "Ṣe àtìlẹyìn fún àwọn akẹ́kọ̀ọ́ ní gbogbo ipele ẹ̀kọ́",
-      "description": "Ran àwọn akẹ́kọ̀ọ́ lọ́wọ́ láti ilé-ẹ̀kọ́ gíga títí dé yunifásítì àti ju bẹ́ẹ̀ lọ. Ṣẹ̀dá akoonu, jẹ́rìí àwọn ìdáhùn, kí o sì jẹ títí dé ₦50,000 oṣooṣù ní ìgbà tí o bá n mú ẹ̀kọ́ dídára ṣé àyè sí fún gbogbo ènìyàn.",
-      "primaryButton": "Bẹ̀rẹ̀ Sí Jẹ Owó Lónìí",
-      "secondaryButton": "Kọ́ Nípa Àwọn Àǹfààní Olùkọ́"
+    "feature1": {
+      "title": "Olùkọ́ AI Ti Ara Rẹ",
+      "subtitle": "Àtìlẹyìn Ọ̀mọ̀ràn 24/7",
+      "description": "Gba ìrànlọ́wọ́ ti ara ẹni ní ìgbàkúgbà, níbikíbi. Láti yanjú àwọn ìṣòro mathematics tó nira sí àgbéyẹ̀wò àwọn ọ̀rọ̀ iṣowo - olùkọ́ AI rẹ yóò ṣàtúnṣe sí ọ̀nà ẹ̀kọ́ rẹ àti ìyára rẹ.",
+      "label": "Olùkọ́ AI",
+      "primaryButton": "Gbìyànjú Olùkọ́ AI",
+      "secondaryButton": "Kọ́ Síi"
     },
-    "parent": {
-      "title": "Ṣe Àtìlẹyìn Ìrìn-àjò Ọmọ Rẹ",
-      "subtitle": "Gbogbo ìgbésẹ̀ láti ilé-ẹ̀kọ́ gíga sí ìparí ẹ̀kọ́",
-      "description": "Tọpinpin ìlọsíwájú ẹ̀kọ́ ọmọ rẹ kí o sì rí dájú pé wọ́n ṣàṣeyọrí ní gbogbo àmì-ayé. Gba àwọn ìjábọ̀ àlàyé àti àwọn ìmọ̀ràn yálà wọ́n wà ní ilé-ẹ̀kọ́ gíga, yunifásítì, tàbí ní ìlépa àwọn degree gíga.",
-      "primaryButton": "Ṣàkóso Ọmọ Mi",
-      "secondaryButton": "Wo Dashboard Òbí"
+    "feature2": {
+      "title": "Tọpinpin Ìlọsíwájú Rẹ",
+      "subtitle": "Àgbéyẹ̀wò Ẹ̀kọ́ Tí A Rí",
+      "description": "Wo ara rẹ tí o ń dára sí i pẹ̀lú ìtọpinpin ìlọsíwájú àlàyé, ìmọ̀ nípa ìṣesí, àti àwọn àmì àṣeyọrí. Ṣe àjọyọ̀ gbogbo àmì-ayé ní ìrìn-àjò ẹ̀kọ́ rẹ.",
+      "label": "Ìlọsíwájú",
+      "primaryButton": "Wo Àpẹẹrẹ",
+      "secondaryButton": "Wo Àgbéyẹ̀wò"
     },
-    "admin": {
-      "title": "Yí Ilé-ẹ̀kọ́ Rẹ Padà",
-      "subtitle": "Àwọn èsì tó dára jù ní gbogbo àwọn ipele ẹ̀kọ́",
-      "description": "Darapọ̀ mọ́ àwọn ilé-ẹ̀kọ́ 200+ tí wọ́n ti n rí ìlọsíwájú 40% nínú ìṣẹ́ ẹ̀kọ́ ní ìgbà tí wọ́n bá n dín àwọn iye owó kíkọ́ kù. Àtìlẹyìn pípé láti ẹ̀kọ́ gíga sí àwọn ètò graduate.",
-      "primaryButton": "Gba Demo Ilé-ẹ̀kọ́",
-      "secondaryButton": "Wo Àwọn Ìtàn Àṣeyọrí"
+    "feature3": {
+      "title": "Ń Bọ̀ Láìpẹ́",
+      "subtitle": "Àwọn Ẹ̀yà Tuntun Tó Dùn",
+      "description": "A ń kọ́ ọjà àwọn olùkọ́, dashboard òbí tí a ti mú dára sí i, àti àwọn irinṣẹ́ ilé-iṣẹ́ tó lágbára. Darapọ̀ mọ́ àwùjọ wa láti jẹ́ ẹni àkọ́kọ́ ní ìlà fún àwọn ẹ̀yà ìyanu wọ̀nyí.",
+      "label": "Ọ̀la",
+      "primaryButton": "Darapọ̀ Mọ́ Àkójọ Ìdúró",
+      "secondaryButton": "Wà Ní Ìmúdójúìwọ̀n"
     }
   }
 }

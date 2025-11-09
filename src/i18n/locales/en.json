@@ -54,33 +54,39 @@
     "step3Desc": "Earn badges, compete with friends, and get ready for JAMB and WAEC"
   },
   "hero": {
-    "student": {
-      "title": "Excel in Every Subject",
-      "subtitle": "From secondary school to postgraduate studies",
-      "description": "Get instant help with assignments, exam prep, and research across all academic levels. Whether you're preparing for WAEC, studying for your degree, or working on your masters thesis - we've got you covered 24/7.",
+    "main": {
+      "title": "Learn Anything, Master Everything",
+      "subtitle": "Your Personal AI Learning Assistant",
+      "description": "Get instant help with homework, exam prep, and professional development. Whether you're a WAEC student or upskilling for your career - we're here 24/7 to help you succeed.",
+      "example1": "WAEC Students",
+      "example2": "Professional Upskilling",
+      "label": "Overview",
       "primaryButton": "Start Learning Free",
       "secondaryButton": "See How It Works"
     },
-    "teacher": {
-      "title": "Earn Money While Teaching",
-      "subtitle": "Support students at every academic level",
-      "description": "Help students from secondary school through university and beyond. Create content, validate answers, and earn up to ₦50,000 monthly while making quality education more accessible to everyone.",
-      "primaryButton": "Start Earning Today",
-      "secondaryButton": "Learn About Teacher Benefits"
+    "feature1": {
+      "title": "Your Personal AI Tutor",
+      "subtitle": "24/7 Expert Support",
+      "description": "Get personalized help anytime, anywhere. From solving complex math problems to analyzing business cases - your AI tutor adapts to your learning style and pace.",
+      "label": "AI Tutor",
+      "primaryButton": "Try AI Tutor",
+      "secondaryButton": "Learn More"
     },
-    "parent": {
-      "title": "Support Your Child's Journey",
-      "subtitle": "Every step from secondary school to graduation",
-      "description": "Track your child's academic progress and ensure they succeed at every milestone. Get detailed reports and insights whether they're in secondary school, university, or pursuing advanced degrees.",
-      "primaryButton": "Monitor My Child",
-      "secondaryButton": "See Parent Dashboard"
+    "feature2": {
+      "title": "Track Your Progress",
+      "subtitle": "Visual Learning Analytics",
+      "description": "Watch yourself improve with detailed progress tracking, performance insights, and achievement badges. Celebrate every milestone on your learning journey.",
+      "label": "Progress",
+      "primaryButton": "View Demo",
+      "secondaryButton": "See Analytics"
     },
-    "admin": {
-      "title": "Transform Your Institution",
-      "subtitle": "Better results across all academic levels",
-      "description": "Join 200+ institutions already seeing 40% improvement in academic performance while reducing tutoring costs. Complete support from secondary education through postgraduate programs.",
-      "primaryButton": "Get Institution Demo",
-      "secondaryButton": "See Success Stories"
+    "feature3": {
+      "title": "Coming Soon",
+      "subtitle": "Exciting New Features",
+      "description": "We're building a teacher marketplace, enhanced parent dashboard, and powerful institutional tools. Join our community to be first in line for these amazing features.",
+      "label": "Future",
+      "primaryButton": "Join Waitlist",
+      "secondaryButton": "Stay Updated"
     }
   }
 }
