@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_response_cache: {
+        Row: {
+          created_at: string | null
+          hit_count: number | null
+          id: string
+          last_accessed_at: string | null
+          model: string
+          query_hash: string
+          query_text: string
+          response_text: string
+          tokens_used: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          hit_count?: number | null
+          id?: string
+          last_accessed_at?: string | null
+          model: string
+          query_hash: string
+          query_text: string
+          response_text: string
+          tokens_used?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          hit_count?: number | null
+          id?: string
+          last_accessed_at?: string | null
+          model?: string
+          query_hash?: string
+          query_text?: string
+          response_text?: string
+          tokens_used?: number | null
+        }
+        Relationships: []
+      }
       communities: {
         Row: {
           category: string | null
@@ -105,6 +141,74 @@ export type Database = {
           },
         ]
       }
+      conversation_history: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          model: string | null
+          role: string
+          session_id: string
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          model?: string | null
+          role: string
+          session_id: string
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          model?: string | null
+          role?: string
+          session_id?: string
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      document_chunks: {
+        Row: {
+          chunk_index: number
+          content: string
+          created_at: string | null
+          document_id: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          chunk_index: number
+          content: string
+          created_at?: string | null
+          document_id: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          chunk_index?: number
+          content?: string
+          created_at?: string | null
+          document_id?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_chunks_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "user_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       home_learning_resources: {
         Row: {
           created_at: string | null
@@ -129,6 +233,54 @@ export type Database = {
           resource_type?: string | null
           title?: string
           url?: string | null
+        }
+        Relationships: []
+      }
+      learning_sessions: {
+        Row: {
+          concepts_covered: string[] | null
+          correct_answers: number | null
+          duration_minutes: number | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          performance_score: number | null
+          questions_answered: number | null
+          session_type: string
+          started_at: string | null
+          subject: string | null
+          topic: string | null
+          user_id: string
+        }
+        Insert: {
+          concepts_covered?: string[] | null
+          correct_answers?: number | null
+          duration_minutes?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          performance_score?: number | null
+          questions_answered?: number | null
+          session_type: string
+          started_at?: string | null
+          subject?: string | null
+          topic?: string | null
+          user_id: string
+        }
+        Update: {
+          concepts_covered?: string[] | null
+          correct_answers?: number | null
+          duration_minutes?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          performance_score?: number | null
+          questions_answered?: number | null
+          session_type?: string
+          started_at?: string | null
+          subject?: string | null
+          topic?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -309,6 +461,149 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_questions: {
+        Row: {
+          correct_answer: string
+          created_at: string | null
+          difficulty: string | null
+          explanation: string | null
+          id: string
+          options: Json | null
+          question_text: string
+          question_type: string
+          quiz_id: string | null
+          topic: string | null
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string | null
+          difficulty?: string | null
+          explanation?: string | null
+          id?: string
+          options?: Json | null
+          question_text: string
+          question_type: string
+          quiz_id?: string | null
+          topic?: string | null
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string | null
+          difficulty?: string | null
+          explanation?: string | null
+          id?: string
+          options?: Json | null
+          question_text?: string
+          question_type?: string
+          quiz_id?: string | null
+          topic?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          academic_level: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          difficulty: string | null
+          estimated_duration_minutes: number | null
+          id: string
+          is_published: boolean | null
+          passing_score: number | null
+          subject: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          academic_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          difficulty?: string | null
+          estimated_duration_minutes?: number | null
+          id?: string
+          is_published?: boolean | null
+          passing_score?: number | null
+          subject: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          academic_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          difficulty?: string | null
+          estimated_duration_minutes?: number | null
+          id?: string
+          is_published?: boolean | null
+          passing_score?: number | null
+          subject?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      spaced_repetition_cards: {
+        Row: {
+          answer: string
+          created_at: string | null
+          difficulty: number | null
+          ease_factor: number | null
+          id: string
+          interval_days: number | null
+          last_reviewed_at: string | null
+          metadata: Json | null
+          next_review_date: string | null
+          question: string
+          repetitions: number | null
+          subject: string
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string | null
+          difficulty?: number | null
+          ease_factor?: number | null
+          id?: string
+          interval_days?: number | null
+          last_reviewed_at?: string | null
+          metadata?: Json | null
+          next_review_date?: string | null
+          question: string
+          repetitions?: number | null
+          subject: string
+          topic: string
+          user_id: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string | null
+          difficulty?: number | null
+          ease_factor?: number | null
+          id?: string
+          interval_days?: number | null
+          last_reviewed_at?: string | null
+          metadata?: Json | null
+          next_review_date?: string | null
+          question?: string
+          repetitions?: number | null
+          subject?: string
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       student_reports: {
         Row: {
           created_at: string | null
@@ -333,6 +628,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_ai_usage: {
+        Row: {
+          cost_usd: number | null
+          created_at: string | null
+          id: string
+          requests_count: number | null
+          tokens_used: number | null
+          updated_at: string | null
+          usage_date: string
+          user_id: string
+        }
+        Insert: {
+          cost_usd?: number | null
+          created_at?: string | null
+          id?: string
+          requests_count?: number | null
+          tokens_used?: number | null
+          updated_at?: string | null
+          usage_date?: string
+          user_id: string
+        }
+        Update: {
+          cost_usd?: number | null
+          created_at?: string | null
+          id?: string
+          requests_count?: number | null
+          tokens_used?: number | null
+          updated_at?: string | null
+          usage_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_connections: {
         Row: {
           created_at: string | null
@@ -354,6 +682,45 @@ export type Database = {
           status?: string | null
           user1_id?: string
           user2_id?: string
+        }
+        Relationships: []
+      }
+      user_documents: {
+        Row: {
+          created_at: string | null
+          file_name: string
+          file_size: number | null
+          file_type: string | null
+          id: string
+          processing_metadata: Json | null
+          storage_path: string
+          updated_at: string | null
+          upload_status: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          file_name: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          processing_metadata?: Json | null
+          storage_path: string
+          updated_at?: string | null
+          upload_status?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          processing_metadata?: Json | null
+          storage_path?: string
+          updated_at?: string | null
+          upload_status?: string | null
+          user_id?: string
         }
         Relationships: []
       }
