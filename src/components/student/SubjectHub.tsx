@@ -3,60 +3,52 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, FlaskConical, Globe, BookOpen, TrendingUp, Target, Clock, Star } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
+import { Calculator, FlaskConical, Globe, BookOpen, TrendingUp, Target, Clock, Star, Brain, Zap, Award, BarChart } from "lucide-react";
+import { useSubjectProgress } from "@/hooks/useSubjectProgress";
 
 const SubjectHub = () => {
   const navigate = useNavigate();
-  const subjects = [
-    {
-      name: 'Mathematics',
-      icon: Calculator,
-      color: 'bg-blue-500',
-      progress: 78,
-      topics: ['Algebra', 'Geometry', 'Trigonometry', 'Calculus', 'Statistics'],
-      resources: [
-        { name: 'Formula Sheet', type: 'PDF' },
-        { name: 'Practice Calculator', type: 'Tool' },
-        { name: 'Graph Plotter', type: 'Tool' }
-      ]
-    },
-    {
-      name: 'Physics',
-      icon: FlaskConical,
-      color: 'bg-purple-500',
-      progress: 65,
-      topics: ['Mechanics', 'Electricity', 'Waves', 'Thermodynamics', 'Modern Physics'],
-      resources: [
-        { name: 'Physics Formulas', type: 'PDF' },
-        { name: 'Unit Converter', type: 'Tool' },
-        { name: 'Experiment Simulations', type: 'Interactive' }
-      ]
-    },
-    {
-      name: 'Chemistry',
-      icon: FlaskConical,
-      color: 'bg-green-500',
-      progress: 72,
-      topics: ['Organic Chemistry', 'Inorganic Chemistry', 'Physical Chemistry', 'Analytical Chemistry'],
-      resources: [
-        { name: 'Periodic Table', type: 'Reference' },
-        { name: 'Reaction Equations', type: 'PDF' },
-        { name: 'Molecular Models', type: 'Interactive' }
-      ]
-    },
-    {
-      name: 'English Language',
-      icon: Globe,
-      color: 'bg-orange-500',
-      progress: 84,
-      topics: ['Grammar', 'Literature', 'Essay Writing', 'Comprehension', 'Vocabulary'],
-      resources: [
-        { name: 'Grammar Guide', type: 'PDF' },
-        { name: 'Essay Templates', type: 'Document' },
-        { name: 'Vocabulary Builder', type: 'Interactive' }
-      ]
-    }
-  ];
+  const { subjects: userSubjects, loading, weeklyStats } = useSubjectProgress();
+
+  // Map subjects to icons and colors
+  const getSubjectIcon = (subject: string) => {
+    const lower = subject.toLowerCase();
+    if (lower.includes('math') || lower.includes('algebra') || lower.includes('calculus')) return Calculator;
+    if (lower.includes('physics') || lower.includes('mechanics')) return Zap;
+    if (lower.includes('chemistry') || lower.includes('biology')) return FlaskConical;
+    if (lower.includes('english') || lower.includes('literature')) return Globe;
+    if (lower.includes('economics') || lower.includes('commerce')) return TrendingUp;
+    return BookOpen;
+  };
+
+  const getSubjectColor = (index: number) => {
+    const colors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-red-500', 'bg-indigo-500'];
+    return colors[index % colors.length];
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Your Subjects</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <Skeleton className="h-8 w-48" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-24 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const examFocus = [
     {
@@ -115,66 +107,143 @@ const SubjectHub = () => {
 
   return (
     <div className="space-y-8">
-      {/* Subject Cards */}
+      {/* Subject Cards - Real Data */}
       <div>
-        <h2 className="text-2xl font-bold mb-6">Your Subjects</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {subjects.map((subject) => {
-            const Icon = subject.icon;
-            return (
-              <Card key={subject.name} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-3 ${subject.color} rounded-lg`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl">{subject.name}</CardTitle>
-                        <div className="text-sm text-gray-600">{subject.progress}% Complete</div>
-                      </div>
-                    </div>
-                    <Badge variant="secondary">{subject.topics.length} Topics</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Recent Topics:</div>
-                    <div className="flex flex-wrap gap-2">
-                      {subject.topics.slice(0, 3).map((topic) => (
-                        <Badge key={topic} variant="outline" className="text-xs">
-                          {topic}
-                        </Badge>
-                      ))}
-                      {subject.topics.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{subject.topics.length - 3} more
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Resources:</div>
-                    <div className="space-y-1">
-                      {subject.resources.map((resource, index) => (
-                        <div key={index} className="flex justify-between items-center text-sm">
-                          <span>{resource.name}</span>
-                          <Badge variant="outline" className="text-xs">{resource.type}</Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 pt-2">
-                    <Button size="sm" className="flex-1">Study Now</Button>
-                    <Button size="sm" variant="outline">Practice Quiz</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold">Your Subjects</h2>
+            <p className="text-sm text-gray-600">Based on your actual study activity</p>
+          </div>
+          {userSubjects.length === 0 && (
+            <Badge variant="outline" className="text-xs">
+              Start studying to see your progress!
+            </Badge>
+          )}
         </div>
+
+        {userSubjects.length === 0 ? (
+          <Card className="p-8 text-center">
+            <div className="space-y-4">
+              <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                <BookOpen className="h-8 w-8 text-gray-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">No Subjects Yet</h3>
+                <p className="text-gray-600 mb-4">
+                  Start taking quizzes or study sessions to track your progress
+                </p>
+                <div className="flex gap-2 justify-center">
+                  <Button onClick={() => navigate('/student/quiz')}>
+                    <Brain className="h-4 w-4 mr-2" />
+                    Take a Quiz
+                  </Button>
+                  <Button variant="outline" onClick={() => navigate('/student/study-timer')}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    Start Studying
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6">
+            {userSubjects.map((subject, index) => {
+              const Icon = getSubjectIcon(subject.subject);
+              const color = getSubjectColor(index);
+              const progressPercent = Math.min(100, Math.round((subject.totalQuizzes * 10) + (subject.totalStudyHours * 2)));
+              
+              return (
+                <Card key={subject.subject} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-3 ${color} rounded-lg`}>
+                          <Icon className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl">{subject.subject}</CardTitle>
+                          <div className="text-sm text-gray-600">
+                            {subject.totalStudyHours}h studied • {subject.totalQuizzes} quizzes
+                          </div>
+                        </div>
+                      </div>
+                      <Badge variant={subject.averageScore >= 80 ? "default" : "secondary"}>
+                        {subject.averageScore}% avg
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">Overall Progress</span>
+                        <span className="text-gray-600">{progressPercent}%</span>
+                      </div>
+                      <Progress value={progressPercent} className="h-2" />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="space-y-1">
+                        <div className="text-gray-600">Study Time</div>
+                        <div className="font-semibold flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {subject.totalStudyHours}h total
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-gray-600">This Week</div>
+                        <div className="font-semibold flex items-center gap-1">
+                          <TrendingUp className="h-4 w-4" />
+                          {subject.weeklyHours}h
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-gray-600">Questions</div>
+                        <div className="font-semibold flex items-center gap-1">
+                          <Target className="h-4 w-4" />
+                          {subject.questionsAnswered}
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-gray-600">Last Study</div>
+                        <div className="font-semibold text-xs">
+                          {subject.lastStudied}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 pt-2">
+                      <div className="flex gap-2">
+                        <Badge variant="outline" className="text-xs">
+                          <Award className="h-3 w-3 mr-1" />
+                          {subject.topicsCompleted} topics
+                        </Badge>
+                        {subject.averageScore >= 80 && (
+                          <Badge variant="outline" className="text-xs bg-green-50 text-green-700">
+                            Strong subject
+                          </Badge>
+                        )}
+                        {subject.averageScore < 60 && subject.totalQuizzes >= 3 && (
+                          <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700">
+                            Needs practice
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 pt-2">
+                      <Button size="sm" className="flex-1" onClick={() => navigate('/student/study-timer')}>
+                        Study Now
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => navigate('/student/quiz')}>
+                        Practice Quiz
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Nigerian Exam Preparation */}
@@ -237,31 +306,34 @@ const SubjectHub = () => {
         </div>
       </div>
 
-      {/* Performance Summary */}
+      {/* Performance Summary - Real Data */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-yellow-500" />
+            <BarChart className="h-5 w-5 text-blue-600" />
             This Week's Performance
           </CardTitle>
+          <p className="text-sm text-gray-600">Your actual study statistics from the past 7 days</p>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-4 gap-4 text-center">
             <div className="p-4 bg-blue-50 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600">45</div>
+              <div className="text-2xl font-bold text-blue-600">{weeklyStats.questionsAnswered}</div>
               <div className="text-sm text-gray-600">Questions Solved</div>
             </div>
             <div className="p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">8.5h</div>
+              <div className="text-2xl font-bold text-green-600">{weeklyStats.totalHours}h</div>
               <div className="text-sm text-gray-600">Study Time</div>
             </div>
             <div className="p-4 bg-purple-50 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600">92%</div>
-              <div className="text-sm text-gray-600">Accuracy Rate</div>
+              <div className="text-2xl font-bold text-purple-600">
+                {weeklyStats.averageScore > 0 ? `${weeklyStats.averageScore}%` : '--'}
+              </div>
+              <div className="text-sm text-gray-600">Avg Quiz Score</div>
             </div>
             <div className="p-4 bg-orange-50 rounded-lg">
-              <div className="text-2xl font-bold text-orange-600">7</div>
-              <div className="text-sm text-gray-600">Day Streak</div>
+              <div className="text-2xl font-bold text-orange-600">{weeklyStats.topicsCompleted}</div>
+              <div className="text-sm text-gray-600">Topics Completed</div>
             </div>
           </div>
         </CardContent>
