@@ -57,8 +57,9 @@ serve(async (req) => {
     });
 
     const scorePercentage = Math.round((correctAnswers / totalQuestions) * 100);
+    const durationSeconds = timeToTakeMinutes * 60;
 
-    // Save quiz attempt
+    // Save quiz attempt - using correct column names from schema
     const { data: quizAttempt, error: attemptError } = await supabaseClient
       .from('quiz_attempts')
       .insert({
@@ -66,12 +67,11 @@ serve(async (req) => {
         subject,
         topic,
         exam_type: examType,
-        total_questions: totalQuestions,
-        correct_answers: correctAnswers,
-        score_percentage: scorePercentage,
-        time_taken_minutes: timeToTakeMinutes,
-        questions_data: questions,
-        user_answers: userAnswers
+        difficulty: 'medium', // default difficulty
+        questions_count: totalQuestions,
+        correct_count: correctAnswers,
+        score: scorePercentage,
+        duration_seconds: durationSeconds
       })
       .select()
       .single();
