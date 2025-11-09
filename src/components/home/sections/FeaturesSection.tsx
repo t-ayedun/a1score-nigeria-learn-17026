@@ -8,8 +8,7 @@ import {
   Award, 
   Users, 
   Globe, 
-  CheckCircle, 
-  DollarSign 
+  CheckCircle
 } from "lucide-react";
 
 const FeaturesSection = () => {
@@ -67,12 +66,6 @@ const FeaturesSection = () => {
       title: "Curriculum Aligned", 
       description: "Built for local education standards with familiar examples and content that matches your syllabus.",
       gradient: "from-indigo-600 to-blue-600"
-    },
-    { 
-      icon: DollarSign, 
-      title: "Earn While Teaching", 
-      description: "Help students succeed while earning extra income. Validate answers, create content, and build your reputation.",
-      gradient: "from-emerald-600 to-green-600"
     },
   ];
 

@@ -56,28 +56,6 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
     }
   ];
 
-  const coreFeatures = [
-    {
-      icon: Brain,
-      title: "24/7 AI Tutor",
-      description: "Get instant help in any subject, anytime you need it"
-    },
-    {
-      icon: Trophy,
-      title: "Gamified Learning",
-      description: "Earn points, badges, and compete on leaderboards"
-    },
-    {
-      icon: Target,
-      title: "Personalized Study Plans",
-      description: "AI adapts to your learning style and pace"
-    },
-    {
-      icon: Users,
-      title: "Study Communities",
-      description: "Connect with peers, form study groups, and learn together"
-    }
-  ];
 
   const otherAudiences = [
     {
@@ -139,23 +117,6 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
         </div>
       </section>
 
-      {/* Core Features */}
-      <section className="bg-white/50 backdrop-blur-sm py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Everything You Need to Succeed</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {coreFeatures.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                  <feature.icon className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section ref={(el) => setSectionRef('features', el)}>
