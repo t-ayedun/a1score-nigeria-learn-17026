@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -137,8 +137,29 @@ const AuthPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
+      <div className="w-full max-w-md space-y-4">
+        {/* Back to Home Link */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+        >
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+          Back to home
+        </button>
+
+        <Card className="w-full">
+        <CardHeader className="text-center space-y-4">
+          {/* Clickable Logo */}
+          <div 
+            className="flex justify-center cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => navigate('/')}
+          >
+            <img 
+              src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
+              alt="A1Score Logo" 
+              className="h-16 w-auto object-contain"
+            />
+          </div>
           <CardTitle className="text-2xl font-bold">Welcome to A1Score</CardTitle>
           <p className="text-muted-foreground">Join the student community platform</p>
         </CardHeader>
@@ -305,6 +326,7 @@ const AuthPage = () => {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

@@ -81,7 +81,8 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
                 alt="A1Score Logo" 
-                className="h-12 sm:h-14 md:h-16 w-auto object-contain flex-shrink-0"
+                className="h-12 sm:h-14 md:h-16 w-auto object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => navigate('/')}
               />
             </div>
             
