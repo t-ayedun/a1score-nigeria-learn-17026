@@ -183,6 +183,45 @@ export type Database = {
           },
         ]
       }
+      concept_mastery: {
+        Row: {
+          concept_name: string
+          created_at: string | null
+          evidence_count: number | null
+          first_learned_at: string | null
+          id: string
+          last_practiced_at: string | null
+          mastery_level: number | null
+          subject: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          concept_name: string
+          created_at?: string | null
+          evidence_count?: number | null
+          first_learned_at?: string | null
+          id?: string
+          last_practiced_at?: string | null
+          mastery_level?: number | null
+          subject: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          concept_name?: string
+          created_at?: string | null
+          evidence_count?: number | null
+          first_learned_at?: string | null
+          id?: string
+          last_practiced_at?: string | null
+          mastery_level?: number | null
+          subject?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       content_library: {
         Row: {
           content: Json
@@ -326,6 +365,33 @@ export type Database = {
         }
         Relationships: []
       }
+      leaderboard_preferences: {
+        Row: {
+          anonymous_mode: boolean | null
+          created_at: string | null
+          id: string
+          is_visible: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          anonymous_mode?: boolean | null
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          anonymous_mode?: boolean | null
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       learning_insights: {
         Row: {
           confidence_score: number | null
@@ -355,6 +421,42 @@ export type Database = {
           insight_text?: string
           insight_type?: string
           is_read?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      learning_points: {
+        Row: {
+          activity_type: string
+          created_at: string | null
+          earned_at: string | null
+          id: string
+          metadata: Json | null
+          points: number
+          reason: string
+          subject: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string | null
+          earned_at?: string | null
+          id?: string
+          metadata?: Json | null
+          points: number
+          reason: string
+          subject?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string | null
+          earned_at?: string | null
+          id?: string
+          metadata?: Json | null
+          points?: number
+          reason?: string
+          subject?: string | null
           user_id?: string
         }
         Relationships: []
@@ -416,6 +518,45 @@ export type Database = {
           subject?: string | null
           topic?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      learning_streaks: {
+        Row: {
+          created_at: string | null
+          current_streak: number | null
+          id: string
+          last_activity_date: string | null
+          longest_streak: number | null
+          streak_repairs_available: number | null
+          streak_repairs_used: number | null
+          updated_at: string | null
+          user_id: string
+          weekly_activity_pattern: number[] | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_streak?: number | null
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
+          streak_repairs_available?: number | null
+          streak_repairs_used?: number | null
+          updated_at?: string | null
+          user_id: string
+          weekly_activity_pattern?: number[] | null
+        }
+        Update: {
+          created_at?: string | null
+          current_streak?: number | null
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
+          streak_repairs_available?: number | null
+          streak_repairs_used?: number | null
+          updated_at?: string | null
+          user_id?: string
+          weekly_activity_pattern?: number[] | null
         }
         Relationships: []
       }
@@ -621,6 +762,7 @@ export type Database = {
           child_school: string | null
           created_at: string | null
           full_name: string | null
+          gamification_enabled: boolean | null
           id: string
           institution: string | null
           teaching_subject: string | null
@@ -634,6 +776,7 @@ export type Database = {
           child_school?: string | null
           created_at?: string | null
           full_name?: string | null
+          gamification_enabled?: boolean | null
           id?: string
           institution?: string | null
           teaching_subject?: string | null
@@ -647,6 +790,7 @@ export type Database = {
           child_school?: string | null
           created_at?: string | null
           full_name?: string | null
+          gamification_enabled?: boolean | null
           id?: string
           institution?: string | null
           teaching_subject?: string | null
@@ -942,34 +1086,82 @@ export type Database = {
         }
         Relationships: []
       }
+      subject_levels: {
+        Row: {
+          achieved_at: string | null
+          concepts_mastered: number | null
+          concepts_required: number
+          created_at: string | null
+          id: string
+          level_name: string
+          progress_percentage: number | null
+          subject: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achieved_at?: string | null
+          concepts_mastered?: number | null
+          concepts_required: number
+          created_at?: string | null
+          id?: string
+          level_name: string
+          progress_percentage?: number | null
+          subject: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achieved_at?: string | null
+          concepts_mastered?: number | null
+          concepts_required?: number
+          created_at?: string | null
+          id?: string
+          level_name?: string
+          progress_percentage?: number | null
+          subject?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_type: string
+          concept_count: number | null
           description: string | null
           earned_at: string | null
           icon: string | null
           id: string
           metadata: Json | null
+          rarity: string | null
+          subject: string | null
           title: string
           user_id: string
         }
         Insert: {
           achievement_type: string
+          concept_count?: number | null
           description?: string | null
           earned_at?: string | null
           icon?: string | null
           id?: string
           metadata?: Json | null
+          rarity?: string | null
+          subject?: string | null
           title: string
           user_id: string
         }
         Update: {
           achievement_type?: string
+          concept_count?: number | null
           description?: string | null
           earned_at?: string | null
           icon?: string | null
           id?: string
           metadata?: Json | null
+          rarity?: string | null
+          subject?: string | null
           title?: string
           user_id?: string
         }
