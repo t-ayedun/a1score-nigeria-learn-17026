@@ -50,6 +50,48 @@ export type Database = {
         }
         Relationships: []
       }
+      batch_generation_jobs: {
+        Row: {
+          completed_items: number | null
+          content_type: string
+          created_at: string | null
+          error_message: string | null
+          id: string
+          params: Json
+          result_ids: string[] | null
+          status: string | null
+          total_items: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_items?: number | null
+          content_type: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          params: Json
+          result_ids?: string[] | null
+          status?: string | null
+          total_items: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_items?: number | null
+          content_type?: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          params?: Json
+          result_ids?: string[] | null
+          status?: string | null
+          total_items?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       communities: {
         Row: {
           category: string | null
@@ -140,6 +182,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_library: {
+        Row: {
+          content: Json
+          content_type: string
+          created_at: string | null
+          difficulty: string | null
+          exam_format: string | null
+          id: string
+          is_favorite: boolean | null
+          subject: string
+          tags: string[] | null
+          title: string
+          topic: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: Json
+          content_type: string
+          created_at?: string | null
+          difficulty?: string | null
+          exam_format?: string | null
+          id?: string
+          is_favorite?: boolean | null
+          subject: string
+          tags?: string[] | null
+          title: string
+          topic?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          content_type?: string
+          created_at?: string | null
+          difficulty?: string | null
+          exam_format?: string | null
+          id?: string
+          is_favorite?: boolean | null
+          subject?: string
+          tags?: string[] | null
+          title?: string
+          topic?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       conversation_history: {
         Row: {

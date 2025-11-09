@@ -65,9 +65,122 @@ export interface AITutorResponse {
 export type QuizDifficulty = 'easy' | 'medium' | 'hard';
 
 /**
- * Nigerian exam types
+ * Exam types (Nigerian and International)
  */
-export type ExamType = 'jamb' | 'waec' | 'neco' | 'general';
+export type ExamType = 'jamb' | 'waec' | 'neco' | 'sat' | 'gre' | 'general';
+
+/**
+ * Content generation types
+ */
+export type ContentType = 'quiz' | 'practice_test' | 'study_guide' | 'mnemonic' | 'concept_map';
+
+/**
+ * Study guide structure
+ */
+export interface StudyGuide {
+  title: string;
+  introduction: string;
+  sections: Array<{
+    heading: string;
+    content: string;
+    keyPoints: string[];
+    examples?: string[];
+  }>;
+  summary: string;
+  practiceQuestions?: string[];
+}
+
+/**
+ * Mnemonic device
+ */
+export interface Mnemonic {
+  concept: string;
+  device: string;
+  explanation: string;
+  type: 'acronym' | 'rhyme' | 'story' | 'method_of_loci' | 'chunking';
+  example?: string;
+}
+
+/**
+ * Concept map node
+ */
+export interface ConceptMapNode {
+  id: string;
+  label: string;
+  description?: string;
+  level: number;
+}
+
+/**
+ * Concept map connection
+ */
+export interface ConceptMapEdge {
+  from: string;
+  to: string;
+  relationship: string;
+}
+
+/**
+ * Concept map structure
+ */
+export interface ConceptMap {
+  title: string;
+  mermaidDiagram: string;
+  nodes: ConceptMapNode[];
+  edges: ConceptMapEdge[];
+  description: string;
+}
+
+/**
+ * Practice test structure
+ */
+export interface PracticeTest {
+  id: string;
+  title: string;
+  examType: ExamType;
+  subject: string;
+  topic?: string;
+  duration: number; // in minutes
+  totalPoints: number;
+  questions: QuizQuestion[];
+  passingScore: number;
+}
+
+/**
+ * Content library item
+ */
+export interface ContentLibraryItem {
+  id: string;
+  user_id: string;
+  content_type: ContentType;
+  title: string;
+  subject: string;
+  topic?: string;
+  content: StudyGuide | Mnemonic[] | ConceptMap | PracticeTest | QuizQuestion[];
+  tags: string[];
+  exam_format?: ExamType;
+  difficulty?: QuizDifficulty;
+  is_favorite: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Batch generation job
+ */
+export interface BatchGenerationJob {
+  id: string;
+  user_id: string;
+  content_type: ContentType;
+  params: any;
+  total_items: number;
+  completed_items: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result_ids: string[];
+  error_message?: string;
+  created_at: string;
+  updated_at: string;
+}
 
 /**
  * Quiz question type

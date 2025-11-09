@@ -36,7 +36,7 @@ serve(async (req) => {
     const user = userData.user;
     if (!user) throw new Error("User not authenticated");
 
-    const { subject, topic, examType = 'general', difficulty = 'medium', count = 5 } = await req.json();
+    const { subject, topic, examType = 'general' as 'jamb' | 'waec' | 'neco' | 'sat' | 'gre' | 'general', difficulty = 'medium', count = 5 } = await req.json();
     logStep("Request data parsed", { subject, topic, examType, difficulty, count });
 
     // Try to get questions from database first

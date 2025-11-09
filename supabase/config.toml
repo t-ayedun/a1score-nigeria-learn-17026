@@ -20,3 +20,18 @@ verify_jwt = true
 
 [functions.save-quiz-attempt]
 verify_jwt = true
+
+[functions.generate-study-guide]
+verify_jwt = true
+
+[functions.generate-mnemonics]
+verify_jwt = true
+
+[functions.generate-concept-map]
+verify_jwt = true
+
+[functions.generate-practice-test]
+verify_jwt = true
+
+[functions.batch-generate-content]
+verify_jwt = true
