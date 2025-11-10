@@ -503,7 +503,14 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <AnimatedTutorialSystem />
           </TabsContent>
 
-          <TabsContent value="learning-paths">
+          <TabsContent value="learning-paths" className="space-y-4">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <LearningPathHub />
           </TabsContent>
 
@@ -534,19 +541,47 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <FormulaReference />
           </TabsContent>
 
-          <TabsContent value="progress-tracker">
+          <TabsContent value="progress-tracker" className="space-y-4">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <ProgressTrackerDashboard />
           </TabsContent>
 
-          <TabsContent value="study-goals">
+          <TabsContent value="study-goals" className="space-y-4">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <StudyGoals />
           </TabsContent>
 
-          <TabsContent value="study-timer">
+          <TabsContent value="study-timer" className="space-y-4">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <StudyTimer />
           </TabsContent>
 
           <TabsContent value="pdf-helper" className="space-y-6">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             {!currentAnalysis ? (
               <PDFUploader onAnalysisComplete={setCurrentAnalysis} />
             ) : (
@@ -579,7 +614,14 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <DataAnalysisHub />
           </TabsContent>
 
-          <TabsContent value="homework-scanner">
+          <TabsContent value="homework-scanner" className="space-y-4">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <HomeworkScanner onSolutionGenerated={(solution) => console.log('Solution:', solution)} />
           </TabsContent>
 

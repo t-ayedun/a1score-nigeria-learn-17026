@@ -10,15 +10,11 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import HomeworkScanner from "./HomeworkScanner";
-import EnhancedLearningPaths from "./EnhancedLearningPaths";
 import TutorSelection from "./TutorSelection";
 import TutorHeader from "./TutorHeader";
 import ChatMessage from "./ChatMessage";
 import TutorTypingIndicator from "./TutorTypingIndicator";
 import MessageInput from "./MessageInput";
-import PDFUploader from "./PDFUploader";
-import PDFAnalysisViewer from "./PDFAnalysisViewer";
 
 interface Message {
   id: number;
@@ -53,7 +49,6 @@ const AITutorChat = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState<TutorPersonality | null>(null);
   const [conversationMemory, setConversationMemory] = useState<{[key: string]: any}>({});
-  const [pdfAnalysis, setPdfAnalysis] = useState<any>(null);
   const [useDocuments, setUseDocuments] = useState(false);
   const [isSearchingDocuments, setIsSearchingDocuments] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -242,41 +237,18 @@ const AITutorChat = () => {
     setMessages(prev => [...prev, aiMessage]);
   };
 
-  const handleHomeworkSolved = (solution: string) => {
-    const aiMessage: Message = {
-      id: messages.length + 1,
-      type: 'ai',
-      content: `📸 **Homework Solution Detected!**\n\n${solution}\n\nWould you like me to explain any part of this solution in more detail? I can also create similar practice problems for you!`,
-      timestamp: new Date(),
-      subject: selectedTutor?.subject || 'General',
-      tutorPersonality: selectedTutor?.name || 'AIDA'
-    };
-    setMessages(prev => [...prev, aiMessage]);
-  };
-
-  const handlePDFAnalysis = (analysis: any) => {
-    setPdfAnalysis(analysis);
-  };
-
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>🎓 A1Score AI Tutoring Center</CardTitle>
+          <CardTitle>🎓 AI Chat Tutor</CardTitle>
           <p className="text-gray-600">
-            Choose your personal tutor, scan homework, or explore adaptive learning paths
+            Choose your personal tutor and get instant help with any subject
           </p>
         </CardHeader>
       </Card>
 
-      <Tabs defaultValue="chat" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="chat">AI Chat Tutor</TabsTrigger>
-          <TabsTrigger value="scanner">Homework Scanner</TabsTrigger>
-          <TabsTrigger value="paths">Learning Paths</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="chat" className="space-y-4">
+      <div className="space-y-4">
           {/* Tutor Selection */}
           {!selectedTutor && (
             <TutorSelection 
@@ -359,26 +331,7 @@ const AITutorChat = () => {
               </Card>
             </>
           )}
-        </TabsContent>
-
-        <TabsContent value="scanner" className="space-y-6">
-          <HomeworkScanner onSolutionGenerated={handleHomeworkSolved} />
-          
-          <div className="border-t pt-6">
-            <PDFUploader onAnalysisComplete={handlePDFAnalysis} />
-          </div>
-          
-          {pdfAnalysis && (
-            <div className="border-t pt-6">
-              <PDFAnalysisViewer analysis={pdfAnalysis} />
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="paths">
-          <EnhancedLearningPaths />
-        </TabsContent>
-      </Tabs>
+      </div>
     </div>
   );
 };

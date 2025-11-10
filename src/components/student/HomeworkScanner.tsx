@@ -249,10 +249,9 @@ Feel free to ask follow-up questions!`;
       </Card>
 
       <Tabs defaultValue="camera" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="camera">📸 Camera/Upload</TabsTrigger>
           <TabsTrigger value="type">✏️ Type Problem</TabsTrigger>
-          <TabsTrigger value="samples">🎯 Try Samples</TabsTrigger>
         </TabsList>
 
         <TabsContent value="camera" className="space-y-4">
@@ -360,42 +359,6 @@ Feel free to ask follow-up questions!`;
           </Card>
         </TabsContent>
 
-        <TabsContent value="samples" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Try These Sample Problems</CardTitle>
-              <p className="text-gray-600">Click any problem to see how our AI solver works</p>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-4">
-                {sampleProblems.map((sample, index) => {
-                  const Icon = sample.icon;
-                  return (
-                    <Card
-                      key={index}
-                      className="cursor-pointer hover:shadow-lg transition-shadow"
-                      onClick={() => processSampleProblem(sample.problem)}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <div className={`p-2 rounded-lg ${sample.color}`}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                          <div className="flex-1">
-                            <Badge variant="secondary" className="mb-2">
-                              {sample.type}
-                            </Badge>
-                            <p className="text-sm">{sample.problem}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Extracted Text Display */}
