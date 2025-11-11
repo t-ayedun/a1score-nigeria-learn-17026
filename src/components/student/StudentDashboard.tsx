@@ -208,7 +208,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                         <div className="text-xs md:text-sm text-blue-100">Day Streak</div>
                       </div>
                       <div>
-                        <div className="text-2xl md:text-3xl font-bold">{userStats?.leagueRank || '#--'}</div>
+                        <div className="text-2xl md:text-3xl font-bold">{userStats?.points || '0'}</div>
                         <div className="text-xs md:text-sm text-blue-100">{userStats?.leagueName || 'Bronze League'}</div>
                       </div>
                     </div>

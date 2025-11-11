@@ -47,13 +47,15 @@ const DashboardRouter = () => {
               .from('profiles')
               .insert({
                 user_id: user.id,
-                display_name: displayName,
+                full_name: displayName,
+                display_name: displayName, // Fallback for compatibility
                 user_type: userType
               });
             
             if (!insertError) {
               setUserProfile({
                 user_id: user.id,
+                full_name: displayName,
                 display_name: displayName,
                 user_type: userType
               });
@@ -95,10 +97,13 @@ const DashboardRouter = () => {
         .from('profiles')
         .upsert({
           user_id: user.id,
-          display_name: profile.fullName,
+          full_name: profile.fullName,
+          display_name: profile.fullName, // Fallback for compatibility
           bio: profile.preferences?.privacy?.showProfile ? 'A1Score user' : null,
-          school: profile.institution,
+          institution: profile.institution,
+          school: profile.institution, // Fallback for compatibility
           user_type: profile.userType,
+          academic_level: profile.academicLevel,
           ...profile
         });
       
@@ -137,8 +142,9 @@ const DashboardRouter = () => {
     const userType = userProfile.user_type || 'student';
     const userData = {
       type: userType,
-      name: userProfile.display_name || user.email?.split('@')[0] || 'User',
-      ...(userType === 'admin' && { institution: userProfile.school || 'Guest Institution' })
+      name: userProfile.full_name || userProfile.display_name || user.email?.split('@')[0] || 'User',
+      ...(userType === 'student' && { level: userProfile.academic_level }),
+      ...(userType === 'admin' && { institution: userProfile.institution || userProfile.school || 'Guest Institution' })
     };
 
     // Handle specific dashboard routes
@@ -169,11 +175,11 @@ const DashboardRouter = () => {
         {/* Profile Setup */}
         {showProfileSetup && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
               <ProfileSetup
                 user={{
                   userType: (userProfile?.user_type as any) || 'student',
-                  fullName: userProfile?.display_name || user.email?.split('@')[0] || '',
+                  fullName: userProfile?.full_name || userProfile?.display_name || user.email?.split('@')[0] || '',
                 }}
                 onComplete={handleProfileSetupComplete}
               />
