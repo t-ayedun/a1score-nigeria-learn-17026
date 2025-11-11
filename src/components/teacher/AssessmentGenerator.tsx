@@ -174,8 +174,8 @@ const AssessmentGenerator = () => {
           <TabsTrigger value="preview">Preview</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="setup" className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+        <TabsContent value="setup" className="space-y-4 md:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Assessment Information</CardTitle>
@@ -281,8 +281,8 @@ const AssessmentGenerator = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="requirements" className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+        <TabsContent value="requirements" className="space-y-4 md:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Question Types</CardTitle>

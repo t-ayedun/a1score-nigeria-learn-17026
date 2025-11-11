@@ -92,9 +92,9 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
       {/* Background gradient that changes with content */}
       <div className={`absolute inset-0 bg-gradient-to-br ${currentContent.gradient} opacity-5 transition-all duration-1000`} />
       
-      <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8 md:space-y-12">
+      <div className="relative z-10 text-center max-w-4xl mx-auto space-y-6 md:space-y-8 lg:space-y-12">
         {/* Icon */}
-        <div className="mb-4 md:mb-6">
+        <div className="mb-3 md:mb-4 lg:mb-6">
           <div className={`w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full bg-gradient-to-r ${currentContent.gradient} flex items-center justify-center transition-all duration-600`}>
             <CurrentIcon className="h-6 w-6 md:h-8 md:w-8 text-white" />
           </div>

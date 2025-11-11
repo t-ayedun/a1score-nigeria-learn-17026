@@ -81,8 +81,9 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
                 alt="A1Score Logo" 
-                className="h-8 md:h-12 lg:h-16 w-auto object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                className="h-8 md:h-12 lg:h-16 w-auto max-w-full object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => navigate('/')}
+                loading="eager"
               />
             </div>
             
@@ -155,43 +156,44 @@ const Index = () => {
       <StudentFocusedHomePage onLogin={handleShowAuth} onShowAuth={handleShowAuth} />
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 md:py-12 lg:py-16">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
+      <footer className="bg-gray-900 text-white py-8 px-4 md:py-12 md:px-6">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-2 mb-4">
                 <img 
                   src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
                   alt="A1Score Logo" 
-                  className="h-8 w-auto object-contain brightness-0 invert"
+                  className="h-8 w-auto object-contain brightness-0 invert max-w-full"
+                  loading="lazy"
                 />
                 <span className="text-xl md:text-2xl font-bold">A1Score</span>
               </div>
-              <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+              <p className="text-gray-400 text-sm leading-relaxed">
                 AI-powered education platform designed specifically for Nigerian students and teachers.
               </p>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-lg md:text-xl">For Students</h4>
-              <ul className="space-y-2 text-gray-400 text-sm md:text-base leading-relaxed">
+            <div className="text-center sm:text-left">
+              <h4 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">For Students</h4>
+              <ul className="space-y-2 text-gray-400 text-sm leading-relaxed">
                 <li>AI Tutoring</li>
                 <li>JAMB Practice</li>
                 <li>WAEC Prep</li>
                 <li>Progress Tracking</li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-lg md:text-xl">For Teachers</h4>
-              <ul className="space-y-2 text-gray-400 text-sm md:text-base leading-relaxed">
+            <div className="text-center sm:text-left">
+              <h4 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">For Teachers</h4>
+              <ul className="space-y-2 text-gray-400 text-sm leading-relaxed">
                 <li>Class Analytics</li>
                 <li>Content Creation</li>
                 <li>Student Management</li>
                 <li>Earn with Validation</li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-lg md:text-xl">Support</h4>
-              <ul className="space-y-2 text-gray-400 text-sm md:text-base leading-relaxed">
+            <div className="text-center sm:text-left">
+              <h4 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">Support</h4>
+              <ul className="space-y-2 text-gray-400 text-sm leading-relaxed">
                 <li>Help Center</li>
                 <li>Contact Us</li>
                 <li>Community</li>
@@ -199,7 +201,7 @@ const Index = () => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 md:mt-12 pt-8 text-center text-gray-400 text-xs md:text-sm leading-relaxed">
+          <div className="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-gray-400 text-xs leading-relaxed">
             <p>&copy; 2024 A1Score. All rights reserved. Built for Nigerian Education.</p>
           </div>
         </div>

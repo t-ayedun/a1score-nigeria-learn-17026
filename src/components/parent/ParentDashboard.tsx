@@ -120,22 +120,40 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
       </header>
 
       <div className="p-6 max-w-6xl mx-auto space-y-6">
-        {/* Child Selector */}
-        <div className="flex gap-4 items-center">
-          <Select value={selectedChild} onValueChange={setSelectedChild}>
-            <SelectTrigger className="w-64">
-              <SelectValue placeholder="Select child" />
-            </SelectTrigger>
-            <SelectContent>
-              {children.map((child) => (
-                <SelectItem key={child.id} value={child.id}>
-                  {child.name} ({child.class})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {/* Child Selector - Dropdown on mobile, buttons on desktop */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
+          {/* Mobile: Dropdown */}
+          <div className="sm:hidden">
+            <Select value={selectedChild} onValueChange={setSelectedChild}>
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="Select child" />
+              </SelectTrigger>
+              <SelectContent>
+                {children.map((child) => (
+                  <SelectItem key={child.id} value={child.id}>
+                    {child.name} ({child.class})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Desktop: Tabs */}
+          <div className="hidden sm:flex gap-2">
+            {children.map((child) => (
+              <Button
+                key={child.id}
+                variant={selectedChild === child.id ? "default" : "outline"}
+                onClick={() => setSelectedChild(child.id)}
+                className="min-h-11"
+              >
+                {child.name} ({child.class})
+              </Button>
+            ))}
+          </div>
+          
           <Select value={timeFrame} onValueChange={setTimeFrame}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-full sm:w-48 h-11">
               <SelectValue placeholder="Time frame" />
             </SelectTrigger>
             <SelectContent>
@@ -153,40 +171,40 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
               {children.find(c => c.id === selectedChild)?.name} - Weekly Report
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <CardContent className="p-4 md:p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold">{currentChild.studyTime}</div>
-                <div className="text-sm opacity-90">Study Time</div>
+                <div className="text-xl md:text-2xl font-bold">{currentChild.studyTime}</div>
+                <div className="text-xs md:text-sm opacity-90">Study Time</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-200">{currentChild.improvement}</div>
-                <div className="text-sm opacity-90">Improvement</div>
+                <div className="text-xl md:text-2xl font-bold text-green-200">{currentChild.improvement}</div>
+                <div className="text-xs md:text-sm opacity-90">Improvement</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold">{currentChild.avgScore}%</div>
-                <div className="text-sm opacity-90">Avg Score</div>
+                <div className="text-xl md:text-2xl font-bold">{currentChild.avgScore}%</div>
+                <div className="text-xs md:text-sm opacity-90">Avg Score</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold">{currentChild.streak}</div>
-                <div className="text-sm opacity-90">Day Streak</div>
+                <div className="text-xl md:text-2xl font-bold">{currentChild.streak}</div>
+                <div className="text-xs md:text-sm opacity-90">Day Streak</div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="teachers">Teachers</TabsTrigger>
-            <TabsTrigger value="subscription">Subscription</TabsTrigger>
-            <TabsTrigger value="safety">Safety</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+        <Tabs defaultValue="overview" className="space-y-4 md:space-y-6">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 w-full h-auto gap-1 p-1">
+            <TabsTrigger value="overview" className="text-xs md:text-sm px-2 py-2 min-h-9">Overview</TabsTrigger>
+            <TabsTrigger value="activity" className="text-xs md:text-sm px-2 py-2 min-h-9">Activity</TabsTrigger>
+            <TabsTrigger value="teachers" className="text-xs md:text-sm px-2 py-2 min-h-9">Teachers</TabsTrigger>
+            <TabsTrigger value="subscription" className="text-xs md:text-sm px-2 py-2 min-h-9">Subscription</TabsTrigger>
+            <TabsTrigger value="safety" className="text-xs md:text-sm px-2 py-2 min-h-9">Safety</TabsTrigger>
+            <TabsTrigger value="reports" className="text-xs md:text-sm px-2 py-2 min-h-9">Reports</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <TabsContent value="overview" className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
               {/* Subject Performance */}
               <Card>
                 <CardHeader>
@@ -275,24 +293,24 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           <TabsContent value="activity">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Learning Activity</CardTitle>
+                <CardTitle className="text-lg md:text-xl">Recent Learning Activity</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                   {currentChild.recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <BookOpen className="h-5 w-5 text-blue-600" />
-                        <div>
-                          <div className="font-medium">{activity.activity}</div>
-                          <div className="text-sm text-gray-600">{activity.subject}</div>
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 md:p-4 bg-gray-50 rounded-lg gap-2">
+                      <div className="flex items-start sm:items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-blue-600 flex-shrink-0 mt-0.5 sm:mt-0" />
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm md:text-base leading-tight truncate">{activity.activity}</div>
+                          <div className="text-xs md:text-sm text-gray-600 truncate">{activity.subject}</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <Badge variant={activity.score >= '85%' ? 'default' : 'secondary'}>
+                      <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2 flex-shrink-0">
+                        <Badge variant={activity.score >= '85%' ? 'default' : 'secondary'} className="text-xs">
                           {activity.score}
                         </Badge>
-                        <div className="text-sm text-gray-500 mt-1">{activity.time}</div>
+                        <div className="text-xs md:text-sm text-gray-500">{activity.time}</div>
                       </div>
                     </div>
                   ))}
@@ -301,33 +319,33 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="teachers" className="space-y-6">
-            {/* Teacher Communications */}
+          <TabsContent value="teachers" className="space-y-4 md:space-y-6">
+            {/* Teacher Communications - Mobile-first messaging style */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5 text-blue-600" />
+                <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                  <MessageSquare className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                   Messages from Teachers
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                   {teacherMessages.map((msg, index) => (
-                    <div key={index} className={`p-4 rounded-lg border-l-4 ${msg.priority === 'high' ? 'border-red-500 bg-red-50' : 'border-blue-500 bg-blue-50'}`}>
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h4 className="font-semibold">{msg.teacher}</h4>
-                          <span className="text-sm text-gray-600">{msg.subject}</span>
+                    <div key={index} className={`p-3 md:p-4 rounded-lg border-l-4 ${msg.priority === 'high' ? 'border-red-500 bg-red-50' : 'border-blue-500 bg-blue-50'}`}>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-sm md:text-base truncate">{msg.teacher}</h4>
+                          <span className="text-xs md:text-sm text-gray-600">{msg.subject}</span>
                         </div>
-                        <div className="text-right">
-                          <Badge variant={msg.priority === 'high' ? 'destructive' : 'secondary'}>
+                        <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2">
+                          <Badge variant={msg.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
                             {msg.priority === 'high' ? 'High Priority' : 'Normal'}
                           </Badge>
-                          <div className="text-sm text-gray-500 mt-1">{msg.time}</div>
+                          <div className="text-xs md:text-sm text-gray-500">{msg.time}</div>
                         </div>
                       </div>
-                      <p className="text-gray-700 mb-3">{msg.message}</p>
-                      <Button size="sm" variant="outline">Reply to Teacher</Button>
+                      <p className="text-sm md:text-base text-gray-700 mb-3 leading-relaxed">{msg.message}</p>
+                      <Button size="sm" variant="outline" className="w-full sm:w-auto min-h-9 text-xs md:text-sm">Reply to Teacher</Button>
                     </div>
                   ))}
                 </div>
