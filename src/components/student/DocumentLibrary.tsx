@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { StatsGridSkeleton, DocumentCardSkeleton } from '@/components/ui/loading-skeleton';
 
 interface Document {
   id: string;
@@ -47,9 +48,71 @@ export function DocumentLibrary() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [stats, setStats] = useState<DocumentStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedStatus, setSelectedStatus] = useState<'all' | 'completed' | 'processing' | 'failed'>('all');
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const lastDocumentRef = useRef<HTMLDivElement | null>(null);
+  const pageSize = 12;
+
+  const loadDocuments = async (offset = 0, append = false) => {
+    try {
+      if (!append) setLoading(true);
+      else setLoadingMore(true);
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('user_documents' as any)
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .range(offset, offset + pageSize - 1);
+
+      if (error) throw error;
+
+      const newDocuments = (data || []) as unknown as Document[];
+      
+      if (append) {
+        setDocuments(prev => [...prev, ...newDocuments]);
+      } else {
+        setDocuments(newDocuments);
+      }
+
+      setHasMore(newDocuments.length === pageSize);
+    } catch (error) {
+      console.error('Error loading documents:', error);
+      toast.error('Failed to load documents');
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const loadMore = useCallback(() => {
+    if (!loadingMore && hasMore) {
+      loadDocuments(documents.length, true);
+    }
+  }, [documents.length, loadingMore, hasMore]);
+
+  const loadStats = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await (supabase as any).rpc('get_document_stats', {
+        p_user_id: user.id
+      });
+
+      if (error) throw error;
+      setStats(data);
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
 
   useEffect(() => {
     loadDocuments();
@@ -73,43 +136,29 @@ export function DocumentLibrary() {
     };
   }, []);
 
-  const loadDocuments = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+  // Infinite scroll observer
+  useEffect(() => {
+    if (loading || !hasMore) return;
 
-      const { data, error } = await supabase
-        .from('user_documents' as any)
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-      if (error) throw error;
-
-      setDocuments((data || []) as unknown as Document[]);
-    } catch (error) {
-      console.error('Error loading documents:', error);
-      toast.error('Failed to load documents');
-    } finally {
-      setLoading(false);
+    if (lastDocumentRef.current) {
+      observerRef.current.observe(lastDocumentRef.current);
     }
-  };
 
-  const loadStats = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data, error } = await (supabase as any).rpc('get_document_stats', {
-        p_user_id: user.id
-      });
-
-      if (error) throw error;
-      setStats(data);
-    } catch (error) {
-      console.error('Error loading stats:', error);
-    }
-  };
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [loading, hasMore, loadMore]);
 
   const deleteDocument = async (doc: Document) => {
     if (!confirm(`Delete "${doc.file_name}"? This will remove all associated data.`)) return;
@@ -218,8 +267,21 @@ export function DocumentLibrary() {
     return matchesSearch && matchesStatus;
   });
 
-  if (loading) {
-    return <div className="text-center py-12">Loading documents...</div>;
+  if (loading && documents.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-xl md:text-2xl font-bold leading-relaxed">Document Library</h2>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">Manage your uploaded documents</p>
+        </div>
+        <StatsGridSkeleton />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <DocumentCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -230,7 +292,7 @@ export function DocumentLibrary() {
       </div>
 
       {/* Stats */}
-      {stats && (
+      {stats ? (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card>
             <CardHeader className="pb-2">
@@ -273,6 +335,8 @@ export function DocumentLibrary() {
             </CardContent>
           </Card>
         </div>
+      ) : (
+        <StatsGridSkeleton />
       )}
 
       {/* Controls */}
@@ -328,8 +392,12 @@ export function DocumentLibrary() {
               : 'space-y-3'
           }
         >
-          {filteredDocuments.map((doc) => (
-            <Card key={doc.id} className={viewMode === 'list' ? '' : ''}>
+          {filteredDocuments.map((doc, index) => (
+            <Card 
+              key={doc.id} 
+              className={viewMode === 'list' ? '' : ''}
+              ref={index === filteredDocuments.length - 1 ? lastDocumentRef : null}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -380,6 +448,21 @@ export function DocumentLibrary() {
             </Card>
           ))}
         </div>
+      )}
+
+      {/* Loading indicator for infinite scroll */}
+      {loadingMore && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <DocumentCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {!hasMore && filteredDocuments.length > 0 && (
+        <p className="text-center text-sm text-muted-foreground py-4">
+          All documents loaded
+        </p>
       )}
     </div>
   );

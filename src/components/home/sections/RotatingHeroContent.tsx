@@ -142,11 +142,11 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
                       </div>
                     )}
 
-                    {/* Action buttons */}
+                     {/* Action buttons */}
                     <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center mt-6 md:mt-8">
                       <Button 
                         size="lg" 
-                        className={`w-full md:w-auto bg-gradient-to-r ${content.gradient} hover:opacity-90 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg transition-all duration-200 min-h-11 active:scale-95 md:hover:scale-105`}
+                        className={`w-full md:w-auto bg-gradient-to-r ${content.gradient} hover:opacity-90 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg transition-all duration-200 min-h-11 active:scale-95 md:hover:scale-105 hover-gpu`}
                         onClick={() => {
                           if (content.slideKey === 'feature3') {
                             navigate('/join-waitlist');
@@ -161,7 +161,7 @@ const RotatingHeroContent = ({ onShowAuth }: RotatingHeroContentProps) => {
                       <Button 
                         size="lg" 
                         variant="outline" 
-                        className="w-full md:w-auto px-6 md:px-8 py-3 md:py-4 text-base md:text-lg border-2 transition-all duration-200 min-h-11 active:scale-95 md:hover:scale-105"
+                        className="w-full md:w-auto px-6 md:px-8 py-3 md:py-4 text-base md:text-lg border-2 transition-all duration-200 min-h-11 active:scale-95 md:hover:scale-105 hover-gpu"
                         onClick={() => {
                           if (content.slideKey === 'feature3') {
                             navigate('/stay-updated');

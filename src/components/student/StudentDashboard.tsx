@@ -10,6 +10,7 @@ import { BookOpen, Calculator, FlaskConical, Globe, LogOut, Trophy, TrendingUp, 
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useSubjectProgress } from "@/hooks/useSubjectProgress";
 import { motion } from "framer-motion";
+import { DashboardCardSkeleton } from "@/components/ui/loading-skeleton";
 import AITutorChat from "./AITutorChat";
 import QuizInterface from "./QuizInterface";
 import SubjectHub from "./SubjectHub";
@@ -227,61 +228,61 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">Choose how you want to study today</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                <Button 
-                  onClick={() => setActiveTab('animated-tutorials')}
-                  variant="outline"
-                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-blue-500 transition-all"
-                >
-                  <div className="w-10 h-10 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Play className="h-5 w-5 md:h-7 md:w-7 text-blue-600" />
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm md:text-base font-semibold">Tutorials</div>
-                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Visual learning</div>
-                  </div>
-                </Button>
+              <Button 
+                onClick={() => setActiveTab('animated-tutorials')}
+                variant="outline"
+                className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-blue-500 transition-all hover-gpu"
+              >
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Play className="h-5 w-5 md:h-7 md:w-7 text-blue-600" />
+                </div>
+                <div className="text-center">
+                  <div className="text-sm md:text-base font-semibold">Tutorials</div>
+                  <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Visual learning</div>
+                </div>
+              </Button>
 
-                <Button 
-                  onClick={() => setActiveTab('tutor')}
-                  variant="outline"
-                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-green-500 transition-all"
-                >
-                  <div className="w-10 h-10 md:w-14 md:h-14 bg-green-100 rounded-full flex items-center justify-center">
-                    <Bot className="h-5 w-5 md:h-7 md:w-7 text-green-600" />
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm md:text-base font-semibold">AI Tutor</div>
-                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Get instant help</div>
-                  </div>
-                </Button>
+              <Button 
+                onClick={() => setActiveTab('tutor')}
+                variant="outline"
+                className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-green-500 transition-all hover-gpu"
+              >
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-green-100 rounded-full flex items-center justify-center">
+                  <Bot className="h-5 w-5 md:h-7 md:w-7 text-green-600" />
+                </div>
+                <div className="text-center">
+                  <div className="text-sm md:text-base font-semibold">AI Tutor</div>
+                  <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Get instant help</div>
+                </div>
+              </Button>
 
-                <Button 
-                  onClick={() => setActiveTab('quiz')}
-                  variant="outline"
-                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-purple-500 transition-all"
-                >
-                  <div className="w-10 h-10 md:w-14 md:h-14 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Brain className="h-5 w-5 md:h-7 md:w-7 text-purple-600" />
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm md:text-base font-semibold">Practice Quiz</div>
-                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Test your knowledge</div>
-                  </div>
-                </Button>
+              <Button 
+                onClick={() => setActiveTab('quiz')}
+                variant="outline"
+                className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-purple-500 transition-all hover-gpu"
+              >
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Brain className="h-5 w-5 md:h-7 md:w-7 text-purple-600" />
+                </div>
+                <div className="text-center">
+                  <div className="text-sm md:text-base font-semibold">Practice Quiz</div>
+                  <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Test your knowledge</div>
+                </div>
+              </Button>
 
-                <Button 
-                  onClick={() => setActiveTab('subjects')}
-                  variant="outline"
-                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-orange-500 transition-all"
-                >
-                  <div className="w-10 h-10 md:w-14 md:h-14 bg-orange-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-5 w-5 md:h-7 md:w-7 text-orange-600" />
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm md:text-base font-semibold">Browse Subjects</div>
-                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Explore topics</div>
-                  </div>
-                </Button>
+              <Button 
+                onClick={() => setActiveTab('subjects')}
+                variant="outline"
+                className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-orange-500 transition-all hover-gpu"
+              >
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-orange-100 rounded-full flex items-center justify-center">
+                  <BookOpen className="h-5 w-5 md:h-7 md:w-7 text-orange-600" />
+                </div>
+                <div className="text-center">
+                  <div className="text-sm md:text-base font-semibold">Browse Subjects</div>
+                  <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Explore topics</div>
+                </div>
+              </Button>
               </div>
               <p className="text-xs md:text-sm text-gray-500 mt-3 md:mt-4 text-center">
                 💡 Use the menu to access more tools
@@ -304,8 +305,10 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
               </div>
 
               {subjectsLoading ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">Loading your subjects...</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <DashboardCardSkeleton key={i} />
+                  ))}
                 </div>
               ) : userSubjects.length === 0 ? (
                 <Card className="p-8 text-center">

@@ -105,9 +105,48 @@
     @apply bg-background text-foreground;
   }
   
+  /* Reduce animations on mobile for performance */
+  @media (max-width: 768px) {
+    * {
+      animation-duration: 0.2s !important;
+      transition-duration: 0.2s !important;
+    }
+  }
+  
+  /* Optimize images */
+  img {
+    @apply max-w-full h-auto;
+  }
+  
+  /* Safe area for iOS */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  }
+  
   /* iOS Safe Area Support */
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Performance: GPU acceleration - use sparingly */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  /* Only use will-change on hover/active states */
+  .hover-gpu:hover {
+    will-change: transform;
+  }
+  
+  .hover-gpu:not(:hover) {
+    will-change: auto;
   }
   
   /* Mobile-first Typography */
