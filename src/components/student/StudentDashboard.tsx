@@ -202,16 +202,23 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                       <h2 className="text-xl md:text-2xl lg:text-3xl font-bold leading-relaxed">Welcome back, {user.name}! 👋</h2>
                       <p className="text-sm md:text-base leading-relaxed text-blue-100">{getWelcomeMessage()}</p>
                     </div>
-                    <div className="hidden md:flex gap-8 text-center">
-                      <div>
-                        <div className="text-2xl md:text-3xl font-bold">{userStats?.streak || 0}</div>
-                        <div className="text-xs md:text-sm text-blue-100">Day Streak</div>
+                    {userStats && (userStats.streak > 0 || parseInt(userStats.points.replace(/,/g, '')) > 0) ? (
+                      <div className="hidden md:flex gap-8 text-center">
+                        <div>
+                          <div className="text-2xl md:text-3xl font-bold">{userStats.streak}</div>
+                          <div className="text-xs md:text-sm text-blue-100">Day Streak</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl md:text-3xl font-bold">{userStats.points}</div>
+                          <div className="text-xs md:text-sm text-blue-100">{userStats.leagueName}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-2xl md:text-3xl font-bold">{userStats?.points || '0'}</div>
-                        <div className="text-xs md:text-sm text-blue-100">{userStats?.leagueName || 'Bronze League'}</div>
+                    ) : (
+                      <div className="hidden md:block text-center">
+                        <div className="text-sm text-blue-100">Start your learning journey today! 🚀</div>
+                        <div className="text-xs text-blue-200 mt-1">Complete activities to earn points and build streaks</div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -311,32 +318,35 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                   ))}
                 </div>
               ) : userSubjects.length === 0 ? (
-                <Card className="p-8 text-center">
+                <Card className="p-6 md:p-8 text-center border-2 border-dashed">
                   <div className="space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                      <BookOpen className="h-8 w-8 text-primary" />
+                    <div className="mx-auto w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <Sparkles className="h-8 w-8 md:h-10 md:w-10 text-white" />
                     </div>
                     <div>
                       <h3 className="text-lg md:text-xl lg:text-2xl font-semibold mb-2 leading-relaxed">
                         {preferences?.learningSubjects && preferences.learningSubjects.length > 0
-                          ? `Let's start with ${preferences.learningSubjects.join(', ')}`
-                          : 'No Subjects Yet'}
+                          ? `Ready to learn ${preferences.learningSubjects.join(', ')}?`
+                          : 'Start Your Learning Journey!'}
                       </h3>
-                      <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
+                      <p className="text-sm md:text-base text-muted-foreground mb-6 leading-relaxed max-w-md mx-auto">
                         {preferences?.learningSubjects && preferences.learningSubjects.length > 0
-                          ? 'Take your first quiz or start a study session to begin tracking progress!'
-                          : 'Complete onboarding or start studying to see your subjects here'}
+                          ? 'Take your first quiz or chat with the AI tutor to begin building your personalized learning path.'
+                          : 'Choose an activity below to start tracking your progress and earning achievements!'}
                       </p>
-                      <div className="flex gap-2 justify-center">
-                        <Button onClick={() => setActiveTab('quiz')}>
-                          <Brain className="h-4 w-4 mr-2" />
-                          Take a Quiz
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <Button onClick={() => setActiveTab('tutor')} size="lg" className="gap-2">
+                          <Bot className="h-4 w-4" />
+                          Chat with AI Tutor
                         </Button>
-                        <Button variant="outline" onClick={() => setActiveTab('study-timer')}>
-                          <Clock className="h-4 w-4 mr-2" />
-                          Start Studying
+                        <Button onClick={() => setActiveTab('quiz')} variant="outline" size="lg" className="gap-2">
+                          <Brain className="h-4 w-4" />
+                          Take First Quiz
                         </Button>
                       </div>
+                      <p className="text-xs text-muted-foreground mt-4">
+                        💡 Your progress will appear here once you complete your first activity
+                      </p>
                     </div>
                   </div>
                 </Card>

@@ -118,7 +118,7 @@ export const useProgressTracking = () => {
         .from('learning_streaks')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       const streakDays = streakData?.current_streak || 0;
 
