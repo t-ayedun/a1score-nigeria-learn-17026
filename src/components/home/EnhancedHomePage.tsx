@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import HomeSidebar from "../layout/HomeSidebar";
 import HeroSection from "./sections/HeroSection";
+import InstallPrompt from "./InstallPrompt";
 
 import FeaturesSection from "./sections/FeaturesSection";
 import SubjectsSection from "./sections/SubjectsSection";
@@ -40,6 +41,7 @@ const EnhancedHomePage = ({ onLogin, onShowAuth }: EnhancedHomePageProps) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
       <HomeSidebar onNavigate={handleNavigate} activeSection={activeSection} />
+      <InstallPrompt />
       
       {/* Hero Section */}
       <section ref={(el) => setSectionRef('hero', el)}>
