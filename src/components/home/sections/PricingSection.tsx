@@ -1,11 +1,10 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 interface PricingSectionProps {
-  onShowAuth: (userType: 'student' | 'teacher') => void;
+  onShowAuth: (userType: 'student' | 'teacher' | 'parent' | 'admin') => void;
 }
 
 const PricingSection = ({ onShowAuth }: PricingSectionProps) => {
@@ -13,76 +12,93 @@ const PricingSection = ({ onShowAuth }: PricingSectionProps) => {
     {
       name: "Free Trial",
       price: "₦0",
-      period: "/month",
-      description: "Perfect to get started",
-      features: ["5 questions per day", "Basic homework help", "Secondary school subjects", "Email support"],
-      popular: false,
-      color: "border-gray-200"
+      period: "7 days",
+      description: "Try all features free",
+      features: [
+        "Full platform access",
+        "AI tutor for all subjects",
+        "Practice tests",
+        "Progress tracking",
+        "Limited to 50 questions"
+      ]
     },
     {
-      name: "Family Plan",
+      name: "Monthly",
       price: "₦2,500",
-      period: "/month",
-      description: "Best value for families",
-      features: ["Unlimited questions", "All education levels covered", "Progress reports", "Multiple children supported", "Priority support"],
+      period: "per month",
+      description: "Perfect for trying it out",
       popular: true,
-      color: "border-green-500"
+      features: [
+        "Unlimited AI tutoring",
+        "All subjects covered",
+        "Unlimited practice tests",
+        "Progress tracking",
+        "Study communities",
+        "Homework help",
+        "24/7 access"
+      ]
     },
     {
-      name: "Teacher Plus",
-      price: "₦5,000",
-      period: "/month",
-      description: "Earn while you teach",
-      features: ["All family features", "Earn from validating answers", "Create paid content", "Analytics dashboard", "Institution partnerships"],
-      popular: false,
-      color: "border-blue-500"
+      name: "Annual",
+      price: "₦25,000",
+      period: "per year",
+      description: "Save ₦5,000 (2 months free)",
+      features: [
+        "Everything in Monthly",
+        "Priority support",
+        "Offline study materials",
+        "Early access to features",
+        "Certificate on completion"
+      ]
     }
   ];
 
   return (
-    <section className="py-8 px-4 md:py-12 md:px-6 lg:py-20 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="container mx-auto">
-        <div className="text-center mb-8 md:mb-12 lg:mb-16">
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
-            Affordable Plans for Every Student
-          </h3>
-          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            From secondary school to university graduation. Start free and upgrade when you're ready.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-6 max-w-6xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-3 sm:mb-4">
+          Simple, Transparent Pricing
+        </h2>
+        <p className="text-sm sm:text-base lg:text-lg text-center text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed">
+          Choose the plan that works best for you
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
-            <Card key={index} className={`md:hover:shadow-lg md:hover:scale-105 transition-all duration-300 border-2 ${plan.color} ${plan.popular ? 'relative' : ''} flex flex-col`}>
+            <Card 
+              key={index} 
+              className={`p-4 sm:p-6 relative transition-shadow duration-300 md:hover:shadow-xl ${
+                plan.popular ? 'ring-2 ring-primary shadow-lg' : ''
+              }`}
+            >
               {plan.popular && (
-                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-green-600 text-white px-2 py-0.5 md:px-3 md:py-1 text-xs">Most Popular</Badge>
-                </div>
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-purple-600 text-white text-xs sm:text-sm">
+                  Most Popular
+                </Badge>
               )}
-              <CardHeader className="text-center p-3 md:p-4 lg:p-6">
-                <CardTitle className="text-base md:text-lg lg:text-xl mb-2">{plan.name}</CardTitle>
-                <div className="mb-2 md:mb-3">
-                  <span className="text-2xl md:text-3xl font-bold text-gray-900">{plan.price}</span>
-                  <span className="text-xs md:text-sm text-gray-600">{plan.period}</span>
+              <div className="text-center mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">{plan.name}</h3>
+                <div className="flex items-baseline justify-center gap-1 mb-2">
+                  <span className="text-3xl sm:text-4xl font-bold">{plan.price}</span>
+                  <span className="text-sm sm:text-base text-muted-foreground">/{plan.period}</span>
                 </div>
-                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">{plan.description}</p>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col p-3 md:p-4 lg:p-6">
-                <ul className="space-y-1.5 md:space-y-2 mb-3 md:mb-4 flex-1">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <Check className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-600 mr-1.5 md:mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs md:text-sm text-gray-700 leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button 
-                  className={`w-full mt-auto min-h-12 text-sm md:text-base ${plan.popular ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-900 hover:bg-gray-800'}`}
-                  onClick={() => onShowAuth('student')}
-                >
-                  Start Free Trial
-                </Button>
-              </CardContent>
+                <p className="text-sm sm:text-base text-muted-foreground">{plan.description}</p>
+              </div>
+              <ul className="space-y-2.5 sm:space-y-3 mb-6">
+                {plan.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="flex items-center gap-2 text-sm sm:text-base">
+                    <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                className="w-full min-h-11 text-sm sm:text-base touch-manipulation"
+                variant={plan.popular ? "default" : "outline"}
+                onClick={() => onShowAuth('student')}
+              >
+                Start Free Trial
+              </Button>
             </Card>
           ))}
         </div>

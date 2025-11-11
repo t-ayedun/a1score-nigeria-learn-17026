@@ -5,17 +5,12 @@ import HeroSection from "./sections/HeroSection";
 import MobileHeroSection from "./sections/MobileHeroSection";
 import InstallPrompt from "./InstallPrompt";
 
+import SocialProofBar from "./sections/SocialProofBar";
+import ProblemSolutionSection from "./sections/ProblemSolutionSection";
 import FeaturesSection from "./sections/FeaturesSection";
-import SubjectsSection from "./sections/SubjectsSection";
-import DashboardsSection from "./sections/DashboardsSection";
+import HowItWorksSection from "./sections/HowItWorksSection";
+import TestimonialsSection from "./sections/TestimonialsSection";
 import PricingSection from "./sections/PricingSection";
-import GamificationSection from "./sections/GamificationSection";
-import EthicsSection from "./sections/EthicsSection";
-import MultilingualSection from "./sections/MultilingualSection";
-import InstitutionalSection from "./sections/InstitutionalSection";
-import ParentalSection from "./sections/ParentalSection";
-import CommunitySection from "./sections/CommunitySection";
-import SupportSection from "./sections/SupportSection";
 import CTASection from "./sections/CTASection";
 
 interface EnhancedHomePageProps {
@@ -50,59 +45,32 @@ const EnhancedHomePage = ({ onLogin, onShowAuth }: EnhancedHomePageProps) => {
         <HeroSection onShowAuth={onShowAuth} />
       </section>
 
+      {/* Social Proof Bar */}
+      <SocialProofBar />
+
+      {/* Problem/Solution Section */}
+      <section ref={(el) => setSectionRef('problem', el)}>
+        <ProblemSolutionSection onShowAuth={onShowAuth} />
+      </section>
+
       {/* Features Section */}
       <section ref={(el) => setSectionRef('features', el)}>
         <FeaturesSection />
       </section>
 
-      {/* Subjects Section */}
-      <section ref={(el) => setSectionRef('subjects', el)}>
-        <SubjectsSection />
+      {/* How It Works Section */}
+      <section ref={(el) => setSectionRef('how-it-works', el)}>
+        <HowItWorksSection onShowAuth={onShowAuth} />
       </section>
 
-      {/* Dashboards Section */}
-      <section ref={(el) => setSectionRef('dashboards', el)}>
-        <DashboardsSection />
+      {/* Testimonials Section */}
+      <section ref={(el) => setSectionRef('testimonials', el)}>
+        <TestimonialsSection />
       </section>
 
       {/* Pricing Section */}
       <section ref={(el) => setSectionRef('pricing', el)}>
         <PricingSection onShowAuth={onShowAuth} />
-      </section>
-
-      {/* Gamification Section */}
-      <section ref={(el) => setSectionRef('gamification', el)}>
-        <GamificationSection />
-      </section>
-
-      {/* AI Ethics Section */}
-      <section ref={(el) => setSectionRef('ethics', el)}>
-        <EthicsSection />
-      </section>
-
-      {/* Multilingual Section */}
-      <section ref={(el) => setSectionRef('multilingual', el)}>
-        <MultilingualSection />
-      </section>
-
-      {/* Institutional Section */}
-      <section ref={(el) => setSectionRef('institutional', el)}>
-        <InstitutionalSection />
-      </section>
-
-      {/* Parental Section */}
-      <section ref={(el) => setSectionRef('parental', el)}>
-        <ParentalSection />
-      </section>
-
-      {/* Community Section */}
-      <section ref={(el) => setSectionRef('community', el)}>
-        <CommunitySection onShowAuth={onShowAuth} />
-      </section>
-
-      {/* Support Section */}
-      <section ref={(el) => setSectionRef('support', el)}>
-        <SupportSection />
       </section>
 
       {/* CTA Section */}
