@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import HomeSidebar from "../layout/HomeSidebar";
 import HeroSection from "./sections/HeroSection";
+import MobileHeroSection from "./sections/MobileHeroSection";
 import InstallPrompt from "./InstallPrompt";
 
 import FeaturesSection from "./sections/FeaturesSection";
@@ -45,6 +46,7 @@ const EnhancedHomePage = ({ onLogin, onShowAuth }: EnhancedHomePageProps) => {
       
       {/* Hero Section */}
       <section ref={(el) => setSectionRef('hero', el)}>
+        <MobileHeroSection onShowAuth={onShowAuth} />
         <HeroSection onShowAuth={onShowAuth} />
       </section>
 

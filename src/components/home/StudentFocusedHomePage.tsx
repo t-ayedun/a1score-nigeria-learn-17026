@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Brain, BookOpen, Trophy, Users, Target, Code, GraduationCap, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import HeroSection from "./sections/HeroSection";
+import MobileHeroSection from "./sections/MobileHeroSection";
 
 import FeaturesSection from "./sections/FeaturesSection";
 import SubjectsSection from "./sections/SubjectsSection";
@@ -82,6 +83,7 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
       {/* Hero Section */}
       <section ref={(el) => setSectionRef('hero', el)}>
+        <MobileHeroSection onShowAuth={onShowAuth} />
         <HeroSection onShowAuth={onShowAuth} />
       </section>
 
