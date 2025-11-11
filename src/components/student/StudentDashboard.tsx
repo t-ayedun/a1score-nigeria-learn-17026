@@ -156,28 +156,27 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
       {/* Header */}
       <header className="bg-white shadow-sm border-b fixed top-0 left-0 right-0 z-30">
-        <div className="px-4 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3 ml-12 sm:ml-16">
+        <div className="px-3 md:px-6 py-2 md:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2 md:space-x-3 ml-0 md:ml-16">
             <img 
               src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
               alt="A1Score Logo" 
-              className="h-6 sm:h-8 w-auto object-contain"
+              className="h-6 md:h-8 w-auto object-contain"
             />
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900">A1Score</h1>
+              <h1 className="text-base md:text-xl font-bold text-gray-900">A1Score</h1>
               <div className="flex items-center gap-2 flex-wrap">
-                <p className="text-xs sm:text-sm text-gray-600">Welcome back, {user.name}!</p>
+                <p className="text-xs md:text-sm text-gray-600">Welcome, {user.name}!</p>
                 {getLevelBadge(user.level)}
               </div>
             </div>
           </div>
-          <Button variant="outline" onClick={onLogout} size="sm" className="text-xs sm:text-sm">
-            <LogOut className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Logout</span>
-            <span className="sm:hidden">Exit</span>
+          <Button variant="outline" onClick={onLogout} size="sm" className="text-xs md:text-sm px-2 md:px-4">
+            <LogOut className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
+            <span className="hidden md:inline">Logout</span>
           </Button>
         </div>
       </header>
@@ -186,7 +185,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
       <StudentSidebar activeTab={activeTab} onTabChange={setActiveTab} userLevel={user.level} />
 
       {/* Main Content */}
-      <div className="pt-16 sm:pt-20 px-4 sm:px-6">
+      <div className="pt-14 md:pt-20 px-4 md:px-6 lg:px-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="dashboard" className="space-y-6 max-w-7xl mx-auto">
             {/* Welcome Banner - Personalized */}
@@ -196,11 +195,11 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
               transition={{ duration: 0.5 }}
             >
               <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <h2 className="text-2xl font-bold">Welcome back, {user.name}! 👋</h2>
-                      <p className="text-blue-100">{getWelcomeMessage()}</p>
+                    <div className="space-y-1 md:space-y-2">
+                      <h2 className="text-lg md:text-2xl font-bold">Welcome back, {user.name}! 👋</h2>
+                      <p className="text-sm md:text-base text-blue-100">{getWelcomeMessage()}</p>
                     </div>
                     <div className="hidden md:flex gap-8 text-center">
                       <div>
@@ -223,69 +222,69 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Start Learning</h3>
-                <p className="text-sm text-gray-600">Choose how you want to study today</p>
+              <div className="mb-3 md:mb-4">
+                <h3 className="text-sm md:text-lg font-semibold text-gray-900">Start Learning</h3>
+                <p className="text-xs md:text-sm text-gray-600">Choose how you want to study today</p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                 <Button 
                   onClick={() => setActiveTab('animated-tutorials')}
                   variant="outline"
-                  className="h-32 flex flex-col items-center justify-center gap-3 hover:shadow-lg hover:border-blue-500 transition-all"
+                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-blue-500 transition-all"
                 >
-                  <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Play className="h-7 w-7 text-blue-600" />
+                  <div className="w-10 h-10 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Play className="h-5 w-5 md:h-7 md:w-7 text-blue-600" />
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold">Tutorials</div>
-                    <div className="text-xs text-gray-500 mt-1">Visual learning</div>
+                    <div className="text-sm md:text-base font-semibold">Tutorials</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Visual learning</div>
                   </div>
                 </Button>
 
                 <Button 
                   onClick={() => setActiveTab('tutor')}
                   variant="outline"
-                  className="h-32 flex flex-col items-center justify-center gap-3 hover:shadow-lg hover:border-green-500 transition-all"
+                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-green-500 transition-all"
                 >
-                  <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
-                    <Bot className="h-7 w-7 text-green-600" />
+                  <div className="w-10 h-10 md:w-14 md:h-14 bg-green-100 rounded-full flex items-center justify-center">
+                    <Bot className="h-5 w-5 md:h-7 md:w-7 text-green-600" />
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold">AI Tutor</div>
-                    <div className="text-xs text-gray-500 mt-1">Get instant help</div>
+                    <div className="text-sm md:text-base font-semibold">AI Tutor</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Get instant help</div>
                   </div>
                 </Button>
 
                 <Button 
                   onClick={() => setActiveTab('quiz')}
                   variant="outline"
-                  className="h-32 flex flex-col items-center justify-center gap-3 hover:shadow-lg hover:border-purple-500 transition-all"
+                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-purple-500 transition-all"
                 >
-                  <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Brain className="h-7 w-7 text-purple-600" />
+                  <div className="w-10 h-10 md:w-14 md:h-14 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Brain className="h-5 w-5 md:h-7 md:w-7 text-purple-600" />
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold">Practice Quiz</div>
-                    <div className="text-xs text-gray-500 mt-1">Test your knowledge</div>
+                    <div className="text-sm md:text-base font-semibold">Practice Quiz</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Test your knowledge</div>
                   </div>
                 </Button>
 
                 <Button 
                   onClick={() => setActiveTab('subjects')}
                   variant="outline"
-                  className="h-32 flex flex-col items-center justify-center gap-3 hover:shadow-lg hover:border-orange-500 transition-all"
+                  className="h-24 md:h-32 flex flex-col items-center justify-center gap-2 md:gap-3 hover:shadow-lg hover:border-orange-500 transition-all"
                 >
-                  <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-7 w-7 text-orange-600" />
+                  <div className="w-10 h-10 md:w-14 md:h-14 bg-orange-100 rounded-full flex items-center justify-center">
+                    <BookOpen className="h-5 w-5 md:h-7 md:w-7 text-orange-600" />
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold">Browse Subjects</div>
-                    <div className="text-xs text-gray-500 mt-1">Explore topics</div>
+                    <div className="text-sm md:text-base font-semibold">Browse Subjects</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">Explore topics</div>
                   </div>
                 </Button>
               </div>
-              <p className="text-sm text-gray-500 mt-4 text-center">
-                💡 Use the menu (top-left) to access Study Timer, Progress Tracker, and more tools
+              <p className="text-xs md:text-sm text-gray-500 mt-3 md:mt-4 text-center">
+                💡 Use the menu to access more tools
               </p>
             </motion.div>
 
@@ -295,9 +294,9 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Your Subjects</h3>
-                <p className="text-sm text-gray-600">
+              <div className="mb-3 md:mb-4">
+                <h3 className="text-sm md:text-lg font-semibold text-gray-900">Your Subjects</h3>
+                <p className="text-xs md:text-sm text-gray-600">
                   {userSubjects.length === 0 
                     ? "Start studying to track your progress" 
                     : "Based on your actual study activity"}
@@ -339,7 +338,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                   </div>
                 </Card>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {userSubjects.slice(0, 4).map((subject, index) => {
                     const Icon = getSubjectIcon(subject.subject);
                     const color = getSubjectColor(index);
@@ -355,13 +354,13 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
                       >
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between mb-2">
-                            <CardTitle className="text-base flex items-center gap-2">
-                              <div className={`p-1.5 ${color} rounded`}>
-                                <Icon className="h-3.5 w-3.5 text-white" />
+                            <CardTitle className="text-sm md:text-base flex items-center gap-2">
+                              <div className={`p-1 md:p-1.5 ${color} rounded`}>
+                                <Icon className="h-3 w-3 md:h-3.5 md:w-3.5 text-white" />
                               </div>
-                              {subject.subject}
+                              <span className="truncate">{subject.subject}</span>
                             </CardTitle>
-                            <Badge variant={subject.hasActivity ? "secondary" : "outline"} className="text-xs">
+                            <Badge variant={subject.hasActivity ? "secondary" : "outline"} className="text-[10px] md:text-xs">
                               {progressPercent}%
                             </Badge>
                           </div>

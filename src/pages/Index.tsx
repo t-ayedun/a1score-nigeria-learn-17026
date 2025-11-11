@@ -73,30 +73,27 @@ const Index = () => {
       )}
 
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-30">
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+      <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-50">
+        <div className="container mx-auto px-3 md:px-6 py-2 md:py-4">
           <div className="flex items-center justify-between gap-2">
             {/* Logo Section */}
             <div className="flex items-center flex-shrink-0">
               <img 
                 src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
                 alt="A1Score Logo" 
-                className="h-12 sm:h-14 md:h-16 w-auto object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                className="h-8 md:h-12 lg:h-16 w-auto object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => navigate('/')}
               />
             </div>
             
-            {/* Language Switcher and Login Buttons */}
-            <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-              <div className="hidden md:block">
-                <LanguageSwitcher />
-              </div>
+            {/* Desktop Navigation & Buttons */}
+            <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+              <LanguageSwitcher />
               
               {isPitchMode && (
                 <Button 
                   variant="outline"
                   onClick={() => setIsPitchMode(false)}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2"
                   size="sm"
                 >
                   Exit Pitch
@@ -107,25 +104,48 @@ const Index = () => {
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/dashboard')}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 hover:scale-105 transition-transform duration-200 min-w-0"
                   size="sm"
+                  className="hover:scale-105 transition-transform duration-200"
                 >
-                  <span className="truncate">Dashboard</span>
+                  Dashboard
                 </Button>
               ) : (
                 <Button 
                   variant="outline" 
                   onClick={() => handleShowAuth()}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 hover:scale-105 transition-transform duration-200 min-w-0"
                   size="sm"
+                  className="hover:scale-105 transition-transform duration-200"
                 >
-                  <span className="truncate">Get Started</span>
+                  Get Started
+                </Button>
+              )}
+            </div>
+
+            {/* Mobile Button */}
+            <div className="md:hidden">
+              {user ? (
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/dashboard')}
+                  size="sm"
+                  className="text-xs px-3 py-1.5"
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  onClick={() => handleShowAuth()}
+                  size="sm"
+                  className="text-xs px-3 py-1.5"
+                >
+                  Start
                 </Button>
               )}
             </div>
           </div>
           
-          {/* Mobile Language Switcher */}
+          {/* Mobile Language Switcher - Below Header */}
           <div className="md:hidden mt-3 flex justify-center">
             <LanguageSwitcher />
           </div>
