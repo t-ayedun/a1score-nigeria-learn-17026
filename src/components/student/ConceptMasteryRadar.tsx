@@ -26,16 +26,16 @@ export function ConceptMasteryRadar({ data }: ConceptMasteryRadarProps) {
       </CardHeader>
       <CardContent>
         {chartData.length === 0 ? (
-          <div className="h-80 flex items-center justify-center text-muted-foreground">
+          <div className="h-48 md:h-80 flex items-center justify-center text-muted-foreground text-sm md:text-base">
             Start studying to see your mastery levels
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={350}>
+          <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 250 : 350} className="h-48 md:h-auto">
             <RadarChart data={chartData}>
               <PolarGrid stroke="hsl(var(--border))" />
               <PolarAngleAxis 
                 dataKey="subject" 
-                tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+                tick={{ fill: 'hsl(var(--foreground))', fontSize: window.innerWidth < 768 ? 10 : 12 }}
               />
               <PolarRadiusAxis 
                 angle={90} 

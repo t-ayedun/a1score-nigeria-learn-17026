@@ -25,19 +25,19 @@ export function StudyTimeTrendsChart({ data }: StudyTimeTrendsChartProps) {
       </CardHeader>
       <CardContent>
         {chartData.length === 0 ? (
-          <div className="h-64 flex items-center justify-center text-muted-foreground">
+          <div className="h-48 md:h-64 flex items-center justify-center text-muted-foreground text-sm md:text-base">
             No study sessions yet
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 200 : 300} className="h-48 md:h-auto">
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="date" 
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: window.innerWidth < 768 ? 8 : 10 }}
                 angle={-45}
                 textAnchor="end"
-                height={80}
+                height={window.innerWidth < 768 ? 60 : 80}
               />
               <YAxis 
                 tick={{ fill: 'hsl(var(--muted-foreground))' }}
