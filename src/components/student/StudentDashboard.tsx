@@ -32,7 +32,7 @@ import ReferenceManager from "./ReferenceManager";
 import ThesisWritingAssistant from "./ThesisWritingAssistant";
 import DataAnalysisHub from "./DataAnalysisHub";
 import HomeworkScanner from "./HomeworkScanner";
-import EthicsDashboard from "@/components/ethics/EthicsDashboard";
+import StudentProfile from "./StudentProfile";
 import { studentProfiles } from "@/data/sampleData";
 import { type AcademicLevel, hasFeatureAccess, getLevelFromString, LEVEL_DISPLAY_NAMES } from "@/types/academicLevel";
 
@@ -640,8 +640,15 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <HomeworkScanner onSolutionGenerated={(solution) => console.log('Solution:', solution)} />
           </TabsContent>
 
-          <TabsContent value="ethics" className="space-y-6">
-            <EthicsDashboard />
+          <TabsContent value="profile" className="space-y-6">
+            <Button 
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
+            <StudentProfile />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">

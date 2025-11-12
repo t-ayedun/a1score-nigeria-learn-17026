@@ -275,7 +275,12 @@ const AuthPage = (): JSX.Element => {
             />
           </div>
           <CardTitle className="text-xl md:text-2xl font-bold leading-relaxed">Welcome to A1Score</CardTitle>
-          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">Join the student community platform</p>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            {locationState?.userType === 'teacher' && "Empower your classroom with AI-driven insights"}
+            {locationState?.userType === 'parent' && "Track and support your child's learning journey"}
+            {locationState?.userType === 'admin' && "Manage your institution's learning platform"}
+            {(!locationState?.userType || locationState?.userType === 'student') && "Join thousands of Nigerian students achieving A1 scores"}
+          </p>
         </CardHeader>
         <CardContent className="p-4 md:p-6">
           <Tabs defaultValue="signin" className="w-full">

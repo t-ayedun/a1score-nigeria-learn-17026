@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, TrendingUp, Brain, BookOpen, MessageCircle, Trophy, Globe, Users, FileText, Search, BarChart3, PenTool, Timer, Target, Calculator, Camera, Shield, Play } from "lucide-react";
+import { Menu, X, TrendingUp, Brain, BookOpen, MessageCircle, Trophy, Globe, Users, FileText, Search, BarChart3, PenTool, Timer, Target, Calculator, Camera, User, Play } from "lucide-react";
 import { type AcademicLevel, hasFeatureAccess, getLevelFromString } from "@/types/academicLevel";
 
 interface StudentSidebarProps {
@@ -33,7 +33,7 @@ const StudentSidebar = ({ activeTab, onTabChange, userLevel }: StudentSidebarPro
     { id: 'formula-reference', label: 'Formulas', icon: Calculator, feature: 'formulaReference' as const },
     { id: 'community', label: 'A1Connect', icon: Users, feature: 'studentCommunity' as const },
     { id: 'gamification', label: 'Achievements', icon: Trophy, feature: 'adaptiveLearning' as const },
-    { id: 'ethics', label: 'Ethics Dashboard', icon: Shield, feature: 'dashboard' as const },
+    { id: 'profile', label: 'My Profile', icon: User, feature: 'dashboard' as const },
     { id: 'literature-review', label: 'Literature Review', icon: Search, feature: 'literatureReview' as const },
     { id: 'reference-manager', label: 'References', icon: PenTool, feature: 'referenceManager' as const },
     { id: 'thesis-assistant', label: 'Thesis Assistant', icon: Globe, feature: 'thesisWriting' as const },
