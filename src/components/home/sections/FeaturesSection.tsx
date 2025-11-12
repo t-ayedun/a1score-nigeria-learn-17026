@@ -70,35 +70,35 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section className="py-16 lg:py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             Everything You Need for Academic Success
           </h2>
-          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             From homework help to exam preparation, A1Score supports students, parents, and teachers every step of the way.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card 
-                key={index} 
-                className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-border bg-card"
+              <Card
+                key={index}
+                className="group hover:shadow-lg transition-all duration-300 cursor-pointer border border-border bg-card"
               >
-                <CardHeader className="space-y-4">
-                  <div className={`w-14 h-14 rounded-full bg-gradient-to-r ${feature.gradient} flex items-center justify-center`}>
-                    <Icon className="h-7 w-7 text-white" />
+                <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                  <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r ${feature.gradient} flex items-center justify-center`}>
+                    <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                   </div>
-                  <CardTitle className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <CardTitle className="text-lg sm:text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
                 </CardContent>
