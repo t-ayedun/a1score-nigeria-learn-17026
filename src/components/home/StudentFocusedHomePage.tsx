@@ -2,9 +2,9 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, BookOpen, Trophy, Users, Target, Code, GraduationCap, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
+import { BookOpen, Users, GraduationCap, ArrowRight } from "lucide-react";
 import HeroSection from "./sections/HeroSection";
-
+import LearningStageCarousel from "./sections/LearningStageCarousel";
 import FeaturesSection from "./sections/FeaturesSection";
 import SubjectsSection from "./sections/SubjectsSection";
 import PricingSection from "./sections/PricingSection";
@@ -28,33 +28,6 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
   const setSectionRef = (id: string, element: HTMLElement | null) => {
     sectionsRef.current[id] = element;
   };
-
-  const learnerTypes = [
-    {
-      icon: BookOpen,
-      title: "SS3 Students",
-      description: "Ace JAMB, WAEC, and NECO with AI-powered tutoring tailored to the Nigerian curriculum",
-      features: ["Past questions practice", "Exam strategies", "Subject mastery"]
-    },
-    {
-      icon: GraduationCap,
-      title: "Undergraduates (100-600 Level)",
-      description: "Excel in your university courses with personalized study support and exam prep",
-      features: ["Course materials", "Assignment help", "Exam preparation"]
-    },
-    {
-      icon: Brain,
-      title: "Postgraduate Students",
-      description: "Research support, thesis writing, and advanced learning for Masters and PhD students",
-      features: ["Research tools", "Literature review", "Thesis assistance"]
-    },
-    {
-      icon: Code,
-      title: "Coding & Tech Skills",
-      description: "Master programming and tech skills with hands-on practice and project-based learning",
-      features: ["Code debugging", "Project guidance", "Interview prep"]
-    }
-  ];
 
 
   const otherAudiences = [
@@ -85,37 +58,8 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
         <HeroSection onShowAuth={onShowAuth} />
       </section>
 
-      {/* Learner Types Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">Built for Every Learning Stage</h2>
-          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Whether you're preparing for JAMB, pursuing a degree, or learning to code,
-            A1Score adapts to your unique learning needs
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {learnerTypes.map((type, index) => (
-            <Card key={index} className="border-2 hover:shadow-xl transition-all">
-              <CardHeader className="p-4 sm:p-6">
-                <type.icon className="w-10 h-10 sm:w-12 sm:h-12 text-primary mb-3 sm:mb-4" />
-                <CardTitle className="text-lg sm:text-xl">{type.title}</CardTitle>
-                <CardDescription className="text-sm sm:text-base">{type.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
-                <ul className="space-y-2">
-                  {type.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      {/* Learning Stage Carousel */}
+      <LearningStageCarousel />
 
 
       {/* Features Section */}

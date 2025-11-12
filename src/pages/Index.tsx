@@ -107,7 +107,7 @@ const Index = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate('/dashboard')}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
+                  className="hidden sm:flex text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
                   size="sm"
                 >
                   <span className="truncate">Dashboard</span>
@@ -116,7 +116,7 @@ const Index = () => {
                 <Button
                   variant="outline"
                   onClick={() => handleShowAuth()}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
+                  className="hidden sm:flex text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
                   size="sm"
                 >
                   <span className="truncate">Get Started</span>
