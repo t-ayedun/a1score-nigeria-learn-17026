@@ -74,49 +74,49 @@ const Index = () => {
 
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-30">
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2">
             {/* Logo Section */}
             <div className="flex items-center flex-shrink-0">
-              <img 
-                src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
-                alt="A1Score Logo" 
+              <img
+                src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png"
+                alt="A1Score Logo"
                 className="h-12 sm:h-14 md:h-16 w-auto object-contain flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => navigate('/')}
               />
             </div>
-            
+
             {/* Language Switcher and Login Buttons */}
             <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
               <div className="hidden md:block">
                 <LanguageSwitcher />
               </div>
-              
+
               {isPitchMode && (
-                <Button 
+                <Button
                   variant="outline"
                   onClick={() => setIsPitchMode(false)}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2"
+                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 touch-manipulation"
                   size="sm"
                 >
                   Exit Pitch
                 </Button>
               )}
-              
+
               {user ? (
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => navigate('/dashboard')}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 hover:scale-105 transition-transform duration-200 min-w-0"
+                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
                   size="sm"
                 >
                   <span className="truncate">Dashboard</span>
                 </Button>
               ) : (
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => handleShowAuth()}
-                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 hover:scale-105 transition-transform duration-200 min-w-0"
+                  className="text-xs sm:text-sm px-2 py-1.5 sm:px-3 sm:py-2 min-h-11 hover:scale-105 transition-transform duration-200 touch-manipulation"
                   size="sm"
                 >
                   <span className="truncate">Get Started</span>
@@ -124,7 +124,7 @@ const Index = () => {
               )}
             </div>
           </div>
-          
+
           {/* Mobile Language Switcher */}
           <div className="md:hidden mt-3 flex justify-center">
             <LanguageSwitcher />
@@ -136,7 +136,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 sm:py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">

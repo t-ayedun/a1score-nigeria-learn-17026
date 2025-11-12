@@ -4,18 +4,18 @@ import { Shield, Lock, UserCheck, Brain, Users, Award } from "lucide-react";
 
 const EthicsSection = () => {
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
             Safe and Responsible Learning
           </h3>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             We help students learn properly, not cheat. Parents can trust that their children are building real knowledge.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {[
             {
               icon: Shield,
@@ -56,13 +56,13 @@ const EthicsSection = () => {
           ].map((principle, index) => {
             const Icon = principle.icon;
             return (
-              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300">
-                <CardHeader>
-                  <Icon className={`h-12 w-12 ${principle.color} mb-4`} />
-                  <CardTitle>{principle.title}</CardTitle>
+              <Card key={index} className="hover:shadow-lg transition-all duration-300">
+                <CardHeader className="p-4 sm:p-6">
+                  <Icon className={`h-10 w-10 sm:h-12 sm:w-12 ${principle.color} mb-3 sm:mb-4`} />
+                  <CardTitle className="text-lg sm:text-xl">{principle.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{principle.description}</p>
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                  <p className="text-sm sm:text-base text-gray-600">{principle.description}</p>
                 </CardContent>
               </Card>
             );

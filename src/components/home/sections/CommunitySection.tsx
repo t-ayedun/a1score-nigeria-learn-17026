@@ -10,18 +10,18 @@ interface CommunitySectionProps {
 
 const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
             Join the A1Score Community
           </h3>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Connect with other students, share knowledge, and learn together in a supportive environment.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
           {[
             { icon: Users, title: "Study Groups", description: "Join groups with classmates", count: "150+ Active Groups" },
             { icon: MessageCircle, title: "Ask Questions", description: "Get help from other students", count: "3K+ Questions Daily" },
@@ -30,29 +30,29 @@ const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
           ].map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300 text-center">
-                <CardHeader>
-                  <Icon className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+              <Card key={index} className="hover:shadow-lg transition-all duration-300 text-center">
+                <CardHeader className="p-4 sm:p-6">
+                  <Icon className="h-10 w-10 sm:h-12 sm:w-12 text-green-600 mx-auto mb-3 sm:mb-4" />
+                  <CardTitle className="text-base sm:text-lg">{feature.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm mb-2">{feature.description}</p>
-                  <Badge className="bg-green-100 text-green-800">{feature.count}</Badge>
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                  <p className="text-gray-600 text-xs sm:text-sm mb-2">{feature.description}</p>
+                  <Badge className="bg-green-100 text-green-800 text-xs">{feature.count}</Badge>
                 </CardContent>
               </Card>
             );
           })}
         </div>
 
-        <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg p-8 text-white text-center">
-          <Users className="h-16 w-16 mx-auto mb-4 opacity-90" />
-          <h4 className="text-2xl font-bold mb-4">Learn Better Together</h4>
-          <p className="text-lg opacity-90 mb-6 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg p-6 sm:p-8 text-white text-center">
+          <Users className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 mx-auto mb-3 sm:mb-4 opacity-90" />
+          <h4 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Learn Better Together</h4>
+          <p className="text-sm sm:text-base lg:text-lg opacity-90 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
             Join thousands of students who are helping each other succeed in school and prepare for university.
           </p>
-          <Button 
-            size="lg" 
-            className="bg-white text-green-600 hover:bg-gray-100"
+          <Button
+            size="lg"
+            className="w-full sm:w-auto bg-white text-green-600 hover:bg-gray-100 min-h-11 text-sm sm:text-base touch-manipulation"
             onClick={() => onShowAuth('student')}
           >
             Join Our Community

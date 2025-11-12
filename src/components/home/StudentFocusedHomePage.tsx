@@ -86,27 +86,27 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
       </section>
 
       {/* Learner Types Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">Built for Every Learning Stage</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Whether you're preparing for JAMB, pursuing a degree, or learning to code, 
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">Built for Every Learning Stage</h2>
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+            Whether you're preparing for JAMB, pursuing a degree, or learning to code,
             A1Score adapts to your unique learning needs
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {learnerTypes.map((type, index) => (
-            <Card key={index} className="border-2 hover:shadow-xl transition-all hover:scale-105">
-              <CardHeader>
-                <type.icon className="w-12 h-12 text-primary mb-4" />
-                <CardTitle className="text-xl">{type.title}</CardTitle>
-                <CardDescription className="text-base">{type.description}</CardDescription>
+            <Card key={index} className="border-2 hover:shadow-xl transition-all">
+              <CardHeader className="p-4 sm:p-6">
+                <type.icon className="w-10 h-10 sm:w-12 sm:h-12 text-primary mb-3 sm:mb-4" />
+                <CardTitle className="text-lg sm:text-xl">{type.title}</CardTitle>
+                <CardDescription className="text-sm sm:text-base">{type.description}</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
                 <ul className="space-y-2">
                   {type.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -154,24 +154,24 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
       </section>
 
       {/* Other Audiences */}
-      <section className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-4">Are You a Teacher, Parent, or Institution?</h2>
-          <p className="text-xl text-center mb-12 opacity-90">
+      <section className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-3 sm:mb-4">Are You a Teacher, Parent, or Institution?</h2>
+          <p className="text-base sm:text-lg lg:text-xl text-center mb-8 sm:mb-10 lg:mb-12 opacity-90 px-4">
             We have specialized solutions for you too
           </p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {otherAudiences.map((audience, index) => (
               <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all flex flex-col h-full">
-                <CardHeader className="flex-grow">
-                  <audience.icon className="w-10 h-10 text-white mb-4" />
-                  <CardTitle className="text-white">{audience.title}</CardTitle>
-                  <CardDescription className="text-white/80 text-base">{audience.description}</CardDescription>
+                <CardHeader className="flex-grow p-4 sm:p-6">
+                  <audience.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-3 sm:mb-4" />
+                  <CardTitle className="text-white text-lg sm:text-xl">{audience.title}</CardTitle>
+                  <CardDescription className="text-white/80 text-sm sm:text-base">{audience.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <Button 
-                    variant="secondary" 
-                    className="w-full"
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                  <Button
+                    variant="secondary"
+                    className="w-full min-h-11 text-sm sm:text-base touch-manipulation"
                     onClick={() => navigate(audience.link)}
                   >
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
