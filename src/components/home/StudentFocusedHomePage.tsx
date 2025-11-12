@@ -5,9 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BookOpen, Users, GraduationCap, ArrowRight } from "lucide-react";
 import HeroSection from "./sections/HeroSection";
 import LearningStageCarousel from "./sections/LearningStageCarousel";
-import FeaturesSection from "./sections/FeaturesSection";
-import SubjectsSection from "./sections/SubjectsSection";
-import PricingSection from "./sections/PricingSection";
+import FeaturesCarousel from "./sections/FeaturesCarousel";
+import PricingCarousel from "./sections/PricingCarousel";
 import GamificationSection from "./sections/GamificationSection";
 import EthicsSection from "./sections/EthicsSection";
 import MultilingualSection from "./sections/MultilingualSection";
@@ -62,15 +61,8 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
       <LearningStageCarousel />
 
 
-      {/* Features Section */}
-      <section ref={(el) => setSectionRef('features', el)}>
-        <FeaturesSection />
-      </section>
-
-      {/* Subjects Section */}
-      <section ref={(el) => setSectionRef('subjects', el)}>
-        <SubjectsSection />
-      </section>
+      {/* Features Carousel */}
+      <FeaturesCarousel />
 
       {/* Gamification Section */}
       <section ref={(el) => setSectionRef('gamification', el)}>
@@ -92,10 +84,8 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
         <CommunitySection onShowAuth={onShowAuth} />
       </section>
 
-      {/* Pricing Section */}
-      <section ref={(el) => setSectionRef('pricing', el)}>
-        <PricingSection onShowAuth={onShowAuth} />
-      </section>
+      {/* Pricing Carousel */}
+      <PricingCarousel onShowAuth={onShowAuth} />
 
       {/* Other Audiences */}
       <section className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-12 sm:py-16 lg:py-20">
