@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,16 +7,28 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { EthicsProvider } from '@/contexts/EthicsContext';
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { BackToTop } from "@/components/layout/BackToTop";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import AuthPage from "./components/auth/AuthPage";
-import UserTypeSelector from "./components/auth/UserTypeSelector";
-import ForTeachers from "./pages/ForTeachers";
-import ForParents from "./pages/ForParents";
-import ForInstitutions from "./pages/ForInstitutions";
-import JoinWaitlist from "./pages/JoinWaitlist";
-import StayUpdated from "./pages/StayUpdated";
 import { useAuth } from "./hooks/useAuth";
+
+// Lazy load page components for better code splitting
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const AuthPage = lazy(() => import("./components/auth/AuthPage"));
+const UserTypeSelector = lazy(() => import("./components/auth/UserTypeSelector"));
+const ForTeachers = lazy(() => import("./pages/ForTeachers"));
+const ForParents = lazy(() => import("./pages/ForParents"));
+const ForInstitutions = lazy(() => import("./pages/ForInstitutions"));
+const JoinWaitlist = lazy(() => import("./pages/JoinWaitlist"));
+const StayUpdated = lazy(() => import("./pages/StayUpdated"));
+
+// Loading component for lazy-loaded routes
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -56,47 +69,49 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <BackToTop />
-          <Routes>
-            <Route path="/select-role" element={<UserTypeSelector />} />
-            <Route path="/auth" element={
-              <PublicRoute>
-                <AuthPage />
-              </PublicRoute>
-            } />
-            <Route path="/" element={<Index />} />
-            <Route path="/for-teachers" element={<ForTeachers />} />
-            <Route path="/for-parents" element={<ForParents />} />
-            <Route path="/for-institutions" element={<ForInstitutions />} />
-            <Route path="/join-waitlist" element={<JoinWaitlist />} />
-            <Route path="/stay-updated" element={<StayUpdated />} />
-            <Route path="/dashboard/*" element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            } />
-            <Route path="/student/formula-reference" element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            } />
-            <Route path="/student/progress-tracker" element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            } />
-            <Route path="/student/study-goals" element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            } />
-            <Route path="/student/study-timer" element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            } />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/select-role" element={<UserTypeSelector />} />
+              <Route path="/auth" element={
+                <PublicRoute>
+                  <AuthPage />
+                </PublicRoute>
+              } />
+              <Route path="/" element={<Index />} />
+              <Route path="/for-teachers" element={<ForTeachers />} />
+              <Route path="/for-parents" element={<ForParents />} />
+              <Route path="/for-institutions" element={<ForInstitutions />} />
+              <Route path="/join-waitlist" element={<JoinWaitlist />} />
+              <Route path="/stay-updated" element={<StayUpdated />} />
+              <Route path="/dashboard/*" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/formula-reference" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/progress-tracker" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/study-goals" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/study-timer" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </EthicsProvider>
