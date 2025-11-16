@@ -11,7 +11,7 @@ interface CommunitySectionProps {
 const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
             Join the A1Score Community
@@ -31,12 +31,12 @@ const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
             const Icon = feature.icon;
             return (
               <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-all duration-300 text-center">
-                <CardHeader className="p-4 sm:p-6">
+                <CardHeader className="p-4 md:p-6">
                   <Icon className="h-10 w-10 sm:h-12 sm:w-12 text-green-600 mx-auto mb-3 sm:mb-4" />
                   <CardTitle className="text-base sm:text-lg">{feature.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
-                  <p className="text-gray-600 text-xs sm:text-sm mb-2">{feature.description}</p>
+                <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
+                  <p className="text-gray-600 text-sm md:text-base mb-2">{feature.description}</p>
                   <Badge className="bg-green-100 text-green-800 text-xs">{feature.count}</Badge>
                 </CardContent>
               </Card>

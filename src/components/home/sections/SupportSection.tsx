@@ -13,7 +13,7 @@ const SupportSection = () => {
   return (
     <>
     <section className="py-12 sm:py-16 lg:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
             Help is Always Available
@@ -47,12 +47,12 @@ const SupportSection = () => {
             const Icon = support.icon;
             return (
               <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-all duration-300">
-                <CardHeader className="p-4 sm:p-6">
+                <CardHeader className="p-4 md:p-6">
                   <Icon className={`h-10 w-10 sm:h-12 sm:w-12 ${support.color} mb-3 sm:mb-4`} />
                   <CardTitle className="text-lg sm:text-xl">{support.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
-                  <p className="text-sm sm:text-base text-gray-600">{support.description}</p>
+                <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
+                  <p className="text-sm md:text-base text-gray-600">{support.description}</p>
                 </CardContent>
               </Card>
             );
