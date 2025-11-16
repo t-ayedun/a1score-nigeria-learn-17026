@@ -73,11 +73,11 @@ const LearningStageCarousel = () => {
 
   return (
     <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-      <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">
+      <div className="text-center mb-12 md:mb-16 lg:mb-20">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
           Built for Every Learning Stage
         </h2>
-        <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+        <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
           AI-powered learning that adapts to your unique needs - from secondary school to professional development
         </p>
       </div>
@@ -96,8 +96,8 @@ const LearningStageCarousel = () => {
                   <Card className="border-2 hover:shadow-xl transition-all h-full">
                     <CardHeader className="p-4 md:p-6">
                       <Icon className="w-8 h-8 md:w-10 md:h-10 text-primary mb-3 sm:mb-4" />
-                      <CardTitle className="text-lg sm:text-xl">{stage.title}</CardTitle>
-                      <CardDescription className="text-sm sm:text-base">
+                      <CardTitle className="text-base md:text-lg leading-tight">{stage.title}</CardTitle>
+                      <CardDescription className="text-sm md:text-base leading-relaxed">
                         {stage.description}
                       </CardDescription>
                     </CardHeader>

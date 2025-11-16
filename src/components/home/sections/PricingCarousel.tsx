@@ -85,11 +85,11 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-purple-50 to-pink-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+        <div className="text-center mb-12 md:mb-16 lg:mb-20">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Affordable Plans for Every Student
           </h3>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
+          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
             From secondary school to university graduation. Start free and upgrade when you're ready.
           </p>
         </div>
@@ -112,12 +112,12 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                       </div>
                     )}
                     <CardHeader className="text-center p-4 md:p-6 pt-6 md:pt-8">
-                      <CardTitle className="text-xl sm:text-2xl mb-2">{plan.name}</CardTitle>
+                      <CardTitle className="text-base md:text-lg lg:text-xl mb-2 leading-tight">{plan.name}</CardTitle>
                       <div className="mb-3 sm:mb-4">
                         <span className="text-3xl sm:text-4xl font-bold text-gray-900">{plan.price}</span>
-                        <span className="text-sm sm:text-base text-gray-600">{plan.period}</span>
+                        <span className="text-sm md:text-base text-gray-600">{plan.period}</span>
                       </div>
-                      <p className="text-sm sm:text-base text-gray-600">{plan.description}</p>
+                      <p className="text-sm md:text-base text-gray-600 leading-relaxed">{plan.description}</p>
                     </CardHeader>
                     <CardContent className="flex-1 flex flex-col p-4 pt-0 md:p-6 md:pt-0">
                       <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 flex-1">
@@ -129,7 +129,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                         ))}
                       </ul>
                       <Button
-                        className={`w-full mt-auto min-h-11 text-sm sm:text-base touch-manipulation ${
+                        className={`w-full mt-auto min-h-11 text-sm md:text-base touch-manipulation ${
                           plan.popular ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-900 hover:bg-gray-800'
                         }`}
                         onClick={() => onShowAuth('student')}

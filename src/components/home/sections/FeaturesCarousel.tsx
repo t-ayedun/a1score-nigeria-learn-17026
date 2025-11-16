@@ -94,11 +94,11 @@ const FeaturesCarousel = () => {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+        <div className="text-center mb-12 md:mb-16 lg:mb-20">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
             Everything You Need to Succeed
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
             From homework help to exam preparation, A1Score has you covered.
           </p>
         </div>
@@ -119,12 +119,12 @@ const FeaturesCarousel = () => {
                         <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r ${feature.gradient} flex items-center justify-center mx-auto`}>
                           <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                         </div>
-                        <CardTitle className="text-xl sm:text-2xl font-semibold text-foreground group-hover:text-primary transition-colors text-center">
+                        <CardTitle className="text-base md:text-lg lg:text-xl font-semibold text-foreground group-hover:text-primary transition-colors text-center leading-tight">
                           {feature.title}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
-                        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
+                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-center">
                           {feature.description}
                         </p>
                       </CardContent>

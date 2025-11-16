@@ -14,16 +14,16 @@ const SupportSection = () => {
     <>
     <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+        <div className="text-center mb-12 md:mb-16 lg:mb-20">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Help is Always Available
           </h3>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
+          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
             Whether you need technical help or academic support, we're here for you 24 hours a day.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {[
             {
               icon: MessageCircle,
@@ -49,27 +49,27 @@ const SupportSection = () => {
               <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-colors min-h-[120px]">
                 <CardHeader className="p-4 md:p-6">
                   <Icon className={`h-8 w-8 md:h-10 md:w-10 ${support.color} mb-3 sm:mb-4`} />
-                  <CardTitle className="text-lg sm:text-xl">{support.title}</CardTitle>
+                  <CardTitle className="text-base md:text-lg leading-tight">{support.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
-                  <p className="text-sm md:text-base text-gray-600">{support.description}</p>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{support.description}</p>
                 </CardContent>
               </Card>
             );
           })}
         </div>
 
-        <div className="mt-10 sm:mt-12 lg:mt-16 text-center">
+        <div className="mt-12 md:mt-16 lg:mt-20 text-center">
           <div className="bg-gray-50 rounded-lg p-6 sm:p-8">
             <MessageCircle className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-green-600 mx-auto mb-3 sm:mb-4" />
-            <h4 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Need Help Right Now?</h4>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
+            <h4 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">Need Help Right Now?</h4>
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
               Don't worry if you're stuck or confused. Our friendly support team is ready to help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-h-11 text-sm sm:text-base touch-manipulation"
+                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-h-11 text-sm md:text-base touch-manipulation"
                 onClick={() => setIsChatOpen(true)}
               >
                 Start Live Chat
@@ -77,7 +77,7 @@ const SupportSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto min-h-11 text-sm sm:text-base touch-manipulation"
+                className="w-full sm:w-auto min-h-11 text-sm md:text-base touch-manipulation"
                 onClick={() => setIsHelpCenterOpen(true)}
               >
                 Browse Help Center
