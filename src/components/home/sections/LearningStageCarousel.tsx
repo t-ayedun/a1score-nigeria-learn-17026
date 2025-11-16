@@ -77,7 +77,7 @@ const LearningStageCarousel = () => {
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
           Built for Every Learning Stage
         </h2>
-        <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
+        <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
           AI-powered learning that adapts to your unique needs - from secondary school to professional development
         </p>
       </div>
@@ -97,14 +97,14 @@ const LearningStageCarousel = () => {
                     <CardHeader className="p-4 md:p-6">
                       <Icon className="w-8 h-8 md:w-10 md:h-10 text-primary mb-3 sm:mb-4" />
                       <CardTitle className="text-base md:text-lg leading-tight">{stage.title}</CardTitle>
-                      <CardDescription className="text-sm md:text-base leading-relaxed">
+                      <CardDescription className="text-base leading-relaxed">
                         {stage.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                       <ul className="space-y-2">
                         {stage.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm">
+                          <li key={idx} className="flex items-start gap-2 text-sm">
                             <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                             <span>{feature}</span>
                           </li>

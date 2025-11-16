@@ -18,7 +18,7 @@ const SupportSection = () => {
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Help is Always Available
           </h3>
-          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
             Whether you need technical help or academic support, we're here for you 24 hours a day.
           </p>
         </div>
@@ -52,7 +52,7 @@ const SupportSection = () => {
                   <CardTitle className="text-base md:text-lg leading-tight">{support.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{support.description}</p>
+                  <p className="text-base text-gray-600 leading-relaxed">{support.description}</p>
                 </CardContent>
               </Card>
             );
@@ -63,13 +63,13 @@ const SupportSection = () => {
           <div className="bg-gray-50 rounded-lg p-6 sm:p-8">
             <MessageCircle className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-green-600 mx-auto mb-3 sm:mb-4" />
             <h4 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">Need Help Right Now?</h4>
-            <p className="text-sm md:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
+            <p className="text-base md:text-lg lg:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
               Don't worry if you're stuck or confused. Our friendly support team is ready to help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-h-11 text-sm md:text-base touch-manipulation"
+                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-h-11 text-base touch-manipulation"
                 onClick={() => setIsChatOpen(true)}
               >
                 Start Live Chat
@@ -77,7 +77,7 @@ const SupportSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto min-h-11 text-sm md:text-base touch-manipulation"
+                className="w-full sm:w-auto min-h-11 text-base touch-manipulation"
                 onClick={() => setIsHelpCenterOpen(true)}
               >
                 Browse Help Center

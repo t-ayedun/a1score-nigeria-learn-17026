@@ -95,12 +95,12 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
                 <CardHeader className="flex-grow p-4 sm:p-6">
                   <audience.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-3 sm:mb-4" />
                   <CardTitle className="text-white text-lg sm:text-xl">{audience.title}</CardTitle>
-                  <CardDescription className="text-white/80 text-sm sm:text-base">{audience.description}</CardDescription>
+                  <CardDescription className="text-white/80 text-base">{audience.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
                   <Button
                     variant="secondary"
-                    className="w-full min-h-11 text-sm sm:text-base touch-manipulation"
+                    className="w-full min-h-11 text-base touch-manipulation"
                     onClick={() => navigate(audience.link)}
                   >
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />

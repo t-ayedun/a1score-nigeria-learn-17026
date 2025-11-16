@@ -98,7 +98,7 @@ const FeaturesCarousel = () => {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
             Everything You Need to Succeed
           </h2>
-          <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
             From homework help to exam preparation, A1Score has you covered.
           </p>
         </div>
@@ -124,7 +124,7 @@ const FeaturesCarousel = () => {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
-                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-center">
+                        <p className="text-base text-muted-foreground leading-relaxed text-center">
                           {feature.description}
                         </p>
                       </CardContent>

@@ -10,7 +10,7 @@ const MultilingualSection = () => {
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Speak Your Language, Learn Better
           </h3>
-          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
             A1Score works in all major Nigerian languages so everyone can learn in the way that feels most natural.
           </p>
         </div>
@@ -54,7 +54,7 @@ const MultilingualSection = () => {
                 <CardTitle className="text-base md:text-lg leading-tight">{language.name}</CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
-                <p className="text-gray-600 text-sm md:text-base mb-2 sm:mb-3 leading-relaxed">{language.speakers}</p>
+                <p className="text-gray-600 text-base mb-2 sm:mb-3 leading-relaxed">{language.speakers}</p>
                 <Badge className="bg-gray-100 text-gray-800 text-xs">Available Now</Badge>
               </CardContent>
             </Card>

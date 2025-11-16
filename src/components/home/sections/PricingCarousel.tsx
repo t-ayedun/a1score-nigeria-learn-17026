@@ -89,7 +89,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Affordable Plans for Every Student
           </h3>
-          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
             From secondary school to university graduation. Start free and upgrade when you're ready.
           </p>
         </div>
@@ -115,21 +115,21 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                       <CardTitle className="text-base md:text-lg lg:text-xl mb-2 leading-tight">{plan.name}</CardTitle>
                       <div className="mb-3 sm:mb-4">
                         <span className="text-3xl sm:text-4xl font-bold text-gray-900">{plan.price}</span>
-                        <span className="text-sm md:text-base text-gray-600">{plan.period}</span>
+                        <span className="text-base text-gray-600">{plan.period}</span>
                       </div>
-                      <p className="text-sm md:text-base text-gray-600 leading-relaxed">{plan.description}</p>
+                      <p className="text-base text-gray-600 leading-relaxed">{plan.description}</p>
                     </CardHeader>
                     <CardContent className="flex-1 flex flex-col p-4 pt-0 md:p-6 md:pt-0">
                       <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 flex-1">
                         {plan.features.map((feature, idx) => (
                           <li key={idx} className="flex items-start">
                             <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mr-2 sm:mr-3 flex-shrink-0 mt-0.5" />
-                            <span className="text-sm sm:text-base text-gray-700">{feature}</span>
+                            <span className="text-base text-gray-700">{feature}</span>
                           </li>
                         ))}
                       </ul>
                       <Button
-                        className={`w-full mt-auto min-h-11 text-sm md:text-base touch-manipulation ${
+                        className={`w-full mt-auto min-h-11 text-base touch-manipulation ${
                           plan.popular ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-900 hover:bg-gray-800'
                         }`}
                         onClick={() => onShowAuth('student')}
