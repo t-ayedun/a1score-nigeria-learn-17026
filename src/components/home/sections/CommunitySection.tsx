@@ -10,7 +10,7 @@ interface CommunitySectionProps {
 
 const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-indigo-50 to-white">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
