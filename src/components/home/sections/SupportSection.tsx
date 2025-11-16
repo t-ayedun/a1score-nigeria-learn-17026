@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, HelpCircle, Users, Brain, BookOpen, Building2 } from "lucide-react";
+import { MessageCircle, BookOpen, Building2 } from "lucide-react";
 import LiveChatWidget from "@/components/support/LiveChatWidget";
 import HelpCenterModal from "@/components/support/HelpCenterModal";
 
@@ -23,37 +23,19 @@ const SupportSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {[
             {
               icon: MessageCircle,
-              title: "Chat with Us Anytime",
-              description: "Get instant help from our support team in English or any Nigerian language you prefer.",
+              title: "24/7 AI Chat Support",
+              description: "Get instant help from our AI assistant or support team anytime, in English or any Nigerian language you prefer.",
               color: "text-blue-600"
             },
             {
-              icon: HelpCircle,
-              title: "Easy-to-Follow Guides",
-              description: "Step-by-step instructions and answers to common questions, all written in simple language.",
-              color: "text-green-600"
-            },
-            {
-              icon: Users,
-              title: "Community Support",
-              description: "Ask questions and get answers from other students, parents, and teachers in Nigeria.",
-              color: "text-purple-600"
-            },
-            {
-              icon: Brain,
-              title: "Smart Help Assistant",
-              description: "Our AI can answer simple questions immediately, any time of day or night.",
-              color: "text-orange-600"
-            },
-            {
               icon: BookOpen,
-              title: "Video Tutorials",
-              description: "Watch short videos that show you exactly how to use every feature of the platform.",
-              color: "text-red-600"
+              title: "Help Center & Community",
+              description: "Access video tutorials, step-by-step guides, and get answers from other students, parents, and teachers.",
+              color: "text-green-600"
             },
             {
               icon: Building2,
