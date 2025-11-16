@@ -46,7 +46,7 @@ const SupportSection = () => {
           ].map((support, index) => {
             const Icon = support.icon;
             return (
-              <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-colors min-h-[120px]">
+              <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-colors duration-200 motion-reduce:transition-none min-h-[120px]">
                 <CardHeader className="p-4 md:p-6">
                   <Icon className={`h-8 w-8 md:h-10 md:w-10 ${support.color} mb-3 sm:mb-4`} />
                   <CardTitle className="text-base md:text-lg leading-tight">{support.title}</CardTitle>

@@ -103,7 +103,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                   key={index}
                   className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                 >
-                  <Card className={`hover:shadow-xl transition-all duration-300 border-2 ${plan.color} ${plan.popular ? 'relative scale-105' : ''} flex flex-col h-full`}>
+                  <Card className={`hover:shadow-xl transition-shadow duration-200 motion-reduce:transition-none border-2 ${plan.color} ${plan.popular ? 'relative md:scale-105 motion-reduce:scale-100' : ''} flex flex-col h-full`}>
                     {plan.popular && (
                       <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
                         <Badge className="bg-green-600 text-white px-3 py-1 sm:px-4 text-xs sm:text-sm shadow-lg">
@@ -171,7 +171,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                 aria-label={`Go to ${plans[index].name}`}
               >
                 <div
-                  className={`rounded-full transition-all ${
+                  className={`rounded-full transition-all duration-200 motion-reduce:transition-none ${
                     index === selectedIndex
                       ? "bg-purple-600 w-8 h-3"
                       : "bg-gray-300 hover:bg-gray-400 w-3 h-3"

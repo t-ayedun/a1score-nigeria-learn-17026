@@ -30,7 +30,7 @@ const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
           ].map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-colors min-h-[120px] text-center">
+              <Card key={index} className="border border-gray-200 md:hover:border-indigo-300 transition-colors duration-200 motion-reduce:transition-none min-h-[120px] text-center">
                 <CardHeader className="p-4 md:p-6">
                   <Icon className="h-8 w-8 md:h-10 md:w-10 text-green-600 mx-auto mb-3 sm:mb-4" />
                   <CardTitle className="text-base md:text-lg leading-tight">{feature.title}</CardTitle>

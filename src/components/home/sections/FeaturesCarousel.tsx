@@ -114,12 +114,12 @@ const FeaturesCarousel = () => {
                     key={index}
                     className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                   >
-                    <Card className="group hover:shadow-xl transition-all duration-300 border border-border bg-card h-full">
+                    <Card className="group hover:shadow-xl transition-shadow duration-200 motion-reduce:transition-none border border-border bg-card h-full">
                       <CardHeader className="space-y-3 sm:space-y-4 p-4 md:p-6">
                         <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r ${feature.gradient} flex items-center justify-center mx-auto`}>
                           <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                         </div>
-                        <CardTitle className="text-base md:text-lg lg:text-xl font-semibold text-foreground group-hover:text-primary transition-colors text-center leading-tight">
+                        <CardTitle className="text-base md:text-lg lg:text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200 motion-reduce:transition-none text-center leading-tight">
                           {feature.title}
                         </CardTitle>
                       </CardHeader>
@@ -163,7 +163,7 @@ const FeaturesCarousel = () => {
                 aria-label={`Go to feature ${index + 1}`}
               >
                 <div
-                  className={`rounded-full transition-all ${
+                  className={`rounded-full transition-all duration-200 motion-reduce:transition-none ${
                     index === selectedIndex
                       ? "bg-primary w-8 h-3"
                       : "bg-gray-300 hover:bg-gray-400 w-3 h-3"

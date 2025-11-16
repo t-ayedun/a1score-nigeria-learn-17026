@@ -93,7 +93,7 @@ const LearningStageCarousel = () => {
                   key={index}
                   className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                 >
-                  <Card className="border-2 hover:shadow-xl transition-all h-full">
+                  <Card className="border-2 hover:shadow-xl transition-shadow duration-200 motion-reduce:transition-none h-full">
                     <CardHeader className="p-4 md:p-6">
                       <Icon className="w-8 h-8 md:w-10 md:h-10 text-primary mb-3 sm:mb-4" />
                       <CardTitle className="text-base md:text-lg leading-tight">{stage.title}</CardTitle>
@@ -148,7 +148,7 @@ const LearningStageCarousel = () => {
               aria-label={`Go to slide ${index + 1}`}
             >
               <div
-                className={`rounded-full transition-all ${
+                className={`rounded-full transition-all duration-200 motion-reduce:transition-none ${
                   index === selectedIndex
                     ? "bg-primary w-8 h-3"
                     : "bg-gray-300 hover:bg-gray-400 w-3 h-3"

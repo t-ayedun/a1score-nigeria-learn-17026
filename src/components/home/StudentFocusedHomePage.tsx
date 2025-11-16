@@ -1,16 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Users, GraduationCap, ArrowRight } from "lucide-react";
 import HeroSection from "./sections/HeroSection";
-import LearningStageCarousel from "./sections/LearningStageCarousel";
-import FeaturesCarousel from "./sections/FeaturesCarousel";
-import PricingCarousel from "./sections/PricingCarousel";
 import MultilingualSection from "./sections/MultilingualSection";
 import CommunitySection from "./sections/CommunitySection";
 import SupportSection from "./sections/SupportSection";
 import CTASection from "./sections/CTASection";
+
+// Lazy load carousel components for better initial load performance
+const LearningStageCarousel = lazy(() => import("./sections/LearningStageCarousel"));
+const FeaturesCarousel = lazy(() => import("./sections/FeaturesCarousel"));
+const PricingCarousel = lazy(() => import("./sections/PricingCarousel"));
 
 interface StudentFocusedHomePageProps {
   onLogin: (userType: 'student' | 'teacher' | 'parent' | 'admin', name: string) => void;
@@ -56,11 +58,14 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
       </section>
 
       {/* Learning Stage Carousel */}
-      <LearningStageCarousel />
-
+      <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+        <LearningStageCarousel />
+      </Suspense>
 
       {/* Features Carousel */}
-      <FeaturesCarousel />
+      <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+        <FeaturesCarousel />
+      </Suspense>
 
       {/* Multilingual Section */}
       <section ref={(el) => setSectionRef('multilingual', el)}>
@@ -73,7 +78,9 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
       </section>
 
       {/* Pricing Carousel */}
-      <PricingCarousel onShowAuth={onShowAuth} />
+      <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+        <PricingCarousel onShowAuth={onShowAuth} />
+      </Suspense>
 
       {/* Other Audiences */}
       <section className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-12 sm:py-16 lg:py-20">
@@ -84,7 +91,7 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {otherAudiences.map((audience, index) => (
-              <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all flex flex-col h-full">
+              <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm hover:bg-white/20 transition-colors duration-200 motion-reduce:transition-none flex flex-col h-full">
                 <CardHeader className="flex-grow p-4 sm:p-6">
                   <audience.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-3 sm:mb-4" />
                   <CardTitle className="text-white text-lg sm:text-xl">{audience.title}</CardTitle>
