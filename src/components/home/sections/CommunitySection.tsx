@@ -24,7 +24,7 @@ const CommunitySection = ({ onShowAuth }: CommunitySectionProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
           {[
             { icon: Users, title: "Study Groups", description: "Join groups with classmates", count: "150+ Active Groups" },
-            { icon: MessageCircle, title: "Ask Questions", description: "Get help from other students", count: "3K+ Questions Daily" },
+            { icon: MessageCircle, title: "Share Knowledge", description: "Collaborate and learn from peers", count: "5K+ Active Members" },
             { icon: Trophy, title: "Friendly Competition", description: "Compete in academic challenges", count: "Weekly Contests" },
             { icon: Star, title: "Help Others", description: "Earn points by helping classmates", count: "Top Helper Awards" }
           ].map((feature, index) => {
