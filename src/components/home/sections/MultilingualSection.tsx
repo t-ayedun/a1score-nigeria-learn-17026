@@ -48,9 +48,9 @@ const MultilingualSection = () => {
               color: "bg-purple-500"
             }
           ].map((language, index) => (
-            <Card key={index} className="border border-gray-200 border-l-4 border-l-indigo-500 md:hover:border-indigo-300 transition-all duration-300 cursor-pointer text-center">
+            <Card key={index} className="border border-gray-200 border-l-4 border-l-indigo-500 md:hover:border-indigo-300 transition-colors min-h-[120px] text-center">
               <CardHeader className="p-4 md:p-6">
-                <div className="text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">{language.flag}</div>
+                <div className="text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4">{language.flag}</div>
                 <CardTitle className="text-lg sm:text-xl">{language.name}</CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
