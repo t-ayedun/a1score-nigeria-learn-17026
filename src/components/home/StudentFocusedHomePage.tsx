@@ -7,8 +7,6 @@ import HeroSection from "./sections/HeroSection";
 import LearningStageCarousel from "./sections/LearningStageCarousel";
 import FeaturesCarousel from "./sections/FeaturesCarousel";
 import PricingCarousel from "./sections/PricingCarousel";
-import GamificationSection from "./sections/GamificationSection";
-import EthicsSection from "./sections/EthicsSection";
 import MultilingualSection from "./sections/MultilingualSection";
 import CommunitySection from "./sections/CommunitySection";
 import SupportSection from "./sections/SupportSection";
@@ -63,16 +61,6 @@ const StudentFocusedHomePage = ({ onLogin, onShowAuth }: StudentFocusedHomePageP
 
       {/* Features Carousel */}
       <FeaturesCarousel />
-
-      {/* Gamification Section */}
-      <section ref={(el) => setSectionRef('gamification', el)}>
-        <GamificationSection />
-      </section>
-
-      {/* Ethics Section */}
-      <section ref={(el) => setSectionRef('ethics', el)}>
-        <EthicsSection />
-      </section>
 
       {/* Multilingual Section */}
       <section ref={(el) => setSectionRef('multilingual', el)}>

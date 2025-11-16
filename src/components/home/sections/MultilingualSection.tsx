@@ -60,16 +60,6 @@ const MultilingualSection = () => {
             </Card>
           ))}
         </div>
-
-        <div className="mt-10 sm:mt-12 lg:mt-16 text-center">
-          <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-lg p-6 sm:p-8">
-            <Languages className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-green-600 mx-auto mb-3 sm:mb-4" />
-            <h4 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">We Understand Nigerian Culture</h4>
-            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
-              Our AI knows Nigerian examples, understands our way of explaining things, and respects our cultural values in every language.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );
