@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,11 +41,14 @@ const plans = [
 ];
 
 const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    align: "center",
-    skipSnaps: false,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "center",
+      skipSnaps: false,
+    },
+    [Autoplay({ delay: 5000, stopOnInteraction: false })]
+  );
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -93,11 +97,11 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
         <div className="relative max-w-6xl mx-auto">
           {/* Carousel */}
           <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
+            <div className="flex gap-4 md:gap-6">
               {plans.map((plan, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_85%] lg:flex-[0_0_45%] px-2 sm:px-4"
+                  className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                 >
                   <Card className={`hover:shadow-xl transition-all duration-300 border-2 ${plan.color} ${plan.popular ? 'relative scale-105' : ''} flex flex-col h-full`}>
                     {plan.popular && (
@@ -107,7 +111,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                         </Badge>
                       </div>
                     )}
-                    <CardHeader className="text-center p-4 sm:p-6 pt-6 sm:pt-8">
+                    <CardHeader className="text-center p-4 md:p-6 pt-6 md:pt-8">
                       <CardTitle className="text-xl sm:text-2xl mb-2">{plan.name}</CardTitle>
                       <div className="mb-3 sm:mb-4">
                         <span className="text-3xl sm:text-4xl font-bold text-gray-900">{plan.price}</span>
@@ -115,7 +119,7 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
                       </div>
                       <p className="text-sm sm:text-base text-gray-600">{plan.description}</p>
                     </CardHeader>
-                    <CardContent className="flex-1 flex flex-col p-4 pt-0 sm:p-6 sm:pt-0">
+                    <CardContent className="flex-1 flex flex-col p-4 pt-0 md:p-6 md:pt-0">
                       <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 flex-1">
                         {plan.features.map((feature, idx) => (
                           <li key={idx} className="flex items-start">
@@ -139,39 +143,41 @@ const PricingCarousel = ({ onShowAuth }: PricingCarouselProps) => {
             </div>
           </div>
 
-          {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
+          {/* Navigation Arrows - Larger touch targets */}
           <Button
             variant="outline"
             size="icon"
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10 z-10 disabled:opacity-30"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11 z-10"
             onClick={scrollPrev}
-            disabled={selectedIndex === 0}
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
           <Button
             variant="outline"
             size="icon"
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10 z-10 disabled:opacity-30"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11 z-10"
             onClick={scrollNext}
-            disabled={selectedIndex === plans.length - 1}
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
 
-          {/* Dot Indicators */}
+          {/* Dot Indicators - Larger touch targets */}
           <div className="flex justify-center gap-2 mt-6 sm:mt-8">
             {plans.map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === selectedIndex
-                    ? "bg-purple-600 w-8"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                className={`min-w-11 min-h-11 flex items-center justify-center touch-manipulation`}
                 onClick={() => scrollTo(index)}
                 aria-label={`Go to ${plans[index].name}`}
-              />
+              >
+                <div
+                  className={`rounded-full transition-all ${
+                    index === selectedIndex
+                      ? "bg-purple-600 w-8 h-3"
+                      : "bg-gray-300 hover:bg-gray-400 w-3 h-3"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>

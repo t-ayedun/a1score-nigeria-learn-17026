@@ -85,23 +85,23 @@ const LearningStageCarousel = () => {
       <div className="relative">
         {/* Carousel */}
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
+          <div className="flex gap-4 md:gap-6">
             {learnerStages.map((stage, index) => {
               const Icon = stage.icon;
               return (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_80%] lg:flex-[0_0_60%] px-2 sm:px-4"
+                  className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                 >
                   <Card className="border-2 hover:shadow-xl transition-all h-full">
-                    <CardHeader className="p-4 sm:p-6">
-                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-primary mb-3 sm:mb-4" />
+                    <CardHeader className="p-4 md:p-6">
+                      <Icon className="w-8 h-8 md:w-10 md:h-10 text-primary mb-3 sm:mb-4" />
                       <CardTitle className="text-lg sm:text-xl">{stage.title}</CardTitle>
                       <CardDescription className="text-sm sm:text-base">
                         {stage.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                       <ul className="space-y-2">
                         {stage.features.map((feature, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm">
@@ -118,11 +118,11 @@ const LearningStageCarousel = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
+        {/* Navigation Arrows - Larger touch targets */}
         <Button
           variant="outline"
           size="icon"
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10"
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11"
           onClick={scrollPrev}
         >
           <ChevronLeft className="h-5 w-5" />
@@ -130,25 +130,31 @@ const LearningStageCarousel = () => {
         <Button
           variant="outline"
           size="icon"
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10"
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11"
           onClick={scrollNext}
         >
           <ChevronRight className="h-5 w-5" />
         </Button>
 
-        {/* Dot Indicators */}
+        {/* Dot Indicators - Larger touch targets */}
         <div className="flex justify-center gap-2 mt-6">
           {learnerStages.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === selectedIndex
-                  ? "bg-primary w-8"
-                  : "bg-gray-300 hover:bg-gray-400"
+              className={`min-w-11 min-h-11 flex items-center justify-center touch-manipulation ${
+                index === selectedIndex ? "" : ""
               }`}
               onClick={() => scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
-            />
+            >
+              <div
+                className={`rounded-full transition-all ${
+                  index === selectedIndex
+                    ? "bg-primary w-8 h-3"
+                    : "bg-gray-300 hover:bg-gray-400 w-3 h-3"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

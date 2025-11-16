@@ -106,16 +106,16 @@ const FeaturesCarousel = () => {
         <div className="relative max-w-5xl mx-auto">
           {/* Carousel */}
           <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
+            <div className="flex gap-4 md:gap-6">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
                   <div
                     key={index}
-                    className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_85%] lg:flex-[0_0_70%] px-2 sm:px-4"
+                    className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                   >
                     <Card className="group hover:shadow-xl transition-all duration-300 border border-border bg-card h-full">
-                      <CardHeader className="space-y-3 sm:space-y-4 p-6 sm:p-8">
+                      <CardHeader className="space-y-3 sm:space-y-4 p-4 md:p-6">
                         <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r ${feature.gradient} flex items-center justify-center mx-auto`}>
                           <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                         </div>
@@ -123,7 +123,7 @@ const FeaturesCarousel = () => {
                           {feature.title}
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="p-6 pt-0 sm:p-8 sm:pt-0">
+                      <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
                           {feature.description}
                         </p>
@@ -135,11 +135,11 @@ const FeaturesCarousel = () => {
             </div>
           </div>
 
-          {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
+          {/* Navigation Arrows - Larger touch targets */}
           <Button
             variant="outline"
             size="icon"
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10 z-10"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11 z-10"
             onClick={scrollPrev}
           >
             <ChevronLeft className="h-5 w-5" />
@@ -147,25 +147,29 @@ const FeaturesCarousel = () => {
           <Button
             variant="outline"
             size="icon"
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full w-10 h-10 z-10"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 bg-white shadow-lg hover:bg-gray-100 rounded-full min-w-11 min-h-11 z-10"
             onClick={scrollNext}
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
 
-          {/* Dot Indicators */}
+          {/* Dot Indicators - Larger touch targets */}
           <div className="flex justify-center gap-2 mt-6 sm:mt-8">
             {features.map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === selectedIndex
-                    ? "bg-primary w-8"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                className={`min-w-11 min-h-11 flex items-center justify-center touch-manipulation`}
                 onClick={() => scrollTo(index)}
                 aria-label={`Go to feature ${index + 1}`}
-              />
+              >
+                <div
+                  className={`rounded-full transition-all ${
+                    index === selectedIndex
+                      ? "bg-primary w-8 h-3"
+                      : "bg-gray-300 hover:bg-gray-400 w-3 h-3"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>
