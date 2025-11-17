@@ -99,12 +99,21 @@ const DashboardRouter = () => {
     if (user) {
       localStorage.setItem(`onboarding-${user.id}`, 'true');
     }
-    
+
     // Show profile setup for new users
     const hasCompletedProfile = userProfile && Object.keys(userProfile).length > 3;
     if (!hasCompletedProfile) {
       setShowProfileSetup(true);
     }
+  };
+
+  const handleOnboardingSkip = () => {
+    setShowOnboarding(false);
+    // Mark as completed so it doesn't show again
+    if (user) {
+      localStorage.setItem(`onboarding-${user.id}`, 'true');
+    }
+    // User can access tutorial later if needed
   };
 
   const handleProfileSetupComplete = async (profile: Partial<UserProfile>) => {
@@ -221,6 +230,7 @@ const DashboardRouter = () => {
           <OnboardingFlow
             userType={(userProfile?.user_type as any) || 'student'}
             onComplete={handleOnboardingComplete}
+            onSkip={handleOnboardingSkip}
           />
         )}
 

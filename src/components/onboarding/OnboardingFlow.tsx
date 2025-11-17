@@ -8,9 +8,10 @@ import { Brain, BookOpen, Trophy, ArrowRight, CheckCircle, X, RotateCcw } from '
 interface OnboardingFlowProps {
   userType: 'student' | 'teacher' | 'admin' | 'parent';
   onComplete: () => void;
+  onSkip?: () => void;
 }
 
-const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
+const OnboardingFlow = ({ userType, onComplete, onSkip }: OnboardingFlowProps) => {
   const { t } = useTranslation();
 
   // Try to restore progress from localStorage
@@ -95,7 +96,7 @@ const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={onComplete}
+          onClick={onSkip || onComplete}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
           aria-label="Close onboarding"
         >
@@ -165,7 +166,7 @@ const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
           <div className="flex justify-between items-center gap-2">
             <Button
               variant="ghost"
-              onClick={onComplete}
+              onClick={onSkip || onComplete}
               className="text-gray-500"
             >
               Skip Tutorial
