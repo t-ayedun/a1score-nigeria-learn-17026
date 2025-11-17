@@ -6,8 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Building2, Users, TrendingDown, AlertTriangle, LogOut, DollarSign, BookOpen, Target, Settings } from "lucide-react";
+import { Building2, Users, TrendingDown, AlertTriangle, LogOut, DollarSign, BookOpen, Target, Settings, Home } from "lucide-react";
 import EnterpriseAdminDashboard from "./EnterpriseAdminDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface AdminDashboardProps {
   user: { type: 'admin'; name: string; institution: string };
@@ -18,6 +19,11 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
   const [selectedClass, setSelectedClass] = useState('all');
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [showEnterprise, setShowEnterprise] = useState(false);
+  const [activeTab, setActiveTab] = useState('performance');
+
+  const handleBackToPerformance = () => {
+    setActiveTab('performance');
+  };
 
   // Check if this should show enterprise dashboard
   const institution = user.institution || '';
@@ -71,9 +77,15 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowEnterprise(!showEnterprise)} 
+            {activeTab !== 'performance' && (
+              <Button variant="ghost" onClick={handleBackToPerformance} size="sm">
+                <Home className="h-4 w-4 mr-2" />
+                Performance
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              onClick={() => setShowEnterprise(!showEnterprise)}
               size="sm"
             >
               <Settings className="h-4 w-4 mr-2" />
@@ -111,7 +123,7 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
           })}
         </div>
 
-        <Tabs defaultValue="performance" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="performance">Class Performance</TabsTrigger>
             <TabsTrigger value="content">Content Monitoring</TabsTrigger>
@@ -119,6 +131,13 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
           </TabsList>
 
           <TabsContent value="performance" className="space-y-6">
+            <PageHeader
+              title="Class Performance"
+              description="Monitor student performance and WAEC readiness"
+              breadcrumbs={[
+                { label: "Dashboard" }
+              ]}
+            />
             {/* Performance Alert */}
             <Card className="border-red-200 bg-red-50">
               <CardHeader>
@@ -200,7 +219,15 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="content">
+          <TabsContent value="content" className="space-y-6">
+            <PageHeader
+              title="Content Monitoring"
+              description="Review flagged content and AI usage"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToPerformance },
+                { label: "Content Monitoring" }
+              ]}
+            />
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -232,7 +259,15 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="analytics">
+          <TabsContent value="analytics" className="space-y-6">
+            <PageHeader
+              title="Advanced Analytics"
+              description="Detailed insights and institutional metrics"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToPerformance },
+                { label: "Advanced Analytics" }
+              ]}
+            />
             <Card>
               <CardHeader>
                 <CardTitle>Advanced Analytics Dashboard</CardTitle>

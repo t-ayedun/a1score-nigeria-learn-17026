@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Menu, X, TrendingUp, Brain, BookOpen, MessageCircle, Trophy, Globe, Users, FileText, Search, BarChart3, PenTool, Timer, Target, Calculator, Camera, Shield, Play } from "lucide-react";
+import { Menu, X, TrendingUp, Brain, BookOpen, MessageCircle, Trophy, Globe, Users, FileText, Search, BarChart3, PenTool, Timer, Target, Calculator, Camera, Shield, Play, Home } from "lucide-react";
 import { type AcademicLevel, hasFeatureAccess, getLevelFromString } from "@/types/academicLevel";
 
 interface StudentSidebarProps {
@@ -72,15 +72,30 @@ const StudentSidebar = ({ activeTab, onTabChange, userLevel }: StudentSidebarPro
         <div className="p-4 h-full overflow-y-auto">
           {/* Header */}
           <div className="flex items-center space-x-3 mb-6 sm:mb-8 pt-16 sm:pt-20">
-            <img 
-              src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png" 
-              alt="A1Score Logo" 
+            <img
+              src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png"
+              alt="A1Score Logo"
               className="h-6 sm:h-8 w-auto object-contain"
             />
             <div>
               <h2 className="text-base sm:text-lg font-bold text-gray-900">Student Portal</h2>
             </div>
           </div>
+
+          {/* Quick Home Button */}
+          {activeTab !== 'dashboard' && (
+            <Button
+              variant="outline"
+              className="w-full mb-4 justify-start"
+              onClick={() => {
+                onTabChange('dashboard');
+                setIsOpen(false);
+              }}
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Back to Dashboard Home
+            </Button>
+          )}
 
           {/* Navigation */}
           <nav className="space-y-2">

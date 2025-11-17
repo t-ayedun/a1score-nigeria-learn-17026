@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Users, BookOpen, Clock, TrendingUp, LogOut, Target, AlertCircle, CheckCircle, CreditCard, MessageSquare, Star, Shield, Calendar, DollarSign, Award, Bell } from "lucide-react";
+import { Users, BookOpen, Clock, TrendingUp, LogOut, Target, AlertCircle, CheckCircle, CreditCard, MessageSquare, Star, Shield, Calendar, DollarSign, Award, Bell, Home } from "lucide-react";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface ParentDashboardProps {
   user: { type: 'parent'; name: string };
@@ -18,6 +19,11 @@ interface ParentDashboardProps {
 const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
   const [selectedChild, setSelectedChild] = useState('david');
   const [timeFrame, setTimeFrame] = useState('week');
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const handleBackToOverview = () => {
+    setActiveTab('overview');
+  };
 
   const children = [
     { id: 'david', name: 'Davi Adebayo', class: 'SS2', age: 16 },
@@ -112,10 +118,18 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
               <p className="text-sm text-gray-600">Welcome back, {user.name}!</p>
             </div>
           </div>
-          <Button variant="outline" onClick={onLogout} size="sm">
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            {activeTab !== 'overview' && (
+              <Button variant="ghost" onClick={handleBackToOverview} size="sm">
+                <Home className="h-4 w-4 mr-2" />
+                Overview
+              </Button>
+            )}
+            <Button variant="outline" onClick={onLogout} size="sm">
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -175,7 +189,7 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </CardContent>
         </Card>
 
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
@@ -186,6 +200,14 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
+            <PageHeader
+              title="Child Overview"
+              description={`Monitoring ${children.find(c => c.id === selectedChild)?.name}'s learning progress`}
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Overview" }
+              ]}
+            />
             <div className="grid md:grid-cols-2 gap-6">
               {/* Subject Performance */}
               <Card>
@@ -272,7 +294,15 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="activity">
+          <TabsContent value="activity" className="space-y-6">
+            <PageHeader
+              title="Recent Activity"
+              description="Track your child's learning activities and performance"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Activity" }
+              ]}
+            />
             <Card>
               <CardHeader>
                 <CardTitle>Recent Learning Activity</CardTitle>
@@ -302,6 +332,14 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="teachers" className="space-y-6">
+            <PageHeader
+              title="Teacher Communications"
+              description="View messages and schedule meetings with teachers"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Teachers" }
+              ]}
+            />
             {/* Teacher Communications */}
             <Card>
               <CardHeader>
@@ -372,6 +410,14 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="subscription" className="space-y-6">
+            <PageHeader
+              title="Subscription Management"
+              description="Manage your subscription, billing, and payment history"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Subscription" }
+              ]}
+            />
             {/* Current Subscription */}
             <Card>
               <CardHeader>
@@ -458,6 +504,14 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="safety" className="space-y-6">
+            <PageHeader
+              title="Safety & Screen Time"
+              description="Manage safety controls and monitor screen time usage"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Safety" }
+              ]}
+            />
             {/* Safety Controls */}
             <Card>
               <CardHeader>
@@ -531,6 +585,14 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
+            <PageHeader
+              title="Comprehensive Reports"
+              description="Detailed analytics and AI-powered learning recommendations"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: handleBackToOverview },
+                { label: "Reports" }
+              ]}
+            />
             {/* Comprehensive Reports */}
             <Card>
               <CardHeader>
