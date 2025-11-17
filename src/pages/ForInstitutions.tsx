@@ -7,6 +7,12 @@ import LanguageSwitcher from "@/components/language/LanguageSwitcher";
 const ForInstitutions = () => {
   const navigate = useNavigate();
 
+  const handleNavigateToAuth = () => {
+    // Save current page URL as origin before navigating to auth
+    localStorage.setItem('a1score_signup_origin', window.location.href);
+    navigate('/auth?type=admin');
+  };
+
   const features = [
     {
       icon: Building2,
@@ -104,11 +110,11 @@ const ForInstitutions = () => {
             >
               Schedule Demo <ArrowRight className="ml-2" />
             </Button>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="outline"
               className="text-lg px-8"
-              onClick={() => navigate('/auth', { state: { userType: 'admin' } })}
+              onClick={handleNavigateToAuth}
             >
               Start Free Trial
             </Button>

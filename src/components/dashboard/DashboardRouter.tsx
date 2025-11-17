@@ -88,6 +88,8 @@ const DashboardRouter = () => {
           localStorage.removeItem(key);
         }
       });
+      // Also clear signup origin
+      localStorage.removeItem('a1score_signup_origin');
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
@@ -114,6 +116,16 @@ const DashboardRouter = () => {
       localStorage.setItem(`onboarding-${user.id}`, 'true');
     }
     // User can access tutorial later if needed
+
+    // If user skips onboarding AND profile setup, clean up origin
+    // (origin is also cleaned up in profile setup handlers)
+    if (!showProfileSetup) {
+      const signupOrigin = localStorage.getItem('a1score_signup_origin');
+      if (signupOrigin) {
+        console.log('User signed up from:', signupOrigin);
+        localStorage.removeItem('a1score_signup_origin');
+      }
+    }
   };
 
   const handleProfileSetupComplete = async (profile: Partial<UserProfile>) => {
@@ -143,6 +155,16 @@ const DashboardRouter = () => {
         if (data) {
           setUserProfile(data);
         }
+
+        // Check if there's an origin URL from sign-up flow
+        const signupOrigin = localStorage.getItem('a1score_signup_origin');
+        if (signupOrigin) {
+          // Log the origin for analytics/debugging
+          console.log('User signed up from:', signupOrigin);
+          // Clean up the origin after onboarding/setup is complete
+          localStorage.removeItem('a1score_signup_origin');
+          // Future enhancement: Could redirect back or show welcome message based on origin
+        }
       }
     } catch (error) {
       console.error('Error saving profile:', error);
@@ -152,6 +174,15 @@ const DashboardRouter = () => {
   const handleProfileSetupSkip = () => {
     setShowProfileSetup(false);
     // User can complete profile later from settings
+
+    // Check if there's an origin URL from sign-up flow
+    const signupOrigin = localStorage.getItem('a1score_signup_origin');
+    if (signupOrigin) {
+      // Log the origin for analytics/debugging
+      console.log('User signed up from:', signupOrigin);
+      // Clean up the origin after onboarding/setup is complete
+      localStorage.removeItem('a1score_signup_origin');
+    }
   };
 
   // Show loading while fetching profile or if user exists but profile is null

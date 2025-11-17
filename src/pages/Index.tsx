@@ -33,6 +33,9 @@ const Index = () => {
   }, [user, location]);
 
   const handleShowAuth = (userType?: 'student' | 'teacher' | 'parent' | 'admin') => {
+    // Save current page URL as origin before navigating to auth
+    localStorage.setItem('a1score_signup_origin', window.location.href);
+
     if (userType) {
       navigate(`/auth?type=${userType}`);
     } else {

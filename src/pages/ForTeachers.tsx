@@ -7,6 +7,12 @@ import LanguageSwitcher from "@/components/language/LanguageSwitcher";
 const ForTeachers = () => {
   const navigate = useNavigate();
 
+  const handleNavigateToAuth = () => {
+    // Save current page URL as origin before navigating to auth
+    localStorage.setItem('a1score_signup_origin', window.location.href);
+    navigate('/auth?type=teacher');
+  };
+
   const features = [
     {
       icon: BookOpen,
@@ -58,7 +64,7 @@ const ForTeachers = () => {
             </div>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
-              <Button onClick={() => navigate('/auth', { state: { userType: 'teacher' } })}>
+              <Button onClick={handleNavigateToAuth}>
                 Get Started
               </Button>
             </div>
@@ -76,10 +82,10 @@ const ForTeachers = () => {
             Join thousands of Nigerian educators using A1Score to create engaging lessons, 
             track student progress, and reduce administrative workload.
           </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="text-lg px-8"
-            onClick={() => navigate('/auth', { state: { userType: 'teacher' } })}
+            onClick={handleNavigateToAuth}
           >
             Start Teaching Smarter <ArrowRight className="ml-2" />
           </Button>
@@ -127,11 +133,11 @@ const ForTeachers = () => {
             <p className="text-xl mb-8 opacity-90">
               Join A1Score today and experience the future of teaching
             </p>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="secondary"
               className="text-lg px-8"
-              onClick={() => navigate('/auth', { state: { userType: 'teacher' } })}
+              onClick={handleNavigateToAuth}
             >
               Create Teacher Account
             </Button>

@@ -7,6 +7,12 @@ import LanguageSwitcher from "@/components/language/LanguageSwitcher";
 const ForParents = () => {
   const navigate = useNavigate();
 
+  const handleNavigateToAuth = () => {
+    // Save current page URL as origin before navigating to auth
+    localStorage.setItem('a1score_signup_origin', window.location.href);
+    navigate('/auth?type=parent');
+  };
+
   const features = [
     {
       icon: Eye,
@@ -58,7 +64,7 @@ const ForParents = () => {
             </div>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
-              <Button onClick={() => navigate('/auth', { state: { userType: 'parent' } })}>
+              <Button onClick={handleNavigateToAuth}>
                 Get Started
               </Button>
             </div>
@@ -76,10 +82,10 @@ const ForParents = () => {
             Stay connected to your child's education with real-time insights, 
             progress tracking, and tools to help them succeed.
           </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="text-lg px-8"
-            onClick={() => navigate('/auth', { state: { userType: 'parent' } })}
+            onClick={handleNavigateToAuth}
           >
             Create Parent Account <ArrowRight className="ml-2" />
           </Button>
@@ -143,11 +149,11 @@ const ForParents = () => {
             <p className="text-xl mb-8 opacity-90">
               Join thousands of Nigerian parents using A1Score to support their children
             </p>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="secondary"
               className="text-lg px-8"
-              onClick={() => navigate('/auth', { state: { userType: 'parent' } })}
+              onClick={handleNavigateToAuth}
             >
               Get Started Free
             </Button>
