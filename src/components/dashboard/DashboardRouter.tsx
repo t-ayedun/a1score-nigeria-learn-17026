@@ -109,7 +109,7 @@ const DashboardRouter = () => {
 
   const handleProfileSetupComplete = async (profile: Partial<UserProfile>) => {
     if (!user) return;
-    
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -121,7 +121,7 @@ const DashboardRouter = () => {
           user_type: profile.userType,
           ...profile
         });
-      
+
       if (!error) {
         setShowProfileSetup(false);
         // Refetch profile to get updated data
@@ -130,7 +130,7 @@ const DashboardRouter = () => {
           .select('*')
           .eq('user_id', user.id)
           .single();
-        
+
         if (data) {
           setUserProfile(data);
         }
@@ -138,6 +138,11 @@ const DashboardRouter = () => {
     } catch (error) {
       console.error('Error saving profile:', error);
     }
+  };
+
+  const handleProfileSetupSkip = () => {
+    setShowProfileSetup(false);
+    // User can complete profile later from settings
   };
 
   // Show loading while fetching profile or if user exists but profile is null
@@ -185,7 +190,32 @@ const DashboardRouter = () => {
     return (
       <>
         {DashboardComponent}
-        
+
+        {/* Header with logout during onboarding/profile setup */}
+        {(showOnboarding || showProfileSetup) && (
+          <div className="fixed top-0 left-0 right-0 bg-white border-b shadow-sm z-40 px-4 py-3">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img
+                  src="/lovable-uploads/cd2e80a3-ae02-4d77-b4b6-84f985045e4e.png"
+                  alt="A1Score Logo"
+                  className="h-8 w-auto"
+                />
+                <span className="text-sm text-gray-600">
+                  {showOnboarding && 'Welcome to A1Score'}
+                  {showProfileSetup && 'Complete Your Profile'}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-red-600 hover:text-red-700 font-medium"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Onboarding Flow */}
         {showOnboarding && (
           <OnboardingFlow
@@ -204,6 +234,7 @@ const DashboardRouter = () => {
                   fullName: userProfile?.display_name || user.email?.split('@')[0] || '',
                 }}
                 onComplete={handleProfileSetupComplete}
+                onSkip={handleProfileSetupSkip}
               />
             </div>
           </div>

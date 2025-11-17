@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,16 @@ import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
 const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  // Get user type from URL params, fallback to location.state for backwards compatibility
+  const userTypeFromUrl = searchParams.get('type') as 'student' | 'teacher' | 'parent' | 'admin' | null;
+  const userTypeFromState = (location.state as any)?.userType;
+  const defaultUserType = userTypeFromUrl || userTypeFromState || "student";
 
   const [signInData, setSignInData] = useState({
     email: "",
@@ -28,8 +34,15 @@ const AuthPage = () => {
     password: "",
     confirmPassword: "",
     displayName: "",
-    userType: (location.state as any)?.userType || "student"
+    userType: defaultUserType
   });
+
+  // Update userType if URL param changes
+  useEffect(() => {
+    if (userTypeFromUrl && userTypeFromUrl !== signUpData.userType) {
+      setSignUpData(prev => ({ ...prev, userType: userTypeFromUrl }));
+    }
+  }, [userTypeFromUrl]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,13 +124,13 @@ const AuthPage = () => {
 
     try {
       const { data, error } = await supabase.auth.signInAnonymously();
-      
+
       if (error) {
         setError(error.message);
       } else if (data.user) {
         // Create a profile for the guest user with the selected user type
-        const userType = (location.state as any)?.userType || 'student';
-        
+        const userType = defaultUserType;
+
         await supabase
           .from('profiles')
           .insert({
@@ -125,7 +138,7 @@ const AuthPage = () => {
             display_name: `Guest ${userType.charAt(0).toUpperCase() + userType.slice(1)}`,
             user_type: userType
           });
-        
+
         navigate(`/dashboard/${userType}`);
       }
     } catch (err) {

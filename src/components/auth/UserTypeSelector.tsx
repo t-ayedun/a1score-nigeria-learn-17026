@@ -45,7 +45,7 @@ const UserTypeSelector = ({ onClose }: UserTypeSelectorProps) => {
 
   const handleContinue = () => {
     if (selectedType) {
-      navigate('/auth', { state: { userType: selectedType } });
+      navigate(`/auth?type=${selectedType}`);
     }
   };
 

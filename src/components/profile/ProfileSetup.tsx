@@ -9,15 +9,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
 import { UserProfile } from '@/types/user';
-import { Upload, User, Bell, Shield } from 'lucide-react';
+import { Upload, User, Bell, Shield, X } from 'lucide-react';
 
 interface ProfileSetupProps {
   user: Partial<UserProfile>;
   onComplete: (profile: Partial<UserProfile>) => void;
+  onSkip?: () => void;
   step?: number;
 }
 
-const ProfileSetup = ({ user, onComplete, step = 1 }: ProfileSetupProps) => {
+const ProfileSetup = ({ user, onComplete, onSkip, step = 1 }: ProfileSetupProps) => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(step);
   const [profileData, setProfileData] = useState<Partial<UserProfile>>({
@@ -267,7 +268,20 @@ const ProfileSetup = ({ user, onComplete, step = 1 }: ProfileSetupProps) => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
+    <div className="max-w-2xl mx-auto p-6 space-y-6 relative">
+      {/* Close button */}
+      {onSkip && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onSkip}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 z-10"
+          aria-label="Skip profile setup"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
+
       {/* Progress indicator */}
       <div className="flex items-center justify-center space-x-2 mb-6">
         {[1, 2, 3].map((stepNum) => (
@@ -288,21 +302,37 @@ const ProfileSetup = ({ user, onComplete, step = 1 }: ProfileSetupProps) => {
         ))}
       </div>
 
+      {/* Step counter */}
+      <div className="text-center text-sm text-gray-600 mb-4">
+        Step {currentStep} of 3
+      </div>
+
       {currentStep === 1 && renderStep1()}
       {currentStep === 2 && renderStep2()}
       {currentStep === 3 && renderStep3()}
 
-      <div className="flex justify-between">
-        <Button
-          variant="outline"
-          onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-          disabled={currentStep === 1}
-        >
-          {t('common.back')}
-        </Button>
-        <Button onClick={handleNext}>
-          {currentStep === 3 ? t('common.finish') : t('common.next')}
-        </Button>
+      <div className="flex justify-between items-center gap-2">
+        {onSkip && (
+          <Button
+            variant="ghost"
+            onClick={onSkip}
+            className="text-gray-500"
+          >
+            Complete Later
+          </Button>
+        )}
+        <div className="flex gap-2 ml-auto">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+            disabled={currentStep === 1}
+          >
+            {t('common.back')}
+          </Button>
+          <Button onClick={handleNext}>
+            {currentStep === 3 ? t('common.finish') : t('common.next')}
+          </Button>
+        </div>
       </div>
     </div>
   );

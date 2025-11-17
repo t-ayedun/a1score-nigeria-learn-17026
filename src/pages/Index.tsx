@@ -34,7 +34,7 @@ const Index = () => {
 
   const handleShowAuth = (userType?: 'student' | 'teacher' | 'parent' | 'admin') => {
     if (userType) {
-      navigate('/auth', { state: { userType } });
+      navigate(`/auth?type=${userType}`);
     } else {
       navigate('/select-role');
     }
