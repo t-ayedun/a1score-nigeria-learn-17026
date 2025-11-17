@@ -7,17 +7,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { 
-  FileQuestion, 
-  CheckCircle, 
-  Edit3, 
-  Download, 
+import {
+  FileQuestion,
+  CheckCircle,
+  Edit3,
+  Download,
   Clock,
   Target,
   Zap,
   RotateCcw,
   Plus
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Question {
   id: string;
@@ -30,7 +32,11 @@ interface Question {
   points: number;
 }
 
-const AssessmentGenerator = () => {
+interface AssessmentGeneratorProps {
+  onBackToDashboard?: () => void;
+}
+
+const AssessmentGenerator = ({ onBackToDashboard }: AssessmentGeneratorProps = {}) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [assessmentData, setAssessmentData] = useState({
     title: "",
@@ -156,6 +162,19 @@ const AssessmentGenerator = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Assessment Generator"
+        description="Generate quizzes and assessments with AI"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Assessment Generator" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

@@ -4,8 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calculator, FlaskConical, Globe, BookOpen, TrendingUp, Target, Clock, Star } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const SubjectHub = () => {
+interface SubjectHubProps {
+  onBackToDashboard?: () => void;
+}
+
+const SubjectHub = ({ onBackToDashboard }: SubjectHubProps = {}) => {
   const navigate = useNavigate();
   const subjects = [
     {
@@ -115,6 +121,19 @@ const SubjectHub = () => {
 
   return (
     <div className="space-y-8">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Your Subjects"
+        description="Explore subjects, topics, and exam preparation"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Subjects" }
+        ]}
+      />
+
       {/* Subject Cards */}
       <div>
         <h2 className="text-2xl font-bold mb-6">Your Subjects</h2>

@@ -6,18 +6,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  FileText, 
-  Calendar, 
-  Target, 
-  BookOpen, 
-  Award, 
+import {
+  FileText,
+  Calendar,
+  Target,
+  BookOpen,
+  Award,
   Download,
   Plus,
   Edit3,
   Trash2,
   Clock
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Week {
   week: number;
@@ -27,7 +29,11 @@ interface Week {
   assessment: string;
 }
 
-const SyllabusBuilder = () => {
+interface SyllabusBuilderProps {
+  onBackToDashboard?: () => void;
+}
+
+const SyllabusBuilder = ({ onBackToDashboard }: SyllabusBuilderProps = {}) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [syllabusData, setSyllabusData] = useState({
     courseTitle: "",
@@ -154,6 +160,19 @@ const SyllabusBuilder = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Syllabus Builder"
+        description="Design and organize your course syllabus"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Syllabus Builder" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

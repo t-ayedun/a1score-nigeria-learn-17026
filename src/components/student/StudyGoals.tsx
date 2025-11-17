@@ -8,12 +8,14 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { 
+import {
   Target, Plus, Calendar, Clock, CheckCircle, AlertCircle,
   Trophy, Star, TrendingUp, BookOpen, Calculator, FlaskConical,
   Atom, Globe, Edit2, Trash2, Flag
 } from "lucide-react";
 import { toast } from "sonner";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface StudyGoal {
   id: string;
@@ -30,7 +32,11 @@ interface StudyGoal {
   createdAt: string;
 }
 
-const StudyGoals = () => {
+interface StudyGoalsProps {
+  onBackToDashboard?: () => void;
+}
+
+const StudyGoals = ({ onBackToDashboard }: StudyGoalsProps = {}) => {
   const [goals, setGoals] = useState<StudyGoal[]>([
     {
       id: '1',
@@ -181,6 +187,19 @@ const StudyGoals = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Study Goals"
+        description="Set and track your daily and weekly study targets"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Goals" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">

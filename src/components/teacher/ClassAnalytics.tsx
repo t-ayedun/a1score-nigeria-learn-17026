@@ -7,8 +7,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, Award, AlertCircle } from "lucide-react";
 import { useClassAnalytics } from "@/hooks/useClassAnalytics";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const ClassAnalytics = () => {
+interface ClassAnalyticsProps {
+  onBackToDashboard?: () => void;
+}
+
+const ClassAnalytics = ({ onBackToDashboard }: ClassAnalyticsProps = {}) => {
   const { 
     classStats, 
     studentPerformance, 
@@ -87,12 +93,21 @@ const ClassAnalytics = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Class Analytics"
+        description="Track student performance and class progress"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Analytics" }
+        ]}
+      />
+
       {/* Header with filters */}
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Class Analytics</h2>
-          <p className="text-gray-600">Monitor student performance and identify areas for improvement</p>
-        </div>
         <div className="flex gap-3">
           <Select value={selectedClass || ''} onValueChange={setSelectedClass}>
             <SelectTrigger className="w-60">

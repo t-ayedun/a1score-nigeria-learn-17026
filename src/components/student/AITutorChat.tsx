@@ -2,8 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Calculator, FlaskConical, BookOpen, 
+import {
+  Calculator, FlaskConical, BookOpen,
   Brain, Zap
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +16,8 @@ import TutorTypingIndicator from "./TutorTypingIndicator";
 import MessageInput from "./MessageInput";
 import PDFUploader from "./PDFUploader";
 import PDFAnalysisViewer from "./PDFAnalysisViewer";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Message {
   id: number;
@@ -37,7 +39,11 @@ interface TutorPersonality {
   expertise: string[];
 }
 
-const AITutorChat = () => {
+interface AITutorChatProps {
+  onBackToDashboard?: () => void;
+}
+
+const AITutorChat = ({ onBackToDashboard }: AITutorChatProps = {}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -227,6 +233,19 @@ const AITutorChat = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="AI Tutoring Center"
+        description="Choose your personal tutor, scan homework, or explore adaptive learning paths"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "AI Tutor" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle>🎓 A1Score AI Tutoring Center</CardTitle>

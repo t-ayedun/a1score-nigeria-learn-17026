@@ -6,10 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Search, FileText, Network, TrendingUp, Plus, BookOpen, 
+import {
+  Search, FileText, Network, TrendingUp, Plus, BookOpen,
   Download, Filter, Star, Quote, Lightbulb, ArrowRight
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Paper {
   id: string;
@@ -25,7 +27,11 @@ interface Paper {
   isStarred: boolean;
 }
 
-const LiteratureReviewAssistant = () => {
+interface LiteratureReviewAssistantProps {
+  onBackToDashboard?: () => void;
+}
+
+const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssistantProps = {}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [papers, setPapers] = useState<Paper[]>([
     {
@@ -123,6 +129,19 @@ const LiteratureReviewAssistant = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Literature Review Assistant"
+        description="AI-powered literature review and synthesis"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Literature Review" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

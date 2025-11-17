@@ -6,21 +6,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  BookOpen, 
-  Users, 
-  Clock, 
-  Target, 
-  CheckCircle, 
-  Download, 
+import {
+  BookOpen,
+  Users,
+  Clock,
+  Target,
+  CheckCircle,
+  Download,
   Share,
   Lightbulb,
   Presentation,
   ClipboardList,
   Sparkles
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const LessonPlanWizard = () => {
+interface LessonPlanWizardProps {
+  onBackToDashboard?: () => void;
+}
+
+const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeStep, setActiveStep] = useState("setup");
   const [lessonData, setLessonData] = useState({
@@ -115,6 +121,19 @@ const LessonPlanWizard = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Lesson Plan Wizard"
+        description="Create AI-powered lesson plans quickly"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Lesson Plan Wizard" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

@@ -6,12 +6,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Play, Pause, RotateCcw, Clock, Coffee, BookOpen, 
+import {
+  Play, Pause, RotateCcw, Clock, Coffee, BookOpen,
   Settings, Trophy, TrendingUp, BarChart3, Timer,
   Target, Zap, CheckCircle, Calendar
 } from "lucide-react";
 import { toast } from "sonner";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
+
+interface StudyTimerProps {
+  onBackToDashboard?: () => void;
+}
 
 interface TimerSession {
   id: string;
@@ -30,7 +36,7 @@ interface TimerPreset {
   longBreakInterval: number;
 }
 
-const StudyTimer = () => {
+const StudyTimer = ({ onBackToDashboard }: StudyTimerProps = {}) => {
   const [isRunning, setIsRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [currentSession, setCurrentSession] = useState<'focus' | 'short-break' | 'long-break'>('focus');
@@ -227,6 +233,19 @@ const StudyTimer = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Study Timer"
+        description="Pomodoro technique for focused study sessions"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Timer" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

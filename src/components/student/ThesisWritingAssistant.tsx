@@ -6,11 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  FileText, Target, TrendingUp, CheckCircle, AlertCircle, 
+import {
+  FileText, Target, TrendingUp, CheckCircle, AlertCircle,
   Clock, Users, MessageSquare, BookOpen, Lightbulb, Edit3,
   Calendar, Save, Download, RotateCcw, PlusCircle
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Chapter {
   id: string;
@@ -40,7 +42,11 @@ interface WritingGoal {
   description: string;
 }
 
-const ThesisWritingAssistant = () => {
+interface ThesisWritingAssistantProps {
+  onBackToDashboard?: () => void;
+}
+
+const ThesisWritingAssistant = ({ onBackToDashboard }: ThesisWritingAssistantProps = {}) => {
   const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([
     {
@@ -149,6 +155,19 @@ const ThesisWritingAssistant = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Thesis Writing Assistant"
+        description="Get AI assistance with your thesis writing"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Thesis Writing" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

@@ -131,6 +131,10 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
 
   const content = getContentByLevel(user.level);
 
+  const handleBackToDashboard = () => {
+    setActiveTab('dashboard');
+  };
+
   const getLevelBadge = (level?: string) => {
     if (level === 'undergraduate') return <Badge className="bg-blue-100 text-blue-800">Undergraduate</Badge>;
     if (level === 'postgraduate-taught') return <Badge className="bg-purple-100 text-purple-800">PG Taught</Badge>;
@@ -523,15 +527,15 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="tutor">
-            <AITutorChat />
+            <AITutorChat onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="subjects">
-            <SubjectHub />
+            <SubjectHub onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="quiz">
-            <QuizInterface />
+            <QuizInterface onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="gamification">
@@ -546,19 +550,19 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="formula-reference">
-            <FormulaReference />
+            <FormulaReference onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="progress-tracker">
-            <ProgressTracker />
+            <ProgressTracker onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="study-goals">
-            <StudyGoals />
+            <StudyGoals onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="study-timer">
-            <StudyTimer />
+            <StudyTimer onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="pdf-helper" className="space-y-6">
@@ -579,27 +583,27 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="literature-review">
-            <LiteratureReviewAssistant />
+            <LiteratureReviewAssistant onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="reference-manager">
-            <ReferenceManager />
+            <ReferenceManager onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="thesis-assistant">
-            <ThesisWritingAssistant />
+            <ThesisWritingAssistant onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="data-analysis">
-            <DataAnalysisHub />
+            <DataAnalysisHub onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="homework-scanner">
-            <HomeworkScanner onSolutionGenerated={(solution) => console.log('Solution:', solution)} />
+            <HomeworkScanner onSolutionGenerated={(solution) => console.log('Solution:', solution)} onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="ethics" className="space-y-6">
-            <EthicsDashboard />
+            <EthicsDashboard onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">

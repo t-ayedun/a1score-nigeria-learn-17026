@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertTriangle, TrendingUp, Users, Bot, MessageSquare, Clock } from 'lucide-react';
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface StudentAIUsage {
   id: string;
@@ -17,7 +19,11 @@ interface StudentAIUsage {
   subjects: string[];
 }
 
-const StudentAIMonitoring: React.FC = () => {
+interface StudentAIMonitoringProps {
+  onBackToDashboard?: () => void;
+}
+
+const StudentAIMonitoring = ({ onBackToDashboard }: StudentAIMonitoringProps = {}) => {
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
 
   // Sample data - in real implementation, this would come from API
@@ -75,6 +81,19 @@ const StudentAIMonitoring: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="AI Monitoring"
+        description="Monitor student AI usage and academic integrity"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "AI Monitoring" }
+        ]}
+      />
+
       {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>

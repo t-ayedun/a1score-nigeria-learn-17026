@@ -24,6 +24,10 @@ interface TeacherDashboardProps {
 const TeacherDashboard = ({ user, onLogout }: TeacherDashboardProps) => {
   const [activeTab, setActiveTab] = useState('dashboard');
 
+  const handleBackToDashboard = () => {
+    setActiveTab('dashboard');
+  };
+
   const teacherStats = [
     { title: 'Active Students', value: '127', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
     { title: 'Lessons Created', value: '45', icon: BookOpen, color: 'text-green-600', bg: 'bg-green-50' },
@@ -174,35 +178,35 @@ const TeacherDashboard = ({ user, onLogout }: TeacherDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="analytics">
-            <ClassAnalytics />
+            <ClassAnalytics onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="lesson-wizard">
-            <LessonPlanWizard />
+            <LessonPlanWizard onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="syllabus-builder">
-            <SyllabusBuilder />
+            <SyllabusBuilder onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="assessment-gen">
-            <AssessmentGenerator />
+            <AssessmentGenerator onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="content">
-            <ContentCreation />
+            <ContentCreation onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="parent-comm">
-            <ParentCommunication />
+            <ParentCommunication onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="validation">
-            <AnswerValidation />
+            <AnswerValidation onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="ai-monitoring">
-            <StudentAIMonitoring />
+            <StudentAIMonitoring onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
         </Tabs>
       </div>

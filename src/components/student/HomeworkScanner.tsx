@@ -5,16 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Camera, Upload, Scan, BookOpen, Calculator, 
-  FlaskConical, Globe, Lightbulb, Clock 
+import {
+  Camera, Upload, Scan, BookOpen, Calculator,
+  FlaskConical, Globe, Lightbulb, Clock
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface HomeworkScannerProps {
   onSolutionGenerated: (solution: string) => void;
+  onBackToDashboard?: () => void;
 }
 
-const HomeworkScanner = ({ onSolutionGenerated }: HomeworkScannerProps) => {
+const HomeworkScanner = ({ onSolutionGenerated, onBackToDashboard }: HomeworkScannerProps) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [extractedText, setExtractedText] = useState('');
@@ -236,6 +239,19 @@ Feel free to ask follow-up questions!`;
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Homework Scanner"
+        description="Scan and get help with homework problems"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Homework Help" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

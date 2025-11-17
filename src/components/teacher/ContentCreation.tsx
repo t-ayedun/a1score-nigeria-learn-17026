@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, FileText, CheckCircle } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const ContentCreation = () => {
+interface ContentCreationProps {
+  onBackToDashboard?: () => void;
+}
+
+const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
   const [lessonTitle, setLessonTitle] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [lessonDescription, setLessonDescription] = useState('');
@@ -68,6 +73,19 @@ Key takeaways from this lesson...
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Content Studio"
+        description="Create and manage teaching content"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Content Studio" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

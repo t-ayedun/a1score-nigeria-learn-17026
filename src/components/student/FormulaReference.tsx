@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
+import {
   Calculator, FlaskConical, Atom, Search, Copy, Star,
   BookOpen, Zap, Target, TrendingUp, CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Formula {
   id: string;
@@ -22,7 +24,11 @@ interface Formula {
   isFavorite?: boolean;
 }
 
-const FormulaReference = () => {
+interface FormulaReferenceProps {
+  onBackToDashboard?: () => void;
+}
+
+const FormulaReference = ({ onBackToDashboard }: FormulaReferenceProps = {}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [favorites, setFavorites] = useState<string[]>([]);
 
@@ -265,6 +271,19 @@ const FormulaReference = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Formula Reference"
+        description="Quick reference for Math, Physics, and Chemistry formulas"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Formulas" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

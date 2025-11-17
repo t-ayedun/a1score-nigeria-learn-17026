@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Trophy, RotateCcw, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Question {
   id: number;
@@ -17,7 +19,11 @@ interface Question {
   subject: string;
 }
 
-const QuizInterface = () => {
+interface QuizInterfaceProps {
+  onBackToDashboard?: () => void;
+}
+
+const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   const [currentQuiz, setCurrentQuiz] = useState<Question[]>([]);
@@ -255,6 +261,19 @@ const QuizInterface = () => {
     const percentage = Math.round((score / currentQuiz.length) * 100);
     return (
       <div className="max-w-2xl mx-auto">
+        {onBackToDashboard && (
+          <BackToDashboard onClick={onBackToDashboard} />
+        )}
+
+        <PageHeader
+          title="Practice Quiz"
+          description="Test your knowledge with adaptive quizzes"
+          breadcrumbs={[
+            { label: "Dashboard", onClick: onBackToDashboard },
+            { label: "Practice Quiz" }
+          ]}
+        />
+
         <Card>
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 p-4 bg-yellow-100 rounded-full w-fit">
@@ -305,6 +324,19 @@ const QuizInterface = () => {
   if (currentQuiz.length === 0) {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
+        {onBackToDashboard && (
+          <BackToDashboard onClick={onBackToDashboard} />
+        )}
+
+        <PageHeader
+          title="Practice Quiz"
+          description="Test your knowledge with adaptive quizzes"
+          breadcrumbs={[
+            { label: "Dashboard", onClick: onBackToDashboard },
+            { label: "Practice Quiz" }
+          ]}
+        />
+
         <Card>
           <CardHeader>
             <CardTitle>Practice Quiz Generator</CardTitle>
@@ -399,6 +431,19 @@ const QuizInterface = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Practice Quiz"
+        description="Test your knowledge with adaptive quizzes"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Practice Quiz" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">

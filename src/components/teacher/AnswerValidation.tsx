@@ -4,8 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, DollarSign, Clock, AlertTriangle } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const AnswerValidation = () => {
+interface AnswerValidationProps {
+  onBackToDashboard?: () => void;
+}
+
+const AnswerValidation = ({ onBackToDashboard }: AnswerValidationProps = {}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [earnings, setEarnings] = useState(1250);
 
@@ -64,6 +70,19 @@ const AnswerValidation = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Answer Validation"
+        description="Review and validate student responses"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Answer Validation" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

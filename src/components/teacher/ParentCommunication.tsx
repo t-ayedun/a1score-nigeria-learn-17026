@@ -7,9 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  MessageSquare, 
-  Send, 
+import {
+  MessageSquare,
+  Send,
   Search,
   Filter,
   Phone,
@@ -22,6 +22,8 @@ import {
   Mail,
   Bell
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Parent {
   id: string;
@@ -56,7 +58,11 @@ interface Meeting {
   agenda: string[];
 }
 
-const ParentCommunication = () => {
+interface ParentCommunicationProps {
+  onBackToDashboard?: () => void;
+}
+
+const ParentCommunication = ({ onBackToDashboard }: ParentCommunicationProps = {}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
   const [messageContent, setMessageContent] = useState("");
@@ -196,6 +202,19 @@ const ParentCommunication = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Parent Communication"
+        description="Manage communications with parents"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Parent Communication" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

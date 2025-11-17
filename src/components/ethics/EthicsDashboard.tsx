@@ -4,8 +4,14 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useEthics } from '@/contexts/EthicsContext';
 import { Shield, TrendingUp, BookOpen, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
-const EthicsDashboard: React.FC = () => {
+interface EthicsDashboardProps {
+  onBackToDashboard?: () => void;
+}
+
+const EthicsDashboard = ({ onBackToDashboard }: EthicsDashboardProps = {}) => {
   const { ethicsState, getAITransparencyLevel } = useEthics();
 
   const getScoreColor = (score: number) => {
@@ -24,6 +30,19 @@ const EthicsDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Ethics Dashboard"
+        description="AI usage monitoring and academic integrity"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Ethics" }
+        ]}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

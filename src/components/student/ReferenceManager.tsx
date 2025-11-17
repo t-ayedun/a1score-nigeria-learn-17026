@@ -6,10 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  BookOpen, Download, Upload, Search, Plus, Trash2, 
+import {
+  BookOpen, Download, Upload, Search, Plus, Trash2,
   Copy, Check, FileText, Quote, Settings, Import
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Reference {
   id: string;
@@ -28,7 +30,11 @@ interface Reference {
   dateAdded: string;
 }
 
-const ReferenceManager = () => {
+interface ReferenceManagerProps {
+  onBackToDashboard?: () => void;
+}
+
+const ReferenceManager = ({ onBackToDashboard }: ReferenceManagerProps = {}) => {
   const [references, setReferences] = useState<Reference[]>([
     {
       id: "1",
@@ -136,6 +142,19 @@ const ReferenceManager = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Reference Manager"
+        description="Organize and manage your research references"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "References" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

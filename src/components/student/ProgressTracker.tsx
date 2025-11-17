@@ -5,12 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { 
+import {
   TrendingUp, Calendar, Target, Clock, Award, BarChart3,
   Calculator, FlaskConical, Atom, Globe, BookOpen, Star,
   ArrowUp, ArrowDown, Minus, CheckCircle, AlertCircle
 } from "lucide-react";
 import { useProgressTracking } from "@/hooks/useProgressTracking";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface SubjectProgress {
   subject: string;
@@ -33,7 +35,11 @@ interface WeeklyGoal {
   unit: 'hours' | 'topics' | 'questions';
 }
 
-const ProgressTracker = () => {
+interface ProgressTrackerProps {
+  onBackToDashboard?: () => void;
+}
+
+const ProgressTracker = ({ onBackToDashboard }: ProgressTrackerProps = {}) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('week');
   const { progressStats, loading } = useProgressTracking();
 
@@ -114,17 +120,18 @@ const ProgressTracker = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-green-600" />
-            Progress Tracker
-          </CardTitle>
-          <p className="text-gray-600">
-            Monitor your learning progress across all subjects
-          </p>
-        </CardHeader>
-      </Card>
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Progress Tracker"
+        description="Monitor your learning progress across all subjects"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Progress" }
+        ]}
+      />
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

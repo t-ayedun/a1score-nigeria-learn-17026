@@ -6,11 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  BarChart3, PieChart, LineChart, ScatterChart, Database, 
+import {
+  BarChart3, PieChart, LineChart, ScatterChart, Database,
   Calculator, Code, Download, Upload, Play, Settings,
   TrendingUp, Target, FileSpreadsheet, Lightbulb, HelpCircle
 } from "lucide-react";
+import BackToDashboard from "@/components/shared/BackToDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 
 interface Dataset {
   id: string;
@@ -33,7 +35,11 @@ interface AnalysisResult {
   createdAt: string;
 }
 
-const DataAnalysisHub = () => {
+interface DataAnalysisHubProps {
+  onBackToDashboard?: () => void;
+}
+
+const DataAnalysisHub = ({ onBackToDashboard }: DataAnalysisHubProps = {}) => {
   const [datasets, setDatasets] = useState<Dataset[]>([
     {
       id: "1",
@@ -170,6 +176,19 @@ if anova_results['PR(>F)'][0] < 0.05:
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {onBackToDashboard && (
+        <BackToDashboard onClick={onBackToDashboard} />
+      )}
+
+      <PageHeader
+        title="Data Analysis Hub"
+        description="Statistical analysis and data visualization tools"
+        breadcrumbs={[
+          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Data Analysis" }
+        ]}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
