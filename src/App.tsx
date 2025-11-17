@@ -9,6 +9,7 @@ import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { BackToTop } from "@/components/layout/BackToTop";
 import { useAuth } from "./hooks/useAuth";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { SignUpFlowProvider } from "@/components/auth/SignUpFlow";
 
 // Lazy load page components for better code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -97,10 +98,11 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <ScrollToTop />
-          <BackToTop />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
+          <SignUpFlowProvider>
+            <ScrollToTop />
+            <BackToTop />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
               <Route path="/select-role" element={<UserTypeSelector />} />
               <Route path="/auth" element={
                 <PublicRoute>
@@ -142,6 +144,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </SignUpFlowProvider>
         </BrowserRouter>
       </TooltipProvider>
     </EthicsProvider>
