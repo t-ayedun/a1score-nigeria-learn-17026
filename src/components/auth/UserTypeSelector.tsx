@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Users, Heart, Building2, ArrowLeft } from "lucide-react";
+import { BookOpen, Users, Heart, Building2, ArrowLeft, ChevronRight, Home } from "lucide-react";
 
 interface UserTypeSelectorProps {
   onClose?: () => void;
@@ -52,6 +52,19 @@ const UserTypeSelector = ({ onClose }: UserTypeSelectorProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <div className="w-full max-w-4xl space-y-4">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-1 hover:text-foreground transition-colors"
+          >
+            <Home className="h-4 w-4" />
+            Home
+          </button>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">Choose Your Role</span>
+        </nav>
+
         {/* Back to Home Link */}
         <button
           onClick={() => navigate('/')}

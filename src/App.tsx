@@ -1,13 +1,14 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { EthicsProvider } from '@/contexts/EthicsContext';
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { BackToTop } from "@/components/layout/BackToTop";
 import { useAuth } from "./hooks/useAuth";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 // Lazy load page components for better code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -48,15 +49,44 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  
+  const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
-  
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
+
+  if (user && !showDialog) {
+    // Show confirmation dialog instead of immediate redirect
+    setShowDialog(true);
   }
-  
+
+  if (user && showDialog) {
+    return (
+      <>
+        {children}
+        <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Already Signed In</AlertDialogTitle>
+              <AlertDialogDescription>
+                You're already signed in to A1Score. Would you like to go to your dashboard or stay on this page?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setShowDialog(false)}>
+                Stay Here
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={() => navigate('/dashboard')}>
+                Go to Dashboard
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
+    );
+  }
+
   return <>{children}</>;
 };
 

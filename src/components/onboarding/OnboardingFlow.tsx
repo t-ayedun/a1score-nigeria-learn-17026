@@ -1,9 +1,9 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, BookOpen, Trophy, ArrowRight, CheckCircle, X } from 'lucide-react';
+import { Brain, BookOpen, Trophy, ArrowRight, CheckCircle, X, RotateCcw } from 'lucide-react';
 
 interface OnboardingFlowProps {
   userType: 'student' | 'teacher' | 'admin' | 'parent';
@@ -12,7 +12,18 @@ interface OnboardingFlowProps {
 
 const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = useState(0);
+
+  // Try to restore progress from localStorage
+  const savedStep = localStorage.getItem(`onboarding-step-${userType}`);
+  const [currentStep, setCurrentStep] = useState(savedStep ? parseInt(savedStep, 10) : 0);
+  const [showResumePrompt, setShowResumePrompt] = useState(savedStep !== null && parseInt(savedStep, 10) > 0);
+
+  // Save progress to localStorage whenever step changes
+  useEffect(() => {
+    if (currentStep > 0) {
+      localStorage.setItem(`onboarding-step-${userType}`, currentStep.toString());
+    }
+  }, [currentStep, userType]);
 
   const getSteps = () => {
     const baseSteps = [
@@ -52,6 +63,8 @@ const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
+      // Clear saved progress on completion
+      localStorage.removeItem(`onboarding-step-${userType}`);
       onComplete();
     }
   };
@@ -60,6 +73,16 @@ const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
+  };
+
+  const handleStartOver = () => {
+    setCurrentStep(0);
+    setShowResumePrompt(false);
+    localStorage.removeItem(`onboarding-step-${userType}`);
+  };
+
+  const handleResume = () => {
+    setShowResumePrompt(false);
   };
 
   const currentStepData = steps[currentStep];
@@ -78,6 +101,29 @@ const OnboardingFlow = ({ userType, onComplete }: OnboardingFlowProps) => {
         >
           <X className="h-4 w-4" />
         </Button>
+
+        {/* Resume prompt */}
+        {showResumePrompt && (
+          <div className="absolute inset-0 bg-white/95 z-20 flex items-center justify-center p-6 rounded-lg">
+            <div className="text-center space-y-4">
+              <RotateCcw className="h-12 w-12 text-primary mx-auto" />
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Continue Where You Left Off?</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  You were on step {currentStep + 1} of {steps.length}. Would you like to resume or start over?
+                </p>
+              </div>
+              <div className="flex gap-3 justify-center">
+                <Button variant="outline" onClick={handleStartOver}>
+                  Start Over
+                </Button>
+                <Button onClick={handleResume} className="bg-green-600 hover:bg-green-700">
+                  Continue from Step {currentStep + 1}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">

@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowLeft, ChevronRight, Home } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -148,9 +148,44 @@ const AuthPage = () => {
     }
   };
 
+  const getUserTypeLabel = () => {
+    switch (defaultUserType) {
+      case 'teacher': return 'Teacher';
+      case 'parent': return 'Parent';
+      case 'admin': return 'Institution';
+      default: return 'Student';
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <div className="w-full max-w-md space-y-4">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-1 hover:text-foreground transition-colors"
+          >
+            <Home className="h-4 w-4" />
+            Home
+          </button>
+          <ChevronRight className="h-4 w-4" />
+          <button
+            onClick={() => navigate('/select-role')}
+            className="hover:text-foreground transition-colors"
+          >
+            Choose Role
+          </button>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">Sign In / Sign Up</span>
+          {defaultUserType && defaultUserType !== 'student' && (
+            <>
+              <span className="text-muted-foreground">•</span>
+              <span className="text-primary font-medium">{getUserTypeLabel()}</span>
+            </>
+          )}
+        </nav>
+
         {/* Back to Home Link */}
         <button
           onClick={() => navigate('/')}
