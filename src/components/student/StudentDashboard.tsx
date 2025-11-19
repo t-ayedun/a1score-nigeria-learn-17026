@@ -29,6 +29,7 @@ import ThesisWritingAssistant from "./ThesisWritingAssistant";
 import DataAnalysisHub from "./DataAnalysisHub";
 import HomeworkScanner from "./HomeworkScanner";
 import EthicsDashboard from "@/components/ethics/EthicsDashboard";
+import PageHeader from "@/components/shared/PageHeader";
 import { studentProfiles } from "@/data/sampleData";
 import { type AcademicLevel, hasFeatureAccess, getLevelFromString, LEVEL_DISPLAY_NAMES } from "@/types/academicLevel";
 
@@ -519,47 +520,74 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="animated-tutorials" className="space-y-4">
-            <Button
-              onClick={() => setActiveTab('dashboard')}
-              variant="outline"
-              className="mb-4"
-            >
-              ← Back to Dashboard
-            </Button>
+            <PageHeader
+              title="Interactive Tutorials"
+              description="Visual learning through animated content"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Interactive Tutorials" }
+              ]}
+            />
             <AnimatedTutorialSystem />
           </TabsContent>
 
           <TabsContent value="learning-paths" className="space-y-4">
-            <Button
-              onClick={() => setActiveTab('dashboard')}
-              variant="outline"
-              className="mb-4"
-            >
-              ← Back to Dashboard
-            </Button>
+            <PageHeader
+              title="Smart Learning Paths"
+              description="Personalized learning journeys tailored to your goals"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Learning Paths" }
+              ]}
+            />
             <LearningPathHub />
           </TabsContent>
 
-          <TabsContent value="tutor">
+          <TabsContent value="tutor" className="space-y-4">
+            <PageHeader
+              title="AI Tutor"
+              description="Get instant help and explanations from your AI tutor"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "AI Tutor" }
+              ]}
+            />
             <AITutorChat onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="subjects">
+          <TabsContent value="subjects" className="space-y-4">
+            <PageHeader
+              title="Browse Subjects"
+              description="Explore topics and study materials across all subjects"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Subjects" }
+              ]}
+            />
             <SubjectHub onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="quiz">
+          <TabsContent value="quiz" className="space-y-4">
+            <PageHeader
+              title="Practice Quiz"
+              description="Test your knowledge and track your progress"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Quiz" }
+              ]}
+            />
             <QuizInterface onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="gamification" className="space-y-4">
-            <Button
-              onClick={() => setActiveTab('dashboard')}
-              variant="outline"
-              className="mb-4"
-            >
-              ← Back to Dashboard
-            </Button>
+            <PageHeader
+              title="Achievements & Rewards"
+              description="Track your badges, streaks, and learning milestones"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Achievements" }
+              ]}
+            />
             <GamificationSystem
               studentId={user.name}
               onBadgeEarned={(badge) => console.log(`Badge earned: ${badge}`)}
@@ -567,38 +595,79 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="community" className="space-y-4">
-            <Button
-              onClick={() => setActiveTab('dashboard')}
-              variant="outline"
-              className="mb-4"
-            >
-              ← Back to Dashboard
-            </Button>
+            <PageHeader
+              title="A1Connect Community"
+              description="Connect with fellow students and share knowledge"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Community" }
+              ]}
+            />
             <StudentCommunity />
           </TabsContent>
 
-          <TabsContent value="formula-reference">
+          <TabsContent value="formula-reference" className="space-y-4">
+            <PageHeader
+              title="Formula Reference"
+              description="Quick access to essential formulas and equations"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Formula Reference" }
+              ]}
+            />
             <FormulaReference onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="progress-tracker">
+          <TabsContent value="progress-tracker" className="space-y-4">
+            <PageHeader
+              title="Progress Tracker"
+              description="Monitor your learning progress and performance metrics"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Progress Tracker" }
+              ]}
+            />
             <ProgressTracker onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="study-goals">
+          <TabsContent value="study-goals" className="space-y-4">
+            <PageHeader
+              title="Study Goals"
+              description="Set and track your learning objectives"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Study Goals" }
+              ]}
+            />
             <StudyGoals onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="study-timer">
+          <TabsContent value="study-timer" className="space-y-4">
+            <PageHeader
+              title="Study Timer"
+              description="Use Pomodoro technique to maximize study efficiency"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Study Timer" }
+              ]}
+            />
             <StudyTimer onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="pdf-helper" className="space-y-6">
+            <PageHeader
+              title="PDF Helper"
+              description="Upload and analyze PDF documents with AI assistance"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "PDF Helper" }
+              ]}
+            />
             {!currentAnalysis ? (
               <PDFUploader onAnalysisComplete={setCurrentAnalysis} />
             ) : (
               <div className="space-y-4">
-                <Button 
+                <Button
                   onClick={() => setCurrentAnalysis(null)}
                   variant="outline"
                   className="mb-4"
@@ -610,38 +679,87 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             )}
           </TabsContent>
 
-          <TabsContent value="literature-review">
+          <TabsContent value="literature-review" className="space-y-4">
+            <PageHeader
+              title="Literature Review Assistant"
+              description="Research and organize academic literature for your studies"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Literature Review" }
+              ]}
+            />
             <LiteratureReviewAssistant onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="reference-manager">
+          <TabsContent value="reference-manager" className="space-y-4">
+            <PageHeader
+              title="Reference Manager"
+              description="Organize and cite your research sources"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "References" }
+              ]}
+            />
             <ReferenceManager onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="thesis-assistant">
+          <TabsContent value="thesis-assistant" className="space-y-4">
+            <PageHeader
+              title="Thesis Writing Assistant"
+              description="AI-powered support for your thesis and research papers"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Thesis Assistant" }
+              ]}
+            />
             <ThesisWritingAssistant onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="data-analysis">
+          <TabsContent value="data-analysis" className="space-y-4">
+            <PageHeader
+              title="Data Analysis Hub"
+              description="Tools for statistical analysis and data visualization"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Data Analysis" }
+              ]}
+            />
             <DataAnalysisHub onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="homework-scanner">
+          <TabsContent value="homework-scanner" className="space-y-4">
+            <PageHeader
+              title="Homework Scanner"
+              description="Scan and get help with your homework problems"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Homework Scanner" }
+              ]}
+            />
             <HomeworkScanner onSolutionGenerated={(solution) => console.log('Solution:', solution)} onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="ethics" className="space-y-6">
+            <PageHeader
+              title="Ethics Dashboard"
+              description="Learn about responsible AI use and academic integrity"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Ethics" }
+              ]}
+            />
             <EthicsDashboard onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <Button
-              onClick={() => setActiveTab('dashboard')}
-              variant="outline"
-              className="mb-4"
-            >
-              ← Back to Dashboard
-            </Button>
+            <PageHeader
+              title="Settings"
+              description="Customize your learning experience and preferences"
+              breadcrumbs={[
+                { label: "Dashboard", onClick: () => setActiveTab('dashboard') },
+                { label: "Settings" }
+              ]}
+            />
             <LanguageSelector
               currentLanguage={currentLanguage}
               onLanguageChange={setCurrentLanguage}
