@@ -191,12 +191,12 @@ const ParentDashboard = ({ user, onLogout }: ParentDashboardProps) => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="teachers">Teachers</TabsTrigger>
-            <TabsTrigger value="subscription">Subscription</TabsTrigger>
-            <TabsTrigger value="safety">Safety</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="overview" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Overview</TabsTrigger>
+            <TabsTrigger value="activity" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Activity</TabsTrigger>
+            <TabsTrigger value="teachers" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Teachers</TabsTrigger>
+            <TabsTrigger value="subscription" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Subscription</TabsTrigger>
+            <TabsTrigger value="safety" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Safety</TabsTrigger>
+            <TabsTrigger value="reports" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">Reports</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">

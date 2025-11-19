@@ -125,9 +125,9 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
-            <TabsTrigger value="performance">Class Performance</TabsTrigger>
-            <TabsTrigger value="content">Content Monitoring</TabsTrigger>
-            <TabsTrigger value="analytics">Advanced Analytics</TabsTrigger>
+            <TabsTrigger value="performance" className="data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700">Class Performance</TabsTrigger>
+            <TabsTrigger value="content" className="data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700">Content Monitoring</TabsTrigger>
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700">Advanced Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="performance" className="space-y-6">
