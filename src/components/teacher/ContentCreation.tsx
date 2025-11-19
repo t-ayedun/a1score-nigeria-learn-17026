@@ -15,8 +15,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { BookOpen, Plus, FileText, CheckCircle, RefreshCw } from "lucide-react";
+import { BookOpen, Plus, FileText, CheckCircle, RefreshCw, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -31,6 +32,8 @@ const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
   const [lessonDescription, setLessonDescription] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [generationCancelled, setGenerationCancelled] = useState(false);
   const [showRegenerateWarning, setShowRegenerateWarning] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
 
@@ -64,9 +67,31 @@ const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
     if (!lessonTitle || !selectedSubject) return;
 
     setIsGenerating(true);
+    setGenerationCancelled(false);
+    setGenerationProgress(0);
 
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate AI generation with progress
+    const progressSteps = [25, 50, 75, 100];
+    for (let i = 0; i < progressSteps.length; i++) {
+      if (generationCancelled) {
+        setIsGenerating(false);
+        setGenerationProgress(0);
+        toast({
+          title: "Generation Cancelled",
+          description: "Lesson content generation was cancelled.",
+          variant: "destructive"
+        });
+        return;
+      }
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setGenerationProgress(progressSteps[i]);
+    }
+
+    if (generationCancelled) {
+      setIsGenerating(false);
+      setGenerationProgress(0);
+      return;
+    }
 
     const sampleContent = `# ${lessonTitle}
 
@@ -100,6 +125,11 @@ Key takeaways from this lesson...
 
     setGeneratedContent(sampleContent);
     setIsGenerating(false);
+    setGenerationProgress(0);
+  };
+
+  const handleCancelGeneration = () => {
+    setGenerationCancelled(true);
   };
 
   const handleGenerateClick = () => {
@@ -226,28 +256,42 @@ Key takeaways from this lesson...
               />
             </div>
 
-            <Button
-              onClick={handleGenerateClick}
-              disabled={!lessonTitle || !selectedSubject || isGenerating}
-              className="w-full"
-            >
-              {isGenerating ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Generating Lesson...
-                </>
-              ) : generatedContent ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Regenerate Lesson Plan
-                </>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Generate Lesson Plan
-                </>
-              )}
-            </Button>
+            {isGenerating ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">Generating content...</span>
+                  <span className="text-sm text-gray-600">{generationProgress}%</span>
+                </div>
+                <Progress value={generationProgress} className="w-full" />
+                <Button
+                  onClick={handleCancelGeneration}
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel Generation
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={handleGenerateClick}
+                disabled={!lessonTitle || !selectedSubject}
+                className="w-full"
+              >
+                {generatedContent ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Regenerate Lesson Plan
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Generate Lesson Plan
+                  </>
+                )}
+              </Button>
+            )}
           </CardContent>
         </Card>
 
