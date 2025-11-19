@@ -30,9 +30,11 @@ import {
   Sparkles,
   ArrowLeft,
   ArrowRight,
-  Save
+  Save,
+  X
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -43,6 +45,9 @@ interface LessonPlanWizardProps {
 const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [generationCancelled, setGenerationCancelled] = useState(false);
+  const [showClearConfirmation, setShowClearConfirmation] = useState(false);
   const [activeStep, setActiveStep] = useState("setup");
   const [lessonData, setLessonData] = useState({
     title: "",
@@ -99,9 +104,31 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
 
   const handleGenerate = async () => {
     setIsGenerating(true);
+    setGenerationCancelled(false);
+    setGenerationProgress(0);
 
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Simulate AI generation with progress
+    const progressSteps = [20, 40, 60, 80, 100];
+    for (let i = 0; i < progressSteps.length; i++) {
+      if (generationCancelled) {
+        setIsGenerating(false);
+        setGenerationProgress(0);
+        toast({
+          title: "Generation Cancelled",
+          description: "Lesson plan generation was cancelled.",
+          variant: "destructive"
+        });
+        return;
+      }
+      await new Promise(resolve => setTimeout(resolve, 600));
+      setGenerationProgress(progressSteps[i]);
+    }
+
+    if (generationCancelled) {
+      setIsGenerating(false);
+      setGenerationProgress(0);
+      return;
+    }
 
     const mockPlan = {
       title: lessonData.title,
@@ -169,7 +196,12 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
 
     setGeneratedPlan(mockPlan);
     setIsGenerating(false);
+    setGenerationProgress(0);
     setActiveStep("customize");
+  };
+
+  const handleCancelGeneration = () => {
+    setGenerationCancelled(true);
   };
 
   const handleBackToDashboardClick = () => {
@@ -225,6 +257,12 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
   };
 
   const handleClearDraft = () => {
+    if (lessonData.title || generatedPlan) {
+      setShowClearConfirmation(true);
+    }
+  };
+
+  const handleConfirmClear = () => {
     localStorage.removeItem('lessonPlanDraft');
     setLessonData({
       title: "",
@@ -238,6 +276,7 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
     setGeneratedPlan(null);
     setActiveStep("setup");
     setLastSavedAt(null);
+    setShowClearConfirmation(false);
     toast({
       title: "Draft Cleared",
       description: "Started a new lesson plan.",
@@ -421,30 +460,48 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
             </Card>
           </div>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleNextStep}
-                  disabled={!canProceedFromSetup() || isGenerating}
-                  className="min-h-[44px]"
-                  size="lg"
-                >
-                  {isGenerating ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                      Generating Your Lesson Plan...
-                    </>
-                  ) : (
-                    <>
-                      Next: Generate Plan
-                      <ArrowRight className="h-5 w-5 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {isGenerating && (
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Generating lesson plan...</span>
+                    <span className="text-sm text-gray-600">{generationProgress}%</span>
+                  </div>
+                  <Progress value={generationProgress} className="w-full" />
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={handleCancelGeneration}
+                      variant="outline"
+                      size="sm"
+                      className="min-h-[44px]"
+                    >
+                      <X className="h-4 w-4 mr-2" />
+                      Cancel Generation
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {!isGenerating && (
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex justify-end">
+                  <Button
+                    onClick={handleNextStep}
+                    disabled={!canProceedFromSetup()}
+                    className="min-h-[44px]"
+                    size="lg"
+                  >
+                    Next: Generate Plan
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="customize" className="space-y-6">
@@ -748,6 +805,25 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
             <AlertDialogCancel>Continue Editing</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmExit} className="bg-red-600 hover:bg-red-700">
               Exit Without Saving
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Clear Confirmation Dialog */}
+      <AlertDialog open={showClearConfirmation} onOpenChange={setShowClearConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clear Lesson Plan?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all your current work and start a new lesson plan.
+              Any unsaved changes will be lost. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmClear} className="bg-red-600 hover:bg-red-700">
+              Clear and Start New
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
