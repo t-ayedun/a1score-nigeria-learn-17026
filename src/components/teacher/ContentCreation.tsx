@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { BookOpen, Plus, FileText, CheckCircle, RefreshCw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -24,14 +25,33 @@ interface ContentCreationProps {
 }
 
 const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
+  const { toast } = useToast();
   const [lessonTitle, setLessonTitle] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [lessonDescription, setLessonDescription] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [showRegenerateWarning, setShowRegenerateWarning] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
 
   const subjects = ['Mathematics', 'Physics', 'Chemistry', 'English', 'Biology'];
+
+  // Load draft from localStorage on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('contentStudioDraft');
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+        setLessonTitle(draft.lessonTitle);
+        setSelectedSubject(draft.selectedSubject);
+        setLessonDescription(draft.lessonDescription);
+        setGeneratedContent(draft.generatedContent);
+        setLastSavedAt(new Date(draft.savedAt));
+      } catch (e) {
+        console.error('Failed to load draft:', e);
+      }
+    }
+  }, []);
 
   const recentLessons = [
     { title: 'Quadratic Equations', subject: 'Mathematics', status: 'Published', students: 45 },
@@ -95,6 +115,43 @@ Key takeaways from this lesson...
     generateContent();
   };
 
+  const handleSaveDraft = () => {
+    const draft = {
+      lessonTitle,
+      selectedSubject,
+      lessonDescription,
+      generatedContent,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('contentStudioDraft', JSON.stringify(draft));
+    setLastSavedAt(new Date());
+    toast({
+      title: "Draft Saved",
+      description: "Your lesson content has been saved as a draft.",
+    });
+  };
+
+  const handlePublish = () => {
+    // In a real app, this would publish to a backend
+    localStorage.removeItem('contentStudioDraft');
+    toast({
+      title: "Lesson Published",
+      description: "Your lesson has been published successfully.",
+    });
+  };
+
+  // Auto-save every 30 seconds if there's content
+  useEffect(() => {
+    const hasData = lessonTitle || generatedContent;
+    if (!hasData) return;
+
+    const autoSaveInterval = setInterval(() => {
+      handleSaveDraft();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [lessonTitle, selectedSubject, lessonDescription, generatedContent]);
+
   return (
     <div className="space-y-6">
       {onBackToDashboard && (
@@ -112,11 +169,20 @@ Key takeaways from this lesson...
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-blue-600" />
-            Content Creation Studio
-          </CardTitle>
-          <p className="text-gray-600">Create engaging lesson plans and educational content with AI assistance.</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-6 w-6 text-blue-600" />
+                Content Creation Studio
+              </CardTitle>
+              <p className="text-gray-600 mt-2">Create engaging lesson plans and educational content with AI assistance.</p>
+              {lastSavedAt && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Last saved: {lastSavedAt.toLocaleTimeString()}
+                </p>
+              )}
+            </div>
+          </div>
         </CardHeader>
       </Card>
 
@@ -197,11 +263,11 @@ Key takeaways from this lesson...
                   <pre className="whitespace-pre-wrap text-sm">{generatedContent}</pre>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm">
+                  <Button size="sm" onClick={handleSaveDraft}>
                     <FileText className="h-4 w-4 mr-2" />
                     Save as Draft
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={handlePublish}>
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Publish
                   </Button>

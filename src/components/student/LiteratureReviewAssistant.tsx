@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Search, FileText, Network, TrendingUp, Plus, BookOpen,
-  Download, Filter, Star, Quote, Lightbulb, ArrowRight
+  Download, Filter, Star, Quote, Lightbulb, ArrowRight, Save
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -32,6 +33,7 @@ interface LiteratureReviewAssistantProps {
 }
 
 const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssistantProps = {}) => {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [papers, setPapers] = useState<Paper[]>([
     {
@@ -72,6 +74,22 @@ const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssist
 
   const [searchProgress, setSearchProgress] = useState(0);
   const [activeTab, setActiveTab] = useState("search");
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+
+  // Load saved review from localStorage on mount
+  useEffect(() => {
+    const savedReview = localStorage.getItem('literatureReviewDraft');
+    if (savedReview) {
+      try {
+        const draft = JSON.parse(savedReview);
+        setPapers(draft.papers);
+        setReviewOutline(draft.reviewOutline);
+        setLastSavedAt(new Date(draft.savedAt));
+      } catch (e) {
+        console.error('Failed to load review draft:', e);
+      }
+    }
+  }, []);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -127,6 +145,101 @@ const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssist
     setActiveTab("outline");
   };
 
+  const handleSaveDraft = () => {
+    const draft = {
+      papers,
+      reviewOutline,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('literatureReviewDraft', JSON.stringify(draft));
+    setLastSavedAt(new Date());
+    toast({
+      title: "Review Saved",
+      description: "Your literature review has been saved as a draft.",
+    });
+  };
+
+  const handleExportReferences = () => {
+    const starredPapers = papers.filter(p => p.isStarred);
+    let bibtex = "";
+
+    starredPapers.forEach((paper, index) => {
+      const authors = paper.authors.join(" and ");
+      bibtex += `@article{paper${index + 1},\n`;
+      bibtex += `  title={${paper.title}},\n`;
+      bibtex += `  author={${authors}},\n`;
+      bibtex += `  journal={${paper.journal}},\n`;
+      bibtex += `  year={${paper.year}},\n`;
+      bibtex += `  doi={${paper.doi}}\n`;
+      bibtex += `}\n\n`;
+    });
+
+    const blob = new Blob([bibtex], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'references.bib';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "References Exported",
+      description: `Exported ${starredPapers.length} references as BibTeX.`,
+    });
+  };
+
+  const handleExportOutline = () => {
+    const content = `# Literature Review Outline\n\n## 1. Introduction\n${reviewOutline.introduction}\n\n## 2. Methodology\n${reviewOutline.methodology}\n\n## 3. Key Themes\n${reviewOutline.keyThemes.map(t => `- ${t}`).join('\n')}\n\n## 4. Research Gaps\n${reviewOutline.gaps.map(g => `- ${g}`).join('\n')}\n\n## 5. Conclusion\n${reviewOutline.conclusion}`;
+
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'literature-review-outline.md';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Outline Exported",
+      description: "Your literature review outline has been exported.",
+    });
+  };
+
+  const handleGenerateCitations = () => {
+    const starredPapers = papers.filter(p => p.isStarred);
+    let apa = "";
+
+    starredPapers.forEach(paper => {
+      const authors = paper.authors.join(", ");
+      apa += `${authors} (${paper.year}). ${paper.title}. ${paper.journal}. https://doi.org/${paper.doi}\n\n`;
+    });
+
+    const blob = new Blob([apa], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'citations-apa.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Citations Generated",
+      description: `Generated ${starredPapers.length} citations in APA format.`,
+    });
+  };
+
+  // Auto-save every 30 seconds if there's content
+  useEffect(() => {
+    const hasContent = reviewOutline.introduction || reviewOutline.methodology || reviewOutline.conclusion;
+    if (!hasContent) return;
+
+    const autoSaveInterval = setInterval(() => {
+      handleSaveDraft();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [papers, reviewOutline]);
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {onBackToDashboard && (
@@ -144,13 +257,31 @@ const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssist
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5" />
-            Literature Review Assistant
-          </CardTitle>
-          <p className="text-muted-foreground">
-            AI-powered research discovery and systematic literature review tools
-          </p>
+          <div className="flex items-start justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                Literature Review Assistant
+              </CardTitle>
+              <p className="text-muted-foreground mt-2">
+                AI-powered research discovery and systematic literature review tools
+              </p>
+              {lastSavedAt && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Last saved: {lastSavedAt.toLocaleTimeString()}
+                </p>
+              )}
+            </div>
+            <Button
+              onClick={handleSaveDraft}
+              variant="outline"
+              size="sm"
+              disabled={!reviewOutline.introduction && !papers.some(p => p.isStarred)}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save Draft
+            </Button>
+          </div>
         </CardHeader>
       </Card>
 
@@ -239,7 +370,7 @@ const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssist
                 <Lightbulb className="h-4 w-4 mr-2" />
                 Generate Outline
               </Button>
-              <Button variant="outline">
+              <Button onClick={handleExportReferences} variant="outline" disabled={!papers.some(p => p.isStarred)}>
                 <Download className="h-4 w-4 mr-2" />
                 Export References
               </Button>
@@ -378,11 +509,11 @@ const LiteratureReviewAssistant = ({ onBackToDashboard }: LiteratureReviewAssist
               </div>
 
               <div className="flex gap-2">
-                <Button>
+                <Button onClick={handleExportOutline}>
                   <Download className="h-4 w-4 mr-2" />
-                  Export as Word
+                  Export Outline
                 </Button>
-                <Button variant="outline">
+                <Button variant="outline" onClick={handleGenerateCitations} disabled={!papers.some(p => p.isStarred)}>
                   <Quote className="h-4 w-4 mr-2" />
                   Generate Citations
                 </Button>

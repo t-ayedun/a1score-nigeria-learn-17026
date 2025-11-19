@@ -29,8 +29,10 @@ import {
   ClipboardList,
   Sparkles,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  Save
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -39,6 +41,7 @@ interface LessonPlanWizardProps {
 }
 
 const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => {
+  const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeStep, setActiveStep] = useState("setup");
   const [lessonData, setLessonData] = useState({
@@ -53,6 +56,23 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
   const [generatedPlan, setGeneratedPlan] = useState<any>(null);
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+
+  // Load draft from localStorage on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('lessonPlanDraft');
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+        setLessonData(draft.lessonData);
+        setGeneratedPlan(draft.generatedPlan);
+        setActiveStep(draft.activeStep);
+        setLastSavedAt(new Date(draft.savedAt));
+      } catch (e) {
+        console.error('Failed to load draft:', e);
+      }
+    }
+  }, []);
 
   // Track form modifications
   useEffect(() => {
@@ -189,6 +209,53 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
     }
   };
 
+  const handleSaveDraft = () => {
+    const draft = {
+      lessonData,
+      generatedPlan,
+      activeStep,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('lessonPlanDraft', JSON.stringify(draft));
+    setLastSavedAt(new Date());
+    toast({
+      title: "Draft Saved",
+      description: "Your lesson plan has been saved as a draft.",
+    });
+  };
+
+  const handleClearDraft = () => {
+    localStorage.removeItem('lessonPlanDraft');
+    setLessonData({
+      title: "",
+      subject: "",
+      grade: "",
+      duration: "",
+      objectives: "",
+      description: "",
+      difficulty: "intermediate"
+    });
+    setGeneratedPlan(null);
+    setActiveStep("setup");
+    setLastSavedAt(null);
+    toast({
+      title: "Draft Cleared",
+      description: "Started a new lesson plan.",
+    });
+  };
+
+  // Auto-save every 30 seconds if there are changes
+  useEffect(() => {
+    const hasData = lessonData.title || generatedPlan;
+    if (!hasData) return;
+
+    const autoSaveInterval = setInterval(() => {
+      handleSaveDraft();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [lessonData, generatedPlan, activeStep]);
+
   return (
     <div className="space-y-6">
       {onBackToDashboard && (
@@ -206,11 +273,40 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-purple-600" />
-            AI Lesson Plan Wizard
-          </CardTitle>
-          <p className="text-gray-600">Create comprehensive, engaging lesson plans tailored to your students' needs.</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-6 w-6 text-purple-600" />
+                AI Lesson Plan Wizard
+              </CardTitle>
+              <p className="text-gray-600 mt-2">Create comprehensive, engaging lesson plans tailored to your students' needs.</p>
+              {lastSavedAt && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Last saved: {lastSavedAt.toLocaleTimeString()}
+                </p>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleSaveDraft}
+                variant="outline"
+                size="sm"
+                disabled={!lessonData.title && !generatedPlan}
+              >
+                <Save className="h-4 w-4 mr-2" />
+                Save Draft
+              </Button>
+              {(lessonData.title || generatedPlan) && (
+                <Button
+                  onClick={handleClearDraft}
+                  variant="ghost"
+                  size="sm"
+                >
+                  New
+                </Button>
+              )}
+            </div>
+          </div>
         </CardHeader>
       </Card>
 

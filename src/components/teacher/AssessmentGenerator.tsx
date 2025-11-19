@@ -8,6 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   FileQuestion,
   CheckCircle,
   Edit3,
@@ -18,6 +28,7 @@ import {
   RotateCcw,
   Plus
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -37,7 +48,9 @@ interface AssessmentGeneratorProps {
 }
 
 const AssessmentGenerator = ({ onBackToDashboard }: AssessmentGeneratorProps = {}) => {
+  const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showRegenerateWarning, setShowRegenerateWarning] = useState(false);
   const [assessmentData, setAssessmentData] = useState({
     title: "",
     subject: "",
@@ -146,18 +159,31 @@ const AssessmentGenerator = ({ onBackToDashboard }: AssessmentGeneratorProps = {
     const selected = getSelectedQuestions();
     const total = selected.length;
     if (total === 0) return { easy: 0, medium: 0, hard: 0 };
-    
+
     const counts = {
       easy: selected.filter(q => q.difficulty === 'easy').length,
       medium: selected.filter(q => q.difficulty === 'medium').length,
       hard: selected.filter(q => q.difficulty === 'hard').length
     };
-    
+
     return {
       easy: Math.round((counts.easy / total) * 100),
       medium: Math.round((counts.medium / total) * 100),
       hard: Math.round((counts.hard / total) * 100)
     };
+  };
+
+  const handleRegenerateClick = () => {
+    if (questions.length > 0) {
+      setShowRegenerateWarning(true);
+    } else {
+      handleGenerateQuestions();
+    }
+  };
+
+  const handleConfirmRegenerate = () => {
+    setShowRegenerateWarning(false);
+    handleGenerateQuestions();
   };
 
   return (
@@ -433,7 +459,7 @@ const AssessmentGenerator = ({ onBackToDashboard }: AssessmentGeneratorProps = {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-600">Total Points: {getTotalPoints()}</span>
-                  <Button variant="outline" size="sm" onClick={handleGenerateQuestions}>
+                  <Button variant="outline" size="sm" onClick={handleRegenerateClick}>
                     <RotateCcw className="h-4 w-4 mr-2" />
                     Regenerate
                   </Button>
@@ -626,6 +652,25 @@ const AssessmentGenerator = ({ onBackToDashboard }: AssessmentGeneratorProps = {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Regenerate Confirmation Dialog */}
+      <AlertDialog open={showRegenerateWarning} onOpenChange={setShowRegenerateWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Regenerate Questions?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will replace all current questions with a new set of AI-generated questions.
+              Any customizations or edits you've made will be lost. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmRegenerate} className="bg-orange-600 hover:bg-orange-700">
+              Regenerate Questions
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
