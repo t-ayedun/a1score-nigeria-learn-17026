@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   BookOpen,
   Users,
@@ -17,7 +27,9 @@ import {
   Lightbulb,
   Presentation,
   ClipboardList,
-  Sparkles
+  Sparkles,
+  ArrowLeft,
+  ArrowRight
 } from "lucide-react";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
@@ -39,6 +51,27 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
     difficulty: "intermediate"
   });
   const [generatedPlan, setGeneratedPlan] = useState<any>(null);
+  const [showExitWarning, setShowExitWarning] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Track form modifications
+  useEffect(() => {
+    const hasData = lessonData.title || lessonData.subject || lessonData.objectives || lessonData.description;
+    setHasUnsavedChanges(hasData && !generatedPlan);
+  }, [lessonData, generatedPlan]);
+
+  // Browser unload warning
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const subjects = ["Mathematics", "Physics", "Chemistry", "Biology", "English", "Geography", "History", "Economics"];
   const grades = ["JSS1", "JSS2", "JSS3", "SS1", "SS2", "SS3"];
@@ -46,10 +79,10 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
 
   const handleGenerate = async () => {
     setIsGenerating(true);
-    
+
     // Simulate AI generation
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     const mockPlan = {
       title: lessonData.title,
       subject: lessonData.subject,
@@ -113,23 +146,60 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
         "Challenge advanced students with extension problems"
       ]
     };
-    
+
     setGeneratedPlan(mockPlan);
     setIsGenerating(false);
-    setActiveStep("preview");
+    setActiveStep("customize");
+  };
+
+  const handleBackToDashboardClick = () => {
+    if (hasUnsavedChanges) {
+      setShowExitWarning(true);
+    } else if (onBackToDashboard) {
+      onBackToDashboard();
+    }
+  };
+
+  const handleConfirmExit = () => {
+    setShowExitWarning(false);
+    if (onBackToDashboard) {
+      onBackToDashboard();
+    }
+  };
+
+  const canProceedFromSetup = () => {
+    return lessonData.title && lessonData.subject && lessonData.grade && lessonData.duration;
+  };
+
+  const handleNextStep = () => {
+    if (activeStep === "setup") {
+      if (canProceedFromSetup()) {
+        handleGenerate();
+      }
+    } else if (activeStep === "customize") {
+      setActiveStep("preview");
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (activeStep === "customize") {
+      setActiveStep("setup");
+    } else if (activeStep === "preview") {
+      setActiveStep("customize");
+    }
   };
 
   return (
     <div className="space-y-6">
       {onBackToDashboard && (
-        <BackToDashboard onClick={onBackToDashboard} />
+        <BackToDashboard onClick={handleBackToDashboardClick} />
       )}
 
       <PageHeader
         title="Lesson Plan Wizard"
         description="Create AI-powered lesson plans quickly"
         breadcrumbs={[
-          { label: "Dashboard", onClick: onBackToDashboard },
+          { label: "Dashboard", onClick: handleBackToDashboardClick },
           { label: "Lesson Plan Wizard" }
         ]}
       />
@@ -257,43 +327,143 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
 
           <Card>
             <CardContent className="pt-6">
-              <Button 
-                onClick={handleGenerate}
-                disabled={!lessonData.title || !lessonData.subject || isGenerating}
-                className="w-full h-12 text-lg"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                    Generating Your Lesson Plan...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-5 w-5 mr-3" />
-                    Generate AI Lesson Plan
-                  </>
-                )}
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleNextStep}
+                  disabled={!canProceedFromSetup() || isGenerating}
+                  className="min-h-[44px]"
+                  size="lg"
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                      Generating Your Lesson Plan...
+                    </>
+                  ) : (
+                    <>
+                      Next: Generate Plan
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="customize" className="space-y-6">
+          {generatedPlan && (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Customize Your Lesson Plan</CardTitle>
+                  <p className="text-sm text-gray-600">Review and edit the AI-generated lesson plan before finalizing.</p>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Lesson Title</label>
+                    <Input
+                      value={generatedPlan.title}
+                      onChange={(e) => setGeneratedPlan({...generatedPlan, title: e.target.value})}
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Subject</label>
+                      <Select value={generatedPlan.subject} onValueChange={(value) => setGeneratedPlan({...generatedPlan, subject: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {subjects.map((subject) => (
+                            <SelectItem key={subject} value={subject}>{subject}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Grade Level</label>
+                      <Select value={generatedPlan.grade} onValueChange={(value) => setGeneratedPlan({...generatedPlan, grade: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {grades.map((grade) => (
+                            <SelectItem key={grade} value={grade}>{grade}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Duration</label>
+                      <Select value={generatedPlan.duration} onValueChange={(value) => setGeneratedPlan({...generatedPlan, duration: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {durations.map((duration) => (
+                            <SelectItem key={duration} value={duration}>{duration}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Learning Objectives</label>
+                    <Textarea
+                      value={generatedPlan.objectives.join('\n')}
+                      onChange={(e) => setGeneratedPlan({...generatedPlan, objectives: e.target.value.split('\n')})}
+                      rows={4}
+                      placeholder="Enter each objective on a new line"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Homework Assignment</label>
+                    <Textarea
+                      value={generatedPlan.homework}
+                      onChange={(e) => setGeneratedPlan({...generatedPlan, homework: e.target.value})}
+                      rows={3}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex justify-between">
+                    <Button
+                      onClick={handlePreviousStep}
+                      variant="outline"
+                      className="min-h-[44px]"
+                      size="lg"
+                    >
+                      <ArrowLeft className="h-5 w-5 mr-2" />
+                      Previous
+                    </Button>
+                    <Button
+                      onClick={handleNextStep}
+                      className="min-h-[44px]"
+                      size="lg"
+                    >
+                      Next: Preview & Export
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="preview" className="space-y-6">
           {generatedPlan && (
             <>
-              <div className="flex justify-between items-center">
+              <div className="mb-6">
                 <h2 className="text-2xl font-bold">{generatedPlan.title}</h2>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export PDF
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <Share className="h-4 w-4 mr-2" />
-                    Share
-                  </Button>
-                </div>
+                <p className="text-sm text-gray-600 mt-1">Review your complete lesson plan below</p>
               </div>
 
               <div className="grid md:grid-cols-3 gap-4 mb-6">
@@ -437,10 +607,55 @@ const LessonPlanWizard = ({ onBackToDashboard }: LessonPlanWizardProps = {}) => 
                   <p className="text-sm bg-gray-50 p-4 rounded-lg">{generatedPlan.homework}</p>
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex justify-between">
+                    <Button
+                      onClick={handlePreviousStep}
+                      variant="outline"
+                      className="min-h-[44px]"
+                      size="lg"
+                    >
+                      <ArrowLeft className="h-5 w-5 mr-2" />
+                      Previous: Customize
+                    </Button>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="lg" className="min-h-[44px]">
+                        <Download className="h-4 w-4 mr-2" />
+                        Export PDF
+                      </Button>
+                      <Button variant="outline" size="lg" className="min-h-[44px]">
+                        <Share className="h-4 w-4 mr-2" />
+                        Share
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </>
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Exit Warning Dialog */}
+      <AlertDialog open={showExitWarning} onOpenChange={setShowExitWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsaved Changes</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved changes to your lesson plan. If you leave now, all your work will be lost.
+              Are you sure you want to exit?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue Editing</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmExit} className="bg-red-600 hover:bg-red-700">
+              Exit Without Saving
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

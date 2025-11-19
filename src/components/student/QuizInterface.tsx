@@ -1,11 +1,21 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, Trophy, RotateCcw, Play } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { CheckCircle, XCircle, Trophy, RotateCcw, Play, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
@@ -35,6 +45,22 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
   const [quizAttemptId, setQuizAttemptId] = useState<string | null>(null);
   const [quizResults, setQuizResults] = useState<any[]>([]);
   const [score, setScore] = useState(0);
+  const [showExitWarning, setShowExitWarning] = useState(false);
+  const [showReviewScreen, setShowReviewScreen] = useState(false);
+  const [pendingExit, setPendingExit] = useState(false);
+
+  // Warn user before leaving page during quiz
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (currentQuiz.length > 0 && !quizComplete) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [currentQuiz.length, quizComplete]);
 
   const subjects = {
     mathematics: {
@@ -186,6 +212,27 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
     setSelectedAnswer(answerIndex);
   };
 
+  const handleBackToDashboardClick = () => {
+    if (currentQuiz.length > 0 && !quizComplete) {
+      setShowExitWarning(true);
+      setPendingExit(true);
+    } else if (onBackToDashboard) {
+      onBackToDashboard();
+    }
+  };
+
+  const confirmExit = () => {
+    setShowExitWarning(false);
+    if (pendingExit && onBackToDashboard) {
+      onBackToDashboard();
+    }
+  };
+
+  const cancelExit = () => {
+    setShowExitWarning(false);
+    setPendingExit(false);
+  };
+
   const handleNextQuestion = () => {
     if (selectedAnswer === null) return;
 
@@ -199,8 +246,8 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
       setSelectedAnswer(null);
       setShowResult(false);
     } else {
-      // Quiz complete - save attempt and get results
-      completeQuiz(newAnswers);
+      // Show review screen before completing
+      setShowReviewScreen(true);
     }
   };
 
@@ -262,14 +309,14 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
     return (
       <div className="max-w-2xl mx-auto">
         {onBackToDashboard && (
-          <BackToDashboard onClick={onBackToDashboard} />
+          <BackToDashboard onClick={handleBackToDashboardClick} />
         )}
 
         <PageHeader
           title="Practice Quiz"
           description="Test your knowledge with adaptive quizzes"
           breadcrumbs={[
-            { label: "Dashboard", onClick: onBackToDashboard },
+            { label: "Dashboard", onClick: handleBackToDashboardClick },
             { label: "Practice Quiz" }
           ]}
         />
@@ -321,18 +368,88 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
     );
   }
 
+  // Review screen before final submission
+  if (showReviewScreen) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <PageHeader
+          title="Review Your Answers"
+          description="Check your answers before submitting"
+          breadcrumbs={[
+            { label: "Dashboard", onClick: handleBackToDashboardClick },
+            { label: "Quiz" },
+            { label: "Review" }
+          ]}
+        />
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Review Answers Before Submission</CardTitle>
+            <p className="text-sm text-gray-600 mt-2">
+              You've answered {answers.filter(a => a !== null).length} of {currentQuiz.length} questions
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {currentQuiz.map((question, index) => (
+              <div key={index} className="p-4 border rounded-lg">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="font-semibold">Question {index + 1}</h4>
+                  {answers[index] !== null ? (
+                    <Badge>Answered</Badge>
+                  ) : (
+                    <Badge variant="destructive">Unanswered</Badge>
+                  )}
+                </div>
+                <p className="text-sm text-gray-700 mb-2">{question.question}</p>
+                {answers[index] !== null && (
+                  <p className="text-sm text-blue-600">
+                    Your answer: {question.options[answers[index]!]}
+                  </p>
+                )}
+              </div>
+            ))}
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                onClick={() => {
+                  setShowReviewScreen(false);
+                  setCurrentQuestionIndex(0);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                ← Go Back to Edit
+              </Button>
+              <Button
+                onClick={() => {
+                  const finalAnswers = [...answers];
+                  finalAnswers[currentQuestionIndex] = selectedAnswer;
+                  setShowReviewScreen(false);
+                  completeQuiz(finalAnswers);
+                }}
+                className="flex-1"
+              >
+                Submit Quiz
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (currentQuiz.length === 0) {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
         {onBackToDashboard && (
-          <BackToDashboard onClick={onBackToDashboard} />
+          <BackToDashboard onClick={handleBackToDashboardClick} />
         )}
 
         <PageHeader
           title="Practice Quiz"
           description="Test your knowledge with adaptive quizzes"
           breadcrumbs={[
-            { label: "Dashboard", onClick: onBackToDashboard },
+            { label: "Dashboard", onClick: handleBackToDashboardClick },
             { label: "Practice Quiz" }
           ]}
         />
@@ -430,19 +547,20 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
   const progress = ((currentQuestionIndex + 1) / currentQuiz.length) * 100;
 
   return (
-    <div className="max-w-2xl mx-auto">
-      {onBackToDashboard && (
-        <BackToDashboard onClick={onBackToDashboard} />
-      )}
+    <>
+      <div className="max-w-2xl mx-auto">
+        {onBackToDashboard && (
+          <BackToDashboard onClick={handleBackToDashboardClick} />
+        )}
 
-      <PageHeader
-        title="Practice Quiz"
-        description="Test your knowledge with adaptive quizzes"
-        breadcrumbs={[
-          { label: "Dashboard", onClick: onBackToDashboard },
-          { label: "Practice Quiz" }
-        ]}
-      />
+        <PageHeader
+          title="Practice Quiz"
+          description="Test your knowledge with adaptive quizzes"
+          breadcrumbs={[
+            { label: "Dashboard", onClick: handleBackToDashboardClick },
+            { label: "Practice Quiz" }
+          ]}
+        />
 
       <Card>
         <CardHeader>
@@ -502,6 +620,31 @@ const QuizInterface = ({ onBackToDashboard }: QuizInterfaceProps = {}) => {
         </CardContent>
       </Card>
     </div>
+
+    {/* Exit Warning Dialog */}
+    <AlertDialog open={showExitWarning} onOpenChange={setShowExitWarning}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-orange-500" />
+            Exit Quiz?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            You're in the middle of a quiz. If you leave now, your progress will be lost and you'll need to start over.
+            Are you sure you want to exit?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={cancelExit}>
+            Stay and Continue
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={confirmExit} className="bg-red-600 hover:bg-red-700">
+            Yes, Exit Quiz
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </>
   );
 };
 

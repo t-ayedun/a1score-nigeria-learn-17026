@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -45,6 +55,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [currentPlan, setCurrentPlan] = useState<'free' | 'premium' | 'pro'>('free');
   const [currentAnalysis, setCurrentAnalysis] = useState<any>(null);
+  const [showPDFDiscardWarning, setShowPDFDiscardWarning] = useState(false);
 
   // Handle routing to study tools - supports direct URL access
   useEffect(() => {
@@ -703,7 +714,7 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             ) : (
               <div className="space-y-4">
                 <Button
-                  onClick={() => setCurrentAnalysis(null)}
+                  onClick={() => setShowPDFDiscardWarning(true)}
                   variant="outline"
                   className="mb-4"
                 >
@@ -806,6 +817,31 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* PDF Discard Warning Dialog */}
+      <AlertDialog open={showPDFDiscardWarning} onOpenChange={setShowPDFDiscardWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard PDF Analysis?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will discard the current PDF analysis. You'll need to upload and re-analyze the document to see these results again.
+              Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep Current Analysis</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setCurrentAnalysis(null);
+                setShowPDFDiscardWarning(false);
+              }}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Yes, Upload New PDF
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

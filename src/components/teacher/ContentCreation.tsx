@@ -5,7 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Plus, FileText, CheckCircle } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { BookOpen, Plus, FileText, CheckCircle, RefreshCw } from "lucide-react";
 import BackToDashboard from "@/components/shared/BackToDashboard";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -19,6 +29,7 @@ const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
   const [lessonDescription, setLessonDescription] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showRegenerateWarning, setShowRegenerateWarning] = useState(false);
 
   const subjects = ['Mathematics', 'Physics', 'Chemistry', 'English', 'Biology'];
 
@@ -29,14 +40,14 @@ const ContentCreation = ({ onBackToDashboard }: ContentCreationProps = {}) => {
     { title: 'Essay Writing Techniques', subject: 'English', status: 'Published', students: 28 },
   ];
 
-  const handleGenerateLesson = async () => {
+  const generateContent = async () => {
     if (!lessonTitle || !selectedSubject) return;
-    
+
     setIsGenerating(true);
-    
+
     // Simulate AI generation
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     const sampleContent = `# ${lessonTitle}
 
 ## Learning Objectives
@@ -69,6 +80,19 @@ Key takeaways from this lesson...
 
     setGeneratedContent(sampleContent);
     setIsGenerating(false);
+  };
+
+  const handleGenerateClick = () => {
+    if (generatedContent) {
+      setShowRegenerateWarning(true);
+    } else {
+      generateContent();
+    }
+  };
+
+  const handleConfirmRegenerate = () => {
+    setShowRegenerateWarning(false);
+    generateContent();
   };
 
   return (
@@ -136,8 +160,8 @@ Key takeaways from this lesson...
               />
             </div>
 
-            <Button 
-              onClick={handleGenerateLesson}
+            <Button
+              onClick={handleGenerateClick}
               disabled={!lessonTitle || !selectedSubject || isGenerating}
               className="w-full"
             >
@@ -145,6 +169,11 @@ Key takeaways from this lesson...
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Generating Lesson...
+                </>
+              ) : generatedContent ? (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Regenerate Lesson Plan
                 </>
               ) : (
                 <>
@@ -216,6 +245,25 @@ Key takeaways from this lesson...
           </div>
         </CardContent>
       </Card>
+
+      {/* Regenerate Confirmation Dialog */}
+      <AlertDialog open={showRegenerateWarning} onOpenChange={setShowRegenerateWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Regenerate Lesson Content?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will replace your current lesson content with a new AI-generated version.
+              Any unsaved changes will be lost. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmRegenerate} className="bg-orange-600 hover:bg-orange-700">
+              Regenerate Content
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
