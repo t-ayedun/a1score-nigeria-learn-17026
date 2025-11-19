@@ -518,11 +518,25 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             )}
           </TabsContent>
 
-          <TabsContent value="animated-tutorials">
+          <TabsContent value="animated-tutorials" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <AnimatedTutorialSystem />
           </TabsContent>
 
-          <TabsContent value="learning-paths">
+          <TabsContent value="learning-paths" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <LearningPathHub />
           </TabsContent>
 
@@ -538,14 +552,28 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <QuizInterface onBackToDashboard={handleBackToDashboard} />
           </TabsContent>
 
-          <TabsContent value="gamification">
-            <GamificationSystem 
-              studentId={user.name} 
+          <TabsContent value="gamification" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
+            <GamificationSystem
+              studentId={user.name}
               onBadgeEarned={(badge) => console.log(`Badge earned: ${badge}`)}
             />
           </TabsContent>
 
-          <TabsContent value="community">
+          <TabsContent value="community" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <StudentCommunity />
           </TabsContent>
 
@@ -607,11 +635,18 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <LanguageSelector 
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
+            <LanguageSelector
               currentLanguage={currentLanguage}
               onLanguageChange={setCurrentLanguage}
             />
-            <MonetizationDemo 
+            <MonetizationDemo
               userType="student"
               currentPlan={currentPlan}
             />
