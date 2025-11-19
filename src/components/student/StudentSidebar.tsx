@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Menu, X, TrendingUp, Brain, BookOpen, MessageCircle, Trophy, Globe, Users, FileText, Search, BarChart3, PenTool, Timer, Target, Calculator, Camera, Shield, Play, Home } from "lucide-react";
@@ -18,6 +18,18 @@ const StudentSidebar = ({ activeTab, onTabChange, userLevel }: StudentSidebarPro
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  // ESC key handler to close sidebar
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isOpen]);
 
   // Define tab configuration with level requirements
   const tabs = [
@@ -104,10 +116,10 @@ const StudentSidebar = ({ activeTab, onTabChange, userLevel }: StudentSidebarPro
                 {availableTabs.map(tab => {
                   const Icon = tab.icon;
                   return (
-                    <TabsTrigger 
+                    <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="justify-start w-full data-[state=active]:bg-green-100 data-[state=active]:text-green-700 text-sm py-3"
+                      className="justify-start w-full data-[state=active]:bg-green-100 data-[state=active]:text-green-700 text-sm py-3 min-h-[44px]"
                       onClick={() => setIsOpen(false)}
                     >
                       <Icon className="h-4 w-4 mr-2 flex-shrink-0" />

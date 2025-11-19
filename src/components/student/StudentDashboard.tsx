@@ -46,18 +46,53 @@ const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
   const [currentPlan, setCurrentPlan] = useState<'free' | 'premium' | 'pro'>('free');
   const [currentAnalysis, setCurrentAnalysis] = useState<any>(null);
 
-  // Handle routing to study tools
+  // Handle routing to study tools - supports direct URL access
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes('formula-reference')) {
-      setActiveTab('formula-reference');
-    } else if (path.includes('progress-tracker')) {
-      setActiveTab('progress-tracker');
-    } else if (path.includes('study-goals')) {
-      setActiveTab('study-goals');
-    } else if (path.includes('study-timer')) {
-      setActiveTab('study-timer');
-    } else if (path === '/') {
+
+    // Map all possible routes to their corresponding tabs
+    const routeMap: Record<string, string> = {
+      'animated-tutorials': 'animated-tutorials',
+      'learning-paths': 'learning-paths',
+      'tutor': 'tutor',
+      'ai-tutor': 'tutor',
+      'subjects': 'subjects',
+      'quiz': 'quiz',
+      'gamification': 'gamification',
+      'achievements': 'gamification',
+      'community': 'community',
+      'formula-reference': 'formula-reference',
+      'formulas': 'formula-reference',
+      'progress-tracker': 'progress-tracker',
+      'progress': 'progress-tracker',
+      'study-goals': 'study-goals',
+      'goals': 'study-goals',
+      'study-timer': 'study-timer',
+      'timer': 'study-timer',
+      'pdf-helper': 'pdf-helper',
+      'pdf': 'pdf-helper',
+      'literature-review': 'literature-review',
+      'reference-manager': 'reference-manager',
+      'references': 'reference-manager',
+      'thesis-assistant': 'thesis-assistant',
+      'thesis': 'thesis-assistant',
+      'data-analysis': 'data-analysis',
+      'homework-scanner': 'homework-scanner',
+      'homework': 'homework-scanner',
+      'ethics': 'ethics',
+      'settings': 'settings'
+    };
+
+    // Check if path matches any route
+    for (const [route, tab] of Object.entries(routeMap)) {
+      if (path.includes(route)) {
+        setActiveTab(tab);
+        return;
+      }
+    }
+
+    // Default to dashboard for home route
+    if (path === '/' || path === '/student') {
       setActiveTab('dashboard');
     }
   }, [location.pathname]);

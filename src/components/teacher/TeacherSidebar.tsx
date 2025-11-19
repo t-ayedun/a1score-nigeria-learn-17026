@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -30,6 +30,18 @@ const TeacherSidebar = ({ activeTab, onTabChange }: TeacherSidebarProps) => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  // ESC key handler to close sidebar
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isOpen]);
 
   return (
     <>
@@ -87,73 +99,73 @@ const TeacherSidebar = ({ activeTab, onTabChange }: TeacherSidebarProps) => {
           <nav className="space-y-2">
             <Tabs value={activeTab} onValueChange={onTabChange} orientation="vertical" className="w-full">
               <TabsList className="grid w-full grid-rows-8 h-auto bg-transparent">
-                <TabsTrigger 
-                  value="dashboard" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="dashboard"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <TrendingUp className="h-4 w-4 mr-2" />
                   Dashboard
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="analytics" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="analytics"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <Users className="h-4 w-4 mr-2" />
                   Class Analytics
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="lesson-wizard" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="lesson-wizard"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
                   Lesson Wizard
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="syllabus-builder" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="syllabus-builder"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Syllabus Builder
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="assessment-gen" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="assessment-gen"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <FileQuestion className="h-4 w-4 mr-2" />
                   Assessment Gen
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="content" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="content"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <BookOpen className="h-4 w-4 mr-2" />
                   Content Studio
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="parent-comm" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="parent-comm"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Parent Comm
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="validation" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="validation"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />
                   Validate Answers
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="ai-monitoring" 
-                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
+                <TabsTrigger
+                  value="ai-monitoring"
+                  className="justify-start w-full data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 min-h-[44px]"
                   onClick={() => setIsOpen(false)}
                 >
                   <Shield className="h-4 w-4 mr-2" />

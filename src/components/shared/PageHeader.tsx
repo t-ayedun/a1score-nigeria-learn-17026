@@ -25,19 +25,19 @@ const PageHeader = ({
     <div className="mb-6">
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
           {breadcrumbs.map((crumb, index) => (
             <div key={index} className="flex items-center gap-2">
-              {index > 0 && <ChevronRight className="h-4 w-4" />}
+              {index > 0 && <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />}
               {crumb.onClick ? (
                 <button
                   onClick={crumb.onClick}
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-foreground transition-colors min-h-[44px] flex items-center"
                 >
                   {crumb.label}
                 </button>
               ) : (
-                <span className="text-foreground font-medium">{crumb.label}</span>
+                <span className="text-foreground font-medium min-h-[44px] flex items-center">{crumb.label}</span>
               )}
             </div>
           ))}
