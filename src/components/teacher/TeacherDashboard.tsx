@@ -173,35 +173,91 @@ const TeacherDashboard = ({ user, onLogout }: TeacherDashboardProps) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="analytics">
+          <TabsContent value="analytics" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <ClassAnalytics />
           </TabsContent>
 
-          <TabsContent value="lesson-wizard">
+          <TabsContent value="lesson-wizard" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <LessonPlanWizard />
           </TabsContent>
 
-          <TabsContent value="syllabus-builder">
+          <TabsContent value="syllabus-builder" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <SyllabusBuilder />
           </TabsContent>
 
-          <TabsContent value="assessment-gen">
+          <TabsContent value="assessment-gen" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <AssessmentGenerator />
           </TabsContent>
 
-          <TabsContent value="content">
+          <TabsContent value="content" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <ContentCreation />
           </TabsContent>
 
-          <TabsContent value="parent-comm">
+          <TabsContent value="parent-comm" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <ParentCommunication />
           </TabsContent>
 
-          <TabsContent value="validation">
+          <TabsContent value="validation" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <AnswerValidation />
           </TabsContent>
 
-          <TabsContent value="ai-monitoring">
+          <TabsContent value="ai-monitoring" className="space-y-4">
+            <Button
+              onClick={() => setActiveTab('dashboard')}
+              variant="outline"
+              className="mb-4"
+            >
+              ← Back to Dashboard
+            </Button>
             <StudentAIMonitoring />
           </TabsContent>
         </Tabs>
